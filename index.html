@@ -943,30 +943,19 @@ function generateGenericExplanation(fullName, styleId, roleId) {
 }
 
 // ==================== FIVE ELEMENTS & PINGZE ====================
-const FIVE_ELEMENTS = {
-  金: '金钅锟钧铭铠锐锋锦锡锟鑫铮铁锋锡钰铎铮铄镕锻铖铉铨钰银锜锵锃',
-  木: '木林森柏柳桂桦桐梓楠榕松枫杨柳樱桦彬松树林竹竹笋笔笛笙箫籍筒筱簧朴李杜棠樟楷楝柯枢枚桫椽榭楣梧楸槐槎椴榉榧榈榇榍榛槿榕橼檀檎檬',
-  水: '水氵淼泉波涛海澜泽浩涵雨雪江河溪流汉滴滴泡沫浅深游波及汪池泊沿沿滔滔活洒脱湿润润泽洁洗清渐沧浪涂涂沉沉沌沉浮湿潮汗水汝萍渊深溶淋沐泠浩渺瀚潇洒',
-  火: '火灬炎焱烨炫灿煜炜焕点亮光辉灯灵烈烈然炀照烂灿焕炳焘炽烛熠燃燎',
-  土: '土圭垚坤坚城培基墨均坦壵圣地在坦坤坎垭垣塑培垒堰堤堡墙墩壁壑壕垅',
-};
-
 function detectWuxing(chars) {
-  // Check each character against element radical sets
-  const elemRadicals = {
-    金: '金钅锟钧铭铠锐锋锦锡鑫铮铁钰铎铄镕锻铖铉铨银锜锵锃铭锐锋钰锻铖铉铨',
-    木: '木林森柏柳桂桦桐梓楠榕松枫杨樱彬李杜朴枚枢柯棋棣模相槐楷樵树本末果禾',
-    水: '水氵淼泉波涛海澜泽浩涵雨雪江河溪流汉滴滴渐沙沫润洁洗清沧浪涂层沉浮深溶淋沐泠渺潇洒治泾渭洛淑',
-    火: '火灬炎焱烨炫灿煜炜焕亮辉煌灯灵烈炀灼炳焘炽熠燃燎昕晟旭昭曜照熙熏耀烁耿烽',
-    土: '土圭垚坤坚城培基墨均坦圣在地坎垭垣塑垒堰堡堤墙墩壁壑壕垅岳峰山岭岩岚石田',
+  const elemChars = {
+    金: '金钅鉴銮銎鋈鋆鎏鏊鎜鑫銎凿钨钡钯钛铂钲铀钴钼钽铌铍铑铒铪铯铹钪钬钭钯钊钤钺钿铉铷铹铼铽铿锒锕锖锗锘锛锝锟锢锪锫锬锱锲锴锶锷锸锹锺锾锿铭锐锋锦锡铮铁钰铎铄锻铖铨银锜锵锃钧铠钗钢钦钟钥铜铝钱铡铨铩铳铴铵锻镐镒镓镔镗镘镙镚镛镝镞镟镠镢镣镥镦镧镨镩镪镫镬镱镲钊钊钉针钗钏钜钤钺钴钼钽铒铪铯铹铛铡铨铫铵铷铹铼铿锒锕锖锗锘锛锝锟锢锪锫锬锱锲锴',
+    木: '木林森柏柳桂桦桐梓楠榕松枫杨樱彬李杜朴枚枢柯棋棣模相槐楷樵树本末果禾竹棘荆萧苏蔡薛蒋蒲蔺蓟慕茹习蒯蓝薄苗茅茸茜莱莳莆莉莓荷莜莞莠莺荇葺萱萁萂蒂蓓蒿蓠蓣蓥蘅蘼薇菜薹蔻蘩蘑蘼兰芷芊菲芳芸芬芹芙蓉莲菊萄苇蒂蓉蔓葛萱蕻蕙藩藻苟若苦英苓茵茴茱荭茯荃茱荀茗茜荛荜荞荟荠荭荮荰荲荴荶荸荹荺荾莂莃莄莇莈莉莋莌莍莏莔莜莟莠莡莤莥莧莨莩莮莰莳莴莶莸莻菀菂菃菅菆菈菉菋菍菎菐菑菔菖菗菙菚菛菝菟菡菢菤菥菨菪菬菭菮菰菳菵菶菷菹菺菻菼萁萂萅萆萉萋萌萍萏萐萑萓萕萗萙萛萞萡萢萣萩萪萳萴萶萷萹萺萾葀葂葃葅葇葈葊葋葍葏葑葓葕葖葘葝葠葤葧葪葭葯葲葴葶葷葻葼葽葾蒀蒁蒃蒅蒇蒉蒊蒎蒏蒑蒕蒖蒚蒟蒠蒢蒣蒥蒨蒩蒫蒭蒰蒵蒶蒷蒺蒻蒽蒾蓂蓃蓅蓆蓊蓌蓎蓏蓐蓒蓕蓖蓗蓙蓚蓞蓠蓡蓣蓥蓨蓪蓫蓳蓴蓶蓷蓸蓺蓻蓾蔀蔂蔃蔅蔇蔉蔊蔋蔍蔎蔏蔐蔒蔕蔖蔘蔙蔝蔠蔢蔤蔧蔨蔩蔪蔮蔰蔳蔴蔶蔷蔸蔹蔾蕂蕳薮藨藨',
+    水: '水氵淼泉波涛海澜泽浩涵雨雪江河溪流汉滴滴渐沙沫润洁洗清沧浪涂层沉浮深溶淋沐泠渺潇洒治泾渭洛淑冰凝霜云露雾霞霁霓雯雷霆霖霈霍霙霄霭霏沾濡灌沱泌泫泷洌浈浣浚浜涤涅涪涓浸涨涌涫涵淀渌渍渐渫渗渚渝湾渤渺溅湿溉滟漾潇潋潍漱漳漩漆漫漪漾潆瀣沥濒灌沣泷滢涪澹濯涔涪涑涞涠涫涪涴涸涿淙淝淠淦淭淯淲淴淽淾渂渌渏渑渕渘渲渟渫湄湉湋湑湒湓湔湗湙湚湝湞湢湨湫湱湲湳湷湹湽溁溂溆溍溏溒溓溔溗溘溛溞溠溣溦溨溩溬溰溳溵溷溹溻溾滁滃滈滉滊滎滏滒滖滗滝滣滧滪滫滭滮滱滳滵滺滼滽漄漅漈漊漋漍漎漑漒漖漘漙漛漜漝漟漡漥漧漺漼漽潀潃潆潈潊潌潏潓潖潗潚潝潟潡潣潥潪潫潬潱潳潵潻潽澀澃澅澏澐澑澕澖澘澙澚澛澞澢澩澫澬澮澯澰澴澵澶澷澺澼澽澾澿濍濎濗濢濦濧濩濪濬濭濲濳濶濷濻濼濽濿瀀瀁瀃瀄瀇瀈瀌瀍瀎瀐瀓瀔瀖瀗瀙瀜瀠瀣瀤瀥瀩瀪瀯瀱瀳瀴瀷瀻瀽瀼灀灁灇灈灉灊灋灎灔灗灙灛灜灞灟灡湃湜溱漷澧泠泠泫澹',
+    火: '火灬炎焱烨炫灿煜炜焕亮辉煌灯灵烈炀灼炳焘炽熠燃燎昕晟旭昭曜照熙熏耀烁耿烽日明星晨晶晓晞晖昊景昌易昂晏晦晗晚晴暖曜曦曛昶昀昕晔晟晁冕暎暄暐曦曛晗晞暶暟暠暡暣暤暥暩暬暰暲暳暧暵暷暹曀曂曃曅曈曊曋曍曎曏曑曒曓曔曕曘曚曞曟曤曧曨曫曬灵炽炅炆炟炱炷炻炾烀烄烆烊烋烌烎烐烒烔烕烜烡烢烣烥烪烮烰烲烵烸烺烻烿焀焃焄焇焈焋焌焍焎焏焑焓焗焛焞焟焠焤焥焧焨焩焫焬焮焳焴焵焷焸焹焺焽煀煁煂煃煅煆煇煈煋煍煐煑煓煕煗煘煚煝煟煠煡煣煪煯煰煱煳煵煶煷煹煻煼煾熀熁熂熃熆熇熈熋熌熍熑熓熕熛熜熝熞熡熢熣熤熥熧熩熪熮熰熲熴熶熷熸熺熻熼熽熿燀燋燓燝燞燡燢燣燤燫燯燰燳燶燸燺燻燽燿爀爁爃爄爈爉爊爋爌爎爒爓爕爖爙爚爟爡爣爤爦爧爩炀烜焜煊煊烨',
+    土: '土圭垚坤坚城培基墨均坦圣在地坎垭垣塑垒堰堡堤墙墩壁壑壕垅岳峰山岭岩岚石田玉珍珠珏珣珩璟琦琪瑶琳珊瑚琼瑛瑜瑾璇璞璋环佩玺坛坊坞坫坷坪坦坼垌垤垧垭垲垴埂埙埚埝埸堀堃堆堞堡塄塆塌墉壁壅壤坝坝圭圳圻圹坜圹埘埚埝埯埭埤埸堌堎堙塄塆塱墒墚墨坛坡坦坪垠垚垞垟垡垤垧垭垯垱垳垵垶垸垹垺垼垽垿埂埁埄埅埆埇埈埉埊埌埍埏埐埑埓埕埗埛埥埦埧埨埩埪埫埬埮埰埱埲埳埵埶埻埼埽埾埿堁堄堆堇堈堉堌堏堐堑堒堓堖堗堘堙堛堜堟堠堢堣堥堦堧堨堩堪堫堬堮堲堳場堶堷堹堻堼堽堾堿塂塃塅塇塈塉塋塍塎塏塐塓塕塖塙塛塜塝塟塠塡塣塥塦塧塨塩塪塭塮塯塰塳塴塶塷塸塺塻塼塽塿墒墙墑墒墔墕墖增墛墝墠墡墢墣墤墥墦墩墪墭墯墰墱墲墴墵墶墸墹墺墻墽墾墿壀壆壈壉壋壌壍壏壐壔壖壗壘壛壝壟壡壣壥壦壧壨壩壤壭壮壮壬',
   };
   const found = new Set();
   for (const ch of chars) {
-    for (const [elem, radicals] of Object.entries(elemRadicals)) {
-      // Check if ANY radical char is contained within the target char
-      for (const r of radicals) {
-        if (ch.includes(r)) { found.add(elem); break; }
-      }
+    if (!/[一-鿿]/.test(ch)) continue; // skip non-CJK
+    for (const [elem, charset] of Object.entries(elemChars)) {
+      if (charset.includes(ch)) { found.add(elem); break; }
     }
   }
   return found.size ? [...found].join('·') : '无明确属性';
@@ -1105,7 +1094,7 @@ GEN.protagonist = (style, gender) => {
   switch(style) {
     case 'urban': return cnName(gender);
     case 'xianxia': return gender==='male' ? rand(POOLS.xianxiaMale1) : rand(POOLS.xianxiaFemale1);
-    case 'ancient': return rand(POOLS.cnSurnames) + (gender==='male'?rand(POOLS.ancientMale1):rand(POOLS.ancientFemale1));
+    case 'ancient': return rand(POOLS.cnSurnames) + (gender==='male' ? (Math.random()<0.5?rand(POOLS.ancientMale1):rand(POOLS.ancientMale2)) : (Math.random()<0.5?rand(POOLS.ancientFemale1):rand(POOLS.ancientFemale2)));
     case 'wuxia': return cnName(gender);
     case 'republic': return rand(POOLS.cnSurnames) + (gender==='male'?rand(POOLS.repubMale):rand(POOLS.repubFemale));
     case 'mystery': return rand(POOLS.cnSurnames) + (gender==='male'?rand(POOLS.mysteryMale):rand(POOLS.mysteryFemale));
@@ -1233,34 +1222,43 @@ function generate() {
   const wuxingFilter = wuxingEl ? wuxingEl.dataset.value : 'any';
   const dynastyEl = document.querySelector('#dynastyBtns .active');
   const dynastyFilter = dynastyEl ? dynastyEl.dataset.value : 'any';
+  const charCountEl = document.querySelector('#charCountBtns .active');
+  const charCountFilter = charCountEl ? parseInt(charCountEl.dataset.value) : 0;
   const isCombo = document.querySelector('#modeSwitch .active')?.dataset?.mode === 'combo';
 
   document.getElementById('selectionDisplay').textContent = role.label + ' · ' + gender.label + ' · ' + style.label;
 
   const genFn = GEN[roleId] || GEN.protagonist;
   const names = [];
-  for (let i = 0; i < count; i++) {
-    let rawName = '', display = '', retries = 0;
-    do {
-      if (isCombo) {
-        rawName = genderId === 'male' ? rand(POOLS.cnSurnames) + rand(POOLS.cnMaleG) : rand(POOLS.cnSurnames) + rand(POOLS.cnFemaleG);
-      } else if (dynastyFilter !== 'any') {
-        const dynName = getNameForDynasty(dynastyFilter, genderId);
-        if (dynName) rawName = rand(POOLS.cnSurnames) + dynName;
-        else rawName = genFn(styleId, genderId);
-      } else if (wuxingFilter !== 'any' && ['urban','ancient','wuxia','xianxia','republic','mystery'].includes(styleId)) {
-        const sur = rand(POOLS.cnSurnames);
-        const wuxingChars = FIVE_ELEMENTS[wuxingFilter] || '';
-        const ch1 = rand([...wuxingChars]);
-        const ch2 = rand([...wuxingChars]);
-        rawName = sur + ch1 + (ch1 !== ch2 ? ch2 : rand([...wuxingChars]));
-      } else {
-        rawName = genFn(styleId, genderId);
-      }
-      const title = inclTitle ? getTitle(roleId, styleId, genderId) : '';
-      display = title ? title + ' ' + rawName : rawName;
-      retries++;
-    } while (blacklist.includes(display) && retries < 10);
+  const maxAttempts = count * 20 + 100;
+  let attempts = 0;
+  while (names.length < count && attempts < maxAttempts) {
+    attempts++;
+    let rawName = '';
+    if (isCombo) {
+      rawName = genderId === 'male' ? rand(POOLS.cnSurnames) + rand(POOLS.cnMaleG) : rand(POOLS.cnSurnames) + rand(POOLS.cnFemaleG);
+    } else if (dynastyFilter !== 'any') {
+      const dynName = getNameForDynasty(dynastyFilter, genderId);
+      if (dynName) rawName = rand(POOLS.cnSurnames) + dynName;
+      else rawName = genFn(styleId, genderId);
+    } else {
+      rawName = genFn(styleId, genderId);
+    }
+
+    // Character count filter
+    if (charCountFilter > 0) {
+      const nameChars = [...rawName].filter(c => /[一-鿿]/.test(c)).length;
+      if (nameChars !== charCountFilter) continue;
+    }
+
+    // Wuxing filter
+    if (wuxingFilter !== 'any') {
+      const wx = detectWuxing([...rawName]);
+      if (!wx.includes(wuxingFilter)) continue;
+    }
+
+    const title = inclTitle ? getTitle(roleId, styleId, genderId) : '';
+    const display = title ? title + ' ' + rawName : rawName;
 
     if (blacklist.includes(display)) continue;
 
@@ -2057,13 +2055,13 @@ function initGeneratorUI() {
 function exportSelectedCSV() {
   const cards = document.querySelectorAll('.name-card.batch-selected');
   if (!cards.length) { showToast('请先勾选名字'); return; }
-  let csv = '﻿姓名,角色,性别,风格\n';
+  let csv = '﻿姓名,角色,性别,风格,字,号,绰号,五行,平仄\n';
   const resultNames = window._lastGeneratedNames || [];
   cards.forEach(card => {
     const idx = parseInt(card.querySelector('.batch-check')?.dataset.index);
     if (idx >= 0 && resultNames[idx]) {
       const n = resultNames[idx];
-      csv += `"${n.display}","${n.role}","${n.gender}","${n.style}"\n`;
+      csv += `"${n.display}","${n.role}","${n.gender}","${n.style}","${n.zi||''}","${n.hao||''}","${n.nickname||''}","${n.wuxing||''}","${n.pingze||''}"\n`;
     }
   });
   const blob = new Blob([csv],{type:'text/csv;charset=utf-8'});
