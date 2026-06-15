@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小说取名模拟器</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #0d0f1a;
+  color: #e0e0e0;
+  min-height: 100vh;
+}
+.app { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+header { text-align: center; padding: 24px 0 16px; }
+header h1 {
+  font-size: 2rem;
+  background: linear-gradient(135deg, #f0c27f, #fc5c7d, #6a82fb);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; font-weight: 800; letter-spacing: 2px;
+}
+header p { color: #888; margin-top: 6px; font-size: 0.9rem; }
+.tab-bar {
+  display: flex; background: #16182a; border-radius: 12px;
+  border: 1px solid #2a2d4a; overflow: hidden; margin: 16px 0 24px;
+}
+.tab-btn {
+  flex: 1; padding: 14px 20px; border: none; background: transparent;
+  color: #888; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+  transition: all .2s; font-family: inherit; position: relative;
+}
+.tab-btn:hover { color: #ccc; background: #1e2038; }
+.tab-btn.active { color: #fff; background: linear-gradient(135deg, #6a82fb22, #fc5c7d22); }
+.tab-btn.active::after {
+  content: ''; position: absolute; bottom: 0; left: 20%; width: 60%; height: 2px;
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d); border-radius: 1px;
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.main-layout { display: grid; grid-template-columns: 220px 1fr; gap: 24px; }
+@media (max-width: 768px) { .main-layout { grid-template-columns: 1fr; } }
+.sidebar {
+  background: #16182a; border-radius: 16px; padding: 20px 16px;
+  border: 1px solid #2a2d4a; height: fit-content;
+}
+.sidebar-section { margin-bottom: 20px; }
+.sidebar-section:last-child { margin-bottom: 0; }
+.sidebar-label {
+  font-size: 0.75rem; color: #888; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 10px; font-weight: 600;
+}
+.btn-group { display: flex; flex-direction: column; gap: 6px; }
+.btn-group-h { display: flex; gap: 6px; flex-wrap: wrap; }
+.btn-opt {
+  padding: 8px 14px; border-radius: 8px; border: 1px solid #2a2d4a;
+  background: #1e2038; color: #bbb; cursor: pointer; font-size: 0.85rem;
+  transition: all .2s; text-align: left; font-family: inherit;
+}
+.btn-opt:hover { background: #2a2d5a; color: #fff; }
+.btn-opt.active { background: linear-gradient(135deg,#6a82fb33,#fc5c7d33); border-color: #6a82fb; color: #fff; }
+.btn-opt.small { padding: 6px 14px; font-size: 0.8rem; text-align: center; flex:1; }
+.content {
+  background: #16182a; border-radius: 16px; border: 1px solid #2a2d4a;
+  padding: 28px; min-height: 400px;
+}
+.content-top {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px; margin-bottom: 24px;
+}
+.content-top .info { font-size: 0.9rem; color: #aaa; }
+.content-top .info span { color: #f0c27f; font-weight: 600; }
+.btn-gen {
+  padding: 12px 36px; border: none; border-radius: 12px;
+  background: linear-gradient(135deg, #6a82fb, #fc5c7d);
+  color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer;
+  transition: transform .15s, box-shadow .15s; font-family: inherit; letter-spacing: 1px;
+}
+.btn-gen:hover { transform: translateY(-2px); box-shadow: 0 8px 24px #6a82fb44; }
+.btn-gen:active { transform: translateY(0); }
+.btn-gen.small { padding: 8px 16px; font-size: 0.8rem; }
+.btn-gen.ghost {
+  background: transparent; border: 1px solid #2a2d4a; color: #aaa;
+}
+.btn-gen.ghost:hover { background: #2a2d5a; color: #fff; box-shadow: none; }
+.controls-row {
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  margin-bottom: 24px; padding: 16px; background: #1a1c32; border-radius: 12px;
+}
+.controls-row label { font-size: 0.85rem; color: #aaa; display: flex; align-items: center; gap: 8px; }
+.controls-row select, .controls-row input {
+  background: #0d0f1a; border: 1px solid #2a2d4a; color: #e0e0e0;
+  padding: 6px 10px; border-radius: 6px; font-size: 0.85rem; font-family: inherit;
+}
+.controls-row select option { background: #1a1c32; }
+.controls-row input[type=checkbox] { accent-color: #6a82fb; width: 16px; height: 16px; }
+.name-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.name-card {
+  background: #1a1c32; border: 1px solid #2a2d4a; border-radius: 10px;
+  padding: 14px 16px; transition: all .2s; position: relative;
+  user-select: none; display: flex; flex-direction: column;
+}
+.name-card:hover { border-color: #6a82fb; background: #22244a; }
+.name-card .name { font-size: 1.1rem; font-weight: 600; color: #fff; }
+.name-card .desc { font-size: 0.75rem; color: #888; margin-top: 4px; }
+.name-card .card-actions {
+  display: flex; gap: 6px; margin-top: 10px; justify-content: flex-end;
+  opacity: 0; transition: opacity .2s;
+}
+.name-card:hover .card-actions { opacity: 1; }
+.card-actions .btn-sm {
+  padding: 4px 12px; border-radius: 6px; border: 1px solid #2a2d4a;
+  background: #0d0f1a; color: #aaa; cursor: pointer; font-size: 0.75rem;
+  font-family: inherit; transition: all .15s;
+}
+.card-actions .btn-sm:hover { background: #2a2d5a; color: #fff; border-color: #6a82fb; }
+.card-actions .btn-sm.highlight { border-color: #f0c27f66; color: #f0c27f; }
+.name-card.saved { border-color: #4ade8066; background: #1a2a2a; }
+.empty-state { text-align: center; padding: 40px 20px; color: #666; }
+.empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
+.empty-state p { font-size: 0.95rem; }
+.empty-state .btn-gen { margin-top: 16px; }
+.lib-header {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px; margin-bottom: 24px;
+}
+.lib-title { font-size: 1.3rem; font-weight: 700; color: #fff; }
+.lib-title span { color: #f0c27f; }
+.book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+.book-card {
+  background: linear-gradient(145deg, #1a1c32, #1e2038);
+  border: 1px solid #2a2d4a; border-radius: 14px; padding: 22px 20px;
+  cursor: pointer; transition: all .25s; position: relative; overflow: hidden;
+}
+.book-card:hover { border-color: #6a82fb; transform: translateY(-3px); box-shadow: 0 8px 24px #00000044; }
+.book-card .book-icon { font-size: 2rem; margin-bottom: 12px; }
+.book-card .book-title { font-size: 1.15rem; font-weight: 700; color: #fff; }
+.book-card .book-meta { font-size: 0.8rem; color: #888; margin-top: 6px; }
+.book-card .book-desc {
+  font-size: 0.82rem; color: #999; margin-top: 10px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.book-card .book-count {
+  position: absolute; top: 16px; right: 16px;
+  background: #6a82fb33; color: #6a82fb; font-size: 0.75rem;
+  padding: 2px 10px; border-radius: 20px; font-weight: 600;
+}
+.book-card .delete-book {
+  position: absolute; bottom: 16px; right: 16px;
+  background: none; border: none; color: #555; cursor: pointer;
+  font-size: 0.75rem; padding: 4px 8px; border-radius: 6px;
+  transition: all .15s; font-family: inherit;
+}
+.book-card .delete-book:hover { color: #fc5c7d; background: #fc5c7d22; }
+.back-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.back-btn {
+  background: none; border: 1px solid #2a2d4a; color: #aaa;
+  padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem;
+  transition: all .15s; font-family: inherit;
+}
+.back-btn:hover { background: #2a2d5a; color: #fff; }
+.book-info-card {
+  background: #1a1c32; border: 1px solid #2a2d4a; border-radius: 12px;
+  padding: 20px 24px; margin-bottom: 24px;
+}
+.book-info-card h2 { font-size: 1.2rem; color: #fff; margin-bottom: 6px; }
+.book-info-card .sub { font-size: 0.85rem; color: #888; }
+.char-header {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px; margin-bottom: 16px;
+}
+.char-header h3 { font-size: 1rem; color: #ddd; }
+.char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.char-card {
+  background: #1a1c32; border: 1px solid #2a2d4a; border-radius: 12px;
+  padding: 18px 20px; transition: all .15s;
+}
+.char-card:hover { border-color: #6a82fb44; }
+.char-card .char-name { font-size: 1.1rem; font-weight: 600; color: #fff; }
+.char-card .char-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.char-card .char-tag {
+  font-size: 0.7rem; padding: 2px 8px; border-radius: 4px;
+  background: #2a2d4a; color: #aaa;
+}
+.char-card .char-section { margin-top: 10px; }
+.char-card .char-section-label {
+  font-size: 0.7rem; color: #888; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 4px; font-weight: 600;
+}
+.char-card .char-explain {
+  padding: 10px 12px; background: #16182a;
+  border-radius: 8px; border: 1px solid #2a2d4a22;
+  font-size: 0.82rem; color: #bbb; line-height: 1.6;
+}
+.char-card .char-remark {
+  padding: 8px 12px; background: #16182a;
+  border-radius: 8px; border: 1px dashed #2a2d4a44;
+  font-size: 0.8rem; color: #999; line-height: 1.5;
+  font-style: italic;
+}
+.char-card .char-actions {
+  display: flex; gap: 6px; margin-top: 10px; justify-content: flex-end;
+}
+.char-card .char-actions .btn-sm {
+  padding: 3px 10px; font-size: 0.7rem; border-radius: 6px;
+  border: 1px solid #2a2d4a; background: #0d0f1a; color: #aaa;
+  cursor: pointer; font-family: inherit; transition: all .15s;
+}
+.char-card .char-actions .btn-sm:hover { background: #2a2d5a; color: #fff; border-color: #6a82fb; }
+.char-card .delete-char:hover { border-color: #fc5c7d66 !important; color: #fc5c7d !important; }
+.modal-overlay {
+  position: fixed; inset: 0; background: #00000088;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; padding: 20px; backdrop-filter: blur(4px);
+}
+.modal {
+  background: #1e2038; border: 1px solid #2a2d4a; border-radius: 16px;
+  padding: 28px; max-width: 560px; width: 100%; max-height: 90vh;
+  overflow-y: auto; box-shadow: 0 24px 64px #00000066;
+}
+.modal h3 { font-size: 1.1rem; color: #fff; margin-bottom: 20px; }
+.modal label { font-size: 0.85rem; color: #bbb; display: block; margin-bottom: 6px; }
+.modal input, .modal textarea, .modal select {
+  width: 100%; background: #0d0f1a; border: 1px solid #2a2d4a; color: #e0e0e0;
+  padding: 10px 12px; border-radius: 8px; font-size: 0.9rem;
+  font-family: inherit; margin-bottom: 16px; box-sizing: border-box;
+}
+.modal textarea { min-height: 80px; resize: vertical; }
+.modal input:focus, .modal textarea:focus, .modal select:focus { outline: none; border-color: #6a82fb; }
+.modal-actions {
+  display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px;
+}
+.modal-actions .btn-gen { padding: 10px 24px; font-size: 0.9rem; }
+.modal-actions .btn-cancel {
+  padding: 10px 24px; border: 1px solid #2a2d4a; border-radius: 12px;
+  background: transparent; color: #aaa; cursor: pointer; font-size: 0.9rem;
+  font-family: inherit; transition: all .15s;
+}
+.modal-actions .btn-cancel:hover { background: #2a2d5a; color: #fff; }
+.explain-box {
+  background: #0d0f1a; border: 1px solid #2a2d4a; border-radius: 10px;
+  padding: 16px; margin-bottom: 16px; font-size: 0.88rem;
+  color: #ccc; line-height: 1.7; max-height: 200px; overflow-y: auto;
+}
+.explain-box .exp-category {
+  display: inline-block; font-size: 0.7rem; padding: 2px 10px;
+  border-radius: 4px; background: #6a82fb22; color: #6a82fb;
+  margin-bottom: 8px; font-weight: 600;
+}
+.toast {
+  position: fixed; bottom: 30px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: #1e2038; border: 1px solid #2a2d4a;
+  padding: 12px 24px; border-radius: 10px; font-size: 0.85rem;
+  opacity: 0; transition: all .3s; pointer-events: none; z-index: 999;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.rem-textarea {
+  width: 100%; background: #0d0f1a; border: 1px solid #2a2d4a; color: #e0e0e0;
+  padding: 10px 12px; border-radius: 8px; font-size: 0.85rem;
+  font-family: inherit; margin-bottom: 16px; min-height: 60px; resize: vertical;
+  box-sizing: border-box;
+}
+.rem-textarea:focus { outline: none; border-color: #f0c27f; }
+.btn-sm.remark-btn { border-color: #f0c27f44 !important; color: #f0c27f !important; }
+.btn-sm.remark-btn:hover { border-color: #f0c27f !important; background: #f0c27f22 !important; }
+.explain-info {
+  font-size: 0.75rem; color: #666; margin-top: 4px; text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header>
+    <h1>📖 小说取名模拟器</h1>
+    <p>生成 · 收藏 · 诠释你的小说角色名字</p>
+  </header>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="generator">🎲 生成器</button>
+    <button class="tab-btn" data-tab="library">📚 本地库</button>
+  </div>
+
+  <!-- GENERATOR TAB -->
+  <div class="tab-panel active" id="panel-generator">
+    <div class="main-layout">
+      <div class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-label">角色类型</div>
+          <div class="btn-group" id="roleTypeBtns"></div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-label">性别</div>
+          <div class="btn-group-h" id="genderBtns"></div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-label">风格背景</div>
+          <div class="btn-group" id="styleBtns"></div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="content-top">
+          <div class="info">已选择: <span id="selectionDisplay">主角 · 男 · 都市</span></div>
+          <button class="btn-gen" id="generateBtn">生成名字</button>
+        </div>
+        <div class="controls-row">
+          <label>生成数量 <select id="countSelect">
+            <option value="5">5</option><option value="10" selected>10</option>
+            <option value="20">20</option><option value="50">50</option>
+          </select></label>
+          <label><input type="checkbox" id="includeTitle" checked> 含称号/头衔</label>
+          <label style="margin-left:auto;font-size:0.8rem;color:#666;">悬停可见·保存·复制</label>
+        </div>
+        <div id="resultArea"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIBRARY TAB -->
+  <div class="tab-panel" id="panel-library">
+    <div id="libraryContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== DATA ====================
+const DATA = {
+  charTypes: [
+    { id:'protagonist', label:'主角', desc:'故事核心人物' },
+    { id:'supporter',   label:'配角', desc:'重要配角' },
+    { id:'villain',     label:'反派', desc:'对立角色' },
+    { id:'elder',       label:'长辈', desc:'年长角色' },
+    { id:'deity',       label:'神明/妖魔', desc:'超自然存在' },
+    { id:'extra',       label:'路人/龙套', desc:'背景角色' },
+  ],
+  genders: [{ id:'male', label:'男' }, { id:'female', label:'女' }],
+  styles: [
+    { id:'urban',      label:'都市',       desc:'现代都市背景' },
+    { id:'xianxia',    label:'修仙',       desc:'仙侠/修真世界' },
+    { id:'ancient',    label:'古代',       desc:'中国古代历史' },
+    { id:'wuxia',      label:'武侠',       desc:'江湖武林' },
+    { id:'republic',   label:'民国',       desc:'民国时期' },
+    { id:'japanese',   label:'日式风格',   desc:'和风/日系' },
+    { id:'western',    label:'英美风格',   desc:'英语国家现代·流行' },
+    { id:'russian',    label:'俄式风格',   desc:'俄罗斯风格' },
+    { id:'medieval',   label:'西方中世纪', desc:'欧洲中古时代' },
+    { id:'fantasy',    label:'奇幻史诗',   desc:'剑与魔法' },
+    { id:'scifi',      label:'科幻未来',   desc:'星际/未来世界' },
+    { id:'cyberpunk',  label:'赛博朋克',   desc:'高科技低生活' },
+    { id:'steampunk',  label:'蒸汽朋克',   desc:'维多利亚科技' },
+    { id:'apocalypse', label:'末日废土',   desc:'灾后生存' },
+    { id:'mystery',    label:'悬疑推理',   desc:'侦探/悬疑' },
+    { id:'cthulhu',    label:'克苏鲁/恐怖', desc:'未知恐惧' },
+  ],
+};
+
+// ==================== NAME POOLS (全面升级) ====================
+const POOLS = {
+  cnSurnames: '李,王,张,刘,陈,杨,赵,黄,周,吴,徐,孙,胡,朱,高,林,何,郭,马,罗,梁,宋,郑,谢,韩,唐,冯,于,董,萧,程,曹,袁,邓,许,傅,沈,曾,彭,吕,苏,卢,蒋,蔡,贾,丁,魏,薛,叶,阎,余,潘,杜,戴,夏,钟,汪,田,任,姜,范,方,石,姚,谭,廖,邹,熊,金,陆,郝,孔,白,崔,康,毛,邱,秦,江,史,顾,侯,邵,孟,龙,万,段,雷,钱,汤,尹,黎,易,常,武,乔,贺,赖,龚,文,温,瞿,虞,樊,解,应,宗,宣,洪,包,诸,左,钮,程,嵇,邢,裴,陆,荣,翁,荀,羊,於,惠,甄,曲,家,封,芮,羿,储,靳,汲,邴,糜,松,井,段,富,巫,乌,焦,巴,弓,牧,隗,山,谷,车,侯,宓,蓬,全,郗,班,仰,秋,仲,伊,宫,宁,仇,栾,暴,甘,钭,厉,戎,祖,武,符,刘,景,詹,束,龙,叶,幸,司,韶,郜,黎,蓟,薄,印,宿,白,怀,蒲,邰,从,鄂,索,咸,籍,赖,卓,蔺,屠,蒙,池,乔,阴,鬱,胥,能,苍,双,闻,莘,党,翟,谭,贡,劳,逄,姬,申,扶,堵,冉,宰,郦,雍,卻,璩,桑,桂,濮,牛,寿,通,边,扈,燕,冀,郏,浦,尚,农,温,别,庄,晏,柴,瞿,阎,充,慕,连,茹,习,宦,艾,鱼,容,向,古,易,慎,戈,廖,庾,终,暨,居,衡,步,都,耿,满,弘,匡,国,文,寇,广,禄,阙,东,欧,殳,沃,利,蔚,越,夔,隆,师,巩,厍,聂,晁,勾,敖,融,冷,訾,辛,阚,那,简,饶,空,曾,毋,沙,乜,养,鞠,须,丰,巢,关,蒯,相,查,后,荆,红,游,竺,权,逮,盍,益,桓,公,万俟,司马,上官,欧阳,夏侯,诸葛,闻人,东方,赫连,皇甫,尉迟,公羊,澹台,公冶,宗政,濮阳,淳于,单于,太叔,申屠,公孙,仲孙,轩辕,令狐,钟离,宇文,长孙,慕容,司徒,司空,召,有,舜,叶赫那拉,丛,岳,寸,贰,皇,侨,彤,端木'.split(','),
+  cnCompound: '欧阳,慕容,上官,夏侯,诸葛,司马,东方,独孤,南宫,司徒,司空,令狐,端木,皇甫,鲜于,长孙,宇文,呼延,尉迟,轩辕,公冶,百里,东郭,西门,南宫,北冥,巫马'.split(','),
+  // Male given: 2000-2024 热门 + 网文主角风格
+  cnMaleG: '子轩,昊天,浩然,宇航,铭泽,明哲,志远,博文,俊杰,天翔,睿渊,致远,鸿涛,文博,鹏涛,振宇,凯泽,耀华,嘉懿,景行,承德,绍辉,宇轩,泽宇,明轩,浩宇,梓豪,子涵,子墨,宇恒,志豪,文昊,鹏飞,泽洋,煜城,铭泽,思源,一诺,逸辰,亦辰,宇辰,星辰,沐辰,星辰,之昂,景辉,鹤鸣,潇然,逸飞,凌云,墨白,清尘,修远,敬亭,子期,怀瑾,握瑜,青崖,望舒,予安,既明,朝宗,九思,观棋,抱朴,思齐,如圭,胜蓝,知白,守拙,行知,三省,敏学,敦儒,浩然,若虚,鸿渐,牧之,元亮,摩诘,子安,伯安,阳明'.split(','),
+  // Additional single chars for mixing
+  cnMaleC: '轩,宇,泽,辰,昊,然,浩,博,瑞,琛,霖,凯,恒,毅,逸,彦,哲,远,诚,铭,熠,翊,珩,珣,璟,峥,嵘,渊,澜,川,岳,峰,瀚,宸,烨,炫,灿'.split(','),
+  // Female given: 2000-2024 热门 + 诗意
+  cnFemaleG: '诗涵,雨桐,梦瑶,清欢,晚晴,若曦,语嫣,婉清,心怡,芷若,晴雪,凝霜,慕雪,紫嫣,冰倩,采薇,如烟,若兰,秋雅,思语,云曦,落雁,沉鱼,倾国,倾城,雨薇,逸雪,念薇,玉兰,雅芙,雨婷,怡香,珺瑶,梦琪,惜雪,歆瑶,钰彤,馨怡,依依,悠柔,悦心,千凝,素衣,菱歌,疏影,踏月,天音,清歌,月华,幽篁,饮露,抚琴,点墨,研砂,藏珠,捧玉,玲珑,如意,璇玑,锦瑟,无邪,初静,庭芳,饮冰,素问,忘忧,知夏,采蓝,瑶台,芷兰,沅茝,澧兰,木兰,红药,忘归,长歌,凤歌,凤兮,若华,云裳,锦书,墨韵,书瑶,忆寒,青丝,念薇'.split(','),
+  cnFemaleC: '萱,琪,瑶,婷,雪,琳,菲,慧,燕,雅,欣,悦,彤,蕾,茜,宁,诗,涵,桐,清,晚,若,语,婉,心,芷,晴,凝,冰,烟,兰,秋,思,云,落,沉,倾,薇,柳,蝶,蕊,芊'.split(','),
+  // Elder names
+  elderMale: '建国,爱国,卫国,志国,德福,富贵,有财,金宝,银山,满仓,长顺,永昌,德厚,仁义,礼智,守信,忠孝,文斌,国栋,志强,振华,永康,德才,福生,根生,来福,大壮,铁柱,树根'.split(','),
+  elderFemale: '淑芬,秀英,玉兰,桂芳,秀珍,玉梅,素芬,春兰,秋菊,冬梅,巧云,秀莲,瑞芳,桂英,素珍,美兰,秀兰,兰英,爱珍,美玲,月娥,招娣,翠花,金凤,桂花,凤英,银花'.split(','),
+  elderTitle: '老爷子,老先生,老夫人,老太爷,伯,叔,公,翁,老,爷,奶奶,阿婆,太公'.split(','),
+  // Xianxia
+  xianxiaTitle: '青云真人,玄机子,天玄道人,无极老祖,太虚上人,九霄仙尊,万古帝君,轮回天尊,灭世魔尊,星辉大帝,苍穹道人,碧落仙子,紫薇帝君,幽冥鬼王,皓天圣人,纯阳真君,太乙真人,玉鼎真人,南极仙翁,东华帝君,西王母,荒天帝,元始天尊,灵宝天尊,道德天尊,东皇太一,妖帝,魔帝'.split(','),
+  xianxiaPrefix: '玄,太虚,无极,九霄,万古,不朽,轮回,灭世,至尊,苍穹,碧落,紫薇,幽冥,皓天,纯阳,太乙,混沌,鸿蒙,亘古,太初,逍遥,九天,万象,星辰,太初,鸿蒙,混沌,不朽,太古,远古,上古'.split(','),
+  xianxiaSuffix: '真人,道人,尊者,大帝,老祖,上人,仙尊,帝君,天尊,圣人,真君,散人,仙子,宗主,掌门,祖师,圣君,魔尊,鬼王,妖帝,圣主,天神,天君'.split(','),
+  xianxiaMale1: '叶辰,秦昊,林逸,楚风,云天,陈玄,苏尘,萧炎,林动,牧尘,叶凡,楚昊,秦轩,凌天,叶玄,苏铭,王腾,柳白,姜凡,赵无极,李逍遥,韩立,张小凡,石昊,徐缺,方平,罗峰,纪宁,孟川,秦羽,林雷,萧鼎,云澈,独孤败天,辰南,叶凡,姬皓月,华云飞,南宫正,韩跑跑,李七夜,张悬,许七安,宁毅,范闲,陈平安,裴钱,左右,阿良,崔瀺,齐静春,寇江淮'.split(','),
+  xianxiaFemale1: '柳如烟,苏沐雪,凤清颜,冷月霜,花无缺,云韵,熏儿,紫妍,绫清竹,应欢欢,洛璃,古薰儿,纳兰嫣然,萧薰儿,青鸾,白凤,小医仙,彩鳞,夭夭,柳眉,苏檀儿,陆雪琪,碧瑶,田灵儿,小白,九尾天狐,小囡囡,狠人大帝,姬紫月,安妙依,颜如玉,姚曦,夏一可,林佳,秦怡宁,月婵,魔女,云曦,清漪'.split(','),
+  // Ancient
+  ancientMale1: '长卿,子建,孟德,云长,翼德,子龙,奉先,公瑾,伯符,仲谋,子桓,叔夜,子安,摩诘,太白,子美,乐天,微之,牧之,义山,飞卿,重光,永叔,子瞻,鲁直,务观,改之,元亮,渊明,灵均,惠连,明远,玄晖,彦和,文通,景纯,延年,少陵,达夫,季真,子厚,梦得,长吉,飞卿,用晦,彦升'.split(','),
+  ancientFemale1: '昭君,貂蝉,西施,玉环,飞燕,合德,甄宓,文姬,二乔,道韫,令娴,惠兰,如是,小小,师师,圆圆,如是,香君,紫烟,若兰,秋娘,念奴,绿珠,碧玉,红拂,李娃,霍小玉,崔莺莺,杜丽娘,杨玉环,赵飞燕,李师师,陈圆圆'.split(','),
+  // Villain
+  villainPrefix: '血,暗,黑,冥,邪,魔,煞,鬼,妖,毒,凶,恶,狂,霸,暴,戾,屠,噬,渊,幽'.split(','),
+  villainMale: '傲天,霸天,惊天,逆天,灭天,屠天,弑神,戮仙,灭世,焚天,覆雨,翻云,独尊,无敌,绝世,枭雄,阎罗,修罗,无常,罗刹,天煞,地煞,噬魂,追命,夺魄,白骨,血手,毒蝎,阴九幽,厉千魂'.split(','),
+  villainFemale: '妖姬,媚娘,蛇蝎,毒妇,罗刹,修罗,玄冥,九幽,血姬,魅影,妖后,魔女,魔姬,妖妃,毒后,白骨夫人,黑寡妇,鬼母,邪妃,血妃'.split(','),
+  // Western names - updated with trendy modern names
+  westMale: 'Ethan,Liam,Noah,Mason,Lucas,Logan,James,Benjamin,Elijah,Oliver,Jacob,Michael,Alexander,Daniel,William,Sebastian,Jack,Owen,Gabriel,Julian,Leo,Caleb,Nathan,Ryan,Adrian,Hunter,Christian,Jasper,Wesley,Ezra,Asher,Atticus,Finn,Kai,Silas,Roman,Dashiell,Beckett,Theo,Soren'.split(','),
+  westFemale: 'Emma,Olivia,Ava,Sophia,Isabella,Mia,Charlotte,Amelia,Harper,Evelyn,Abigail,Emily,Ella,Scarlett,Grace,Chloe,Aria,Aurora,Stella,Luna,Hazel,Violet,Iris,Willow,Ruby,Nova,Aurelia,Seraphina,Calliope,Penelope,Eleanor,Clara,Eloise,Adelaide,Clementine,Florence,Zara,Kaia,Sage,Isla'.split(','),
+  westLast: 'Smith,Johnson,Williams,Brown,Jones,Miller,Davis,Wilson,Moore,Taylor,Anderson,Thomas,Jackson,White,Harris,Martin,Thompson,Garcia,Martinez,Robinson,Clark,Lewis,Walker,Hall,Allen,Young,King,Wright,Scott,Green,Baker,Adams,Nelson,Mitchell,Carter,Phillips,Evans,Collins,Stewart,Morris,Reed,Cook,Bell,Cooper,Richardson,Cox,Ward,Peterson,Gray,Bennett,Wood,Barnes,Ross,Henderson,Shaw,Reynolds,Fisher,Marshall,Owens,Gibson,McDonald,Cruz,Murphy,Price,Perry,Powell,Long,Patterson,Hughes,Flores,Washington,Butler,Simmons,Foster,Gonzales,Bryant,Alexander,Russell,Griffin,Diaz,Hayes,Ford,Hamilton,Graham,Sullivan,Wallace,Woods,Cole,West,Jordan,Owens,Reynolds,Hart,Dean,Webb,Tucker,Grant,Reid'.split(','),
+  westMedievalM: 'William,Henry,Richard,Robert,Roger,Hugh,Walter,Ranulf,Geoffrey,Simon,Peter,Godfrey,Baldwin,Alaric,Edmund,Edwin,Harold,Cedric,Tristan,Gawain,Lancelot,Percival,Galahad,Arthur,Alfred,Edward,Gilbert,Reginald,Theobald,Eustace,Osbert,Wymond'.split(','),
+  westMedievalF: 'Eleanor,Matilda,Isabella,Catherine,Margaret,Agnes,Cecily,Beatrice,Constance,Philippa,Rosalind,Guinevere,Morgause,Elaine,Isolde,Brunhild,Griselda,Millicent,Eglantine,Alys,Amice,Basilia,Ida,Petronilla,Rohesia,Sybilla,Ysabel,Clarice,Ismay,Melisent'.split(','),
+  westMedievalL: 'of York,of Lancaster,Plantagenet,Beaumont,de Montfort,de Vere,Percy,Neville,Howard,FitzAlan,Clarendon,Baskerville,Blackwood,de Clare,Bigod,de Warenne,Mortimer,Stafford,Holland,Courtenay,de Bohun,Mowbray,Beauchamp,de Ros,de Lacy,de Burgh'.split(','),
+  // Russian
+  ruMale: 'Aleksandr,Dmitri,Sergei,Mikhail,Ivan,Nikolai,Vladimir,Alexei,Pavel,Andrei,Boris,Maxim,Leonid,Viktor,Konstantin,Fyodor,Grigori,Anatoly,Evgeny,Artem,Timur,Roman,Oleg,Anton,Lev,Stepan,Georgy,Vasily'.split(','),
+  ruFemale: 'Anastasia,Ekaterina,Olga,Natalia,Irina,Svetlana,Maria,Elena,Anna,Tatiana,Yulia,Daria,Sofia,Valentina,Galina,Marina,Lyudmila,Polina,Vera,Alexandra,Elizaveta,Ksenia,Varvara,Alisa,Nika,Milana,Arina'.split(','),
+  ruPatroM: 'Aleksandrovich,Dmitrievich,Sergeevich,Mikhailovich,Ivanovich,Nikolaevich,Vladimirovich,Alexeevich,Pavlovich,Andreevich,Borisovich,Maximovich,Fyodorovich,Grigorievich'.split(','),
+  ruPatroF: 'Aleksandrovna,Dmitrievna,Sergeevna,Mikhailovna,Ivanovna,Nikolaevna,Vladimirovna,Alexeevna,Pavlovna,Andreevna,Borisovna'.split(','),
+  ruLast: 'Volkov,Ivanov,Petrov,Sidorov,Smirnov,Kuznetsov,Popov,Sokolov,Lebedev,Kozlov,Novikov,Morozov,Pavlov,Fedorov,Vasiliev,Zaitsev,Kovalenko,Romanov,Orlov,Semenov,Grigoriev,Makarov,Titov,Bogdanov,Savin,Belyaev,Stepanov'.split(','),
+  // Japanese
+  jpSurname: '佐藤,铃木,高桥,田中,渡边,伊藤,山本,中村,小林,加藤,吉田,山田,佐佐木,山口,松本,井上,木村,林,清水,山崎,森,池田,桥本,阿部,石川,山下,中岛,藤田,小川,后藤,近藤,三浦,藤原,武田,前田,宫崎,横山,远藤,野村,杉山,大島,河野,星野,松下,小野,望月,今井,松冈,安田,福田'.split(','),
+  jpMale: '大翔,蓮,陽翔,蒼,湊,悠真,颯太,大和,樹,朝陽,陽太,新,颯,太一,陸,瑛太,慶太,優斗,明,涼太,匠,尚,力也,康太,玲央,哲也,雄大,翼,拓海,翔太,大輔,直人,裕太,健一,正雄,和也,誠,修也,隆之,宏明'.split(','),
+  jpFemale: '陽葵,芽依,結衣,美桜,咲良,莉子,心春,陽菜,琴音,美月,杏奈,真央,優花,結菜,芽生,莉緒,心愛,愛佳,美優,遥,桜,葵,凛,澪,紬,茜,柚希,柚乃,綾乃,明日香,千尋,玲子,真希,理沙,美咲,小百合,真理奈,花音,美雪,小春,栞,桃香,春花,奈々,優衣,真由,彩花,泉,果歩'.split(','),
+  // Cyberpunk
+  cyberPre: 'Cyber,Neuro,Synth,Hyper,Mega,Ultra,Techno,Bio,Nano,Quantum,Void,Neo,Chrome,Circuit,Data,Ghost,Blade,Zero,Shadow,Solar,Phase,Flux,Hexa,Byte,Pulse,Neon,Viral,Digital,Dream,Net,Holo,Cryo,Psi,Tech'.split(','),
+  cyberSuf: 'runner,punk,hunter,breaker,walker,dancer,blade,wire,heart,dream,ghost,masque,fox,wolf,hawk,panther,viper,fang,claw,storm,weaver,smith,jack,phreak,crypt,hack,rigger,deck,spike,razor,shade'.split(','),
+  cyberCode: 'Zero,Neo,Vex,Kai,Blade,Ghost,Shadow,Reaper,Cyclone,Viper,Omega,Delta,Sigma,Proxy,Nyx,Onyx,Jax,Ren,Zev,Ash,Kyo,Ray,Shin,Lex,Zen,Hex,Vexx,Raze,Dax,Sol,Flux,Nova'.split(','),
+  // Fantasy
+  fanPre: 'Ara,El,Thor,Bor,Cal,Fen,Gal,Ith,Kel,Mar,Nor,Orin,Pel,Qui,Ran,Sil,Tal,Ul,Vor,Wyn,Xan,Yor,Zeph,Dra,Dun,Kael,Thel,Riv,Bar,Mir,Van,Fer,Ash,Bel'.split(','),
+  fanSuf: 'ion,ath,dor,mar,nor,lin,rik,ian,val,win,las,dan,mir,del,fir,lith,born,thal,grim,stone,shield,wind,walker,shadow,dale,mere,fall,haven,peak,glade,moor,ford,crest,hollow,reach,rest'.split(','),
+  fanElfM: 'Legolas,Elrond,Thranduil,Celeborn,Haldir,Finrod,Feanor,Galathil,Cirdan,Glorfindel,Ecthelion,Fingon,Maglor,Maedhros,Beleg,Gil-galad,Amroth,Thingol,Beor,Aegnor'.split(','),
+  fanElfF: 'Arwen,Galadriel,Luthien,Idril,Elbereth,Nimloth,Melian,Aredhel,Finduilas,Elwing,Nienna,Varda,Este,Nessa,Vaire,Yavanna,Almiel,Tinuviel,Earwen,Anaire'.split(','),
+  fanDwarf: 'Thorin,Balin,Dwalin,Oin,Gloin,Fili,Kili,Bifur,Bofur,Bombur,Dori,Nori,Ori,Gimli,Thrain,Thror,Fundin,Gror,Farain,Nain,Dain,Durin,Telchar,Azaghal,Mim'.split(','),
+  // Scifi
+  scifiPre: 'Nova,Stella,Orion,Andromeda,Vega,Rigel,Arcturus,Capella,Sirius,Polaris,Cosmos,Nebula,Pulsar,Titan,Eclipse,Solarius,Astral,Galactic,Celestis,Sideral,Lunar,Helios,Zenith,Apex'.split(','),
+  scifiSuf: '7,9,X,Z,Prime,Alpha,Beta,Omega,Sigma,Zero,One,Ark,Crux,Void,Fleet,Star,Core,Flux,ION,EXE,Neo,Edge'.split(','),
+  scifiCode: 'Nova,Orion,Ryker,Zen,Vega,Zara,Kael,Jax,Nyx,Onix,Riven,Shade,Blitz,Crash,Flux,Spark,Viper,Phoenix,Drake,Voss,Tycho,Slade,Revan,Vex,Kova,Syl,Cyrus,Cassian,Lyra,Talon'.split(','),
+  // Post-apocalyptic
+  apocPre: 'Ash,Dust,Rust,Rock,Iron,Steel,Bone,Blood,Wild,Hard,Grim,Thorn,Rage,Stone,Broken,Raven,Storm,Scar,Flint,Slate,Wolf,Grave,Salt,Ember,Cinder,Soar,Drift,Silt'.split(','),
+  apocSuf: 'walker,handler,bane,scar,skin,heart,fist,tooth,breaker,hunter,chaser,tamer,slayer,roamer,howl,claw,lynx,jack,knife,grim,cage,mark'.split(','),
+  apocSimple: 'Kael,Rynn,Dax,Vex,Grim,Ash,Rust,Brock,Sage,Raven,Stone,Iron,Wren,Orin,Shale,Flint,Slate,Cinder,Wolf,Ridge,Gash,Reed,Scab,Harrow,Wick,Ember,Pike,Grave,Shiv,Jolt'.split(','),
+  // Steampunk
+  steamPre: 'Alistair,Bartholomew,Theodore,Sebastian,Augustus,Reginald,Percival,Wilhelmina,Beatrice,Cordelia,Archibald,Montgomery,Phineas,Cornelius,Thaddeus,Ignatius,Phileas,Artemesia,Hortensia,Prospero'.split(','),
+  steamSuf: 'Clockwork,Ironwood,Brassfield,Steamgear,Copperpot,Goldfinch,Ravenhelm,Thornwick,Ashford,Beckworth,Gearhart,Tinkerwell,Copperfield,Steelgrave,Brassington,Whitworth,Lockwood,Silverton,Blackwood,Marchmain'.split(','),
+  // Mystery
+  mysteryMale: '明远,正清,文博,瑞安,承志,景辉,鸿渐,致远,靖安,明哲,守正,怀瑾,思远,近思,敬之,达夫,履安,慎行'.split(','),
+  mysteryFemale: '思睿,明慧,静思,文心,知秋,晓寒,听雪,望舒,清浅,安然,若水,知意,静姝,沉璧,皎然,露晞,朝雨,采葛,蒹葭,零露'.split(','),
+  // Republic era
+  repubMale: '文远,绍棠,景润,嘉铭,兆和,振声,启明,鸿年,景岳,伯苓,叔同,季陶,仲甫,豫才,觉民,竞雄,任公,适之,行严,寅恪,鹤卿,孑民,星海,瘦鸥,恨水,瘦鹃,摩诘,醉生,寄尘,病梅'.split(','),
+  repubFemale: '徽因,小曼,爱玲,玉良,青霞,雅芳,若梅,素筠,清如,婉莹,文秀,淑华,蘊如,碧城,道蕴,令娴,沅君,冰心,萧红,评梅,幼仪,君劢'.split(','),
+  // Cthulhu
+  cthulhuPre: 'Nyarla,Cthulhu,Yog,Azath,Shub,Hasur,Dagon,Ithaqua,Tsath,Byatis,Chaugnar,Cyaegha,Eihort,Glaaki,Shudde,Yig,Rlim,Abhoth,Atlach,Ubbo'.split(','),
+  cthulhuSuf: 'oth,ogg,ath,oggoth,on,ar,ak,ul,eth,ogg,a,um,or,is,ek,nm,shg,lloig,ftaghn,mgha'.split(','),
+  cthulhuTitle: '不可名状者,沉睡之神,拉莱耶之主,混沌之源,深渊之眼,虚空低语,旧日支配者,远古者,黄衣之王,无面者,蠕行的混沌,黑山羊之母,万物归一者,门之钥,深海之王,暗之蠕动'.split(','),
+};
+
+// ==================== CHARACTER MEANING DICTIONARY ====================
+const CHAR_MEANING = {
+  // Male names
+  '轩':'气宇轩昂，高大宽敞，寓指气度不凡', '宇':'宇宙广阔，器宇轩昂', '泽':'恩泽润泽，温润如水',
+  '辰':'星辰时光，良辰美景', '昊':'天空广阔，广袤无边', '然':'自然从容，淡然自若',
+  '浩':'浩然正气，心胸开阔', '博':'博学多才，学识广博', '瑞':'吉祥如意，瑞气东来',
+  '琛':'珍宝美玉，珍贵之才', '霖':'甘霖润泽，久旱逢雨', '凯':'凯旋而归，胜利之音',
+  '恒':'持之以恒，永恒久远', '毅':'刚毅坚强，意志坚定', '逸':'飘逸洒脱，安逸自在',
+  '彦':'才德出众之士', '哲':'智慧明哲，睿智通达', '远':'志存高远',
+  '诚':'诚实守信，真诚恳切', '铭':'铭记于心，刻骨铭心', '熠':'光彩熠熠，光芒闪耀',
+  '翊':'辅佐护翼，展翅翱翔', '珩':'佩上玉也，君子如玉', '璟':'玉的光彩，光华照人',
+  '峥':'峥嵘岁月，不平凡', '嵘':'峥嵘峻拔', '渊':'学识渊博，深不可测',
+  '澜':'波澜壮阔，大器天成', '川':'海纳百川，胸怀博大', '岳':'五岳之尊，稳重如山',
+  '峰':'登峰造极，巅峰之上', '瀚':'浩瀚无垠，大气磅礴', '宸':'北极星所在，帝王之居',
+  '烨':'光彩夺目，辉煌灿烂', '炫':'光彩炫目', '天':'天人合一',
+  '龙':'人中龙凤', '飞':'一飞冲天', '云':'云淡风轻，凌云壮志',
+  '雷':'雷霆万钧', '风':'风行天下', '宁':'宁静致远',
+  '阳':'阳光正气', '涛':'波涛汹涌', '海':'海纳百川',
+  '辉':'光辉灿烂', '明':'光明磊落', '超':'超越非凡',
+  '强':'自强不息', '伟':'伟岸高大', '勇':'勇猛精进',
+  '杰':'豪杰英才', '文':'文采斐然', '鹏':'鹏程万里',
+  '鹤':'松鹤延年，鹤立鸡群', '景':'高山景行', '行':'知行合一',
+  '修':'修身养性', '敬':'敬天爱人', '守':'守正不阿',
+  '观':'洞若观火', '抱':'抱朴守拙', '思':'深思熟虑',
+  '望':'德高望重', '既':'既明且哲', '朝':'朝气蓬勃',
+  '若':'虚怀若谷', '胜':'青出于蓝', '知':'知书达理',
+  '子':'谦谦君子', '之':'言而有之', '白':'清白明亮',
+  // Female names
+  '萱':'忘忧之草，解语之花', '琪':'美玉无瑕', '瑶':'瑶池美玉',
+  '婷':'亭亭玉立', '雪':'冰雪聪明', '琳':'琳琅满目',
+  '菲':'芳菲馥郁', '慧':'兰心慧质', '燕':'燕语莺声',
+  '雅':'温文尔雅', '欣':'欣然自得', '悦':'赏心悦目',
+  '彤':'彤管有炜', '蕾':'含苞待放', '茜':'茜草染红',
+  '宁':'宁静致远', '诗':'诗情画意', '涵':'蕴涵深厚',
+  '桐':'梧桐栖凤', '清':'清雅脱俗', '晚':'晚风拂柳',
+  '若':'若兰君子', '语':'妙语连珠', '婉':'温婉动人',
+  '心':'蕙质兰心', '晴':'晴空万里', '凝':'肤如凝脂',
+  '冰':'冰清玉洁', '烟':'烟波浩渺', '兰':'空谷幽兰',
+  '秋':'秋水伊人', '思':'巧思慧心', '云':'云想衣裳',
+  '落':'落落大方', '沉':'沉鱼之姿', '倾':'倾国倾城',
+  '薇':'蔷薇带露', '柳':'柳絮才高', '蝶':'蝶舞蹁跹',
+  '蕊':'含苞蕊放', '芊':'芊芊玉手', '梦':'如梦似幻',
+  '依':'小鸟依人', '柔':'柔情似水', '悠':'悠然自得',
+  '月':'花容月貌', '华':'风华绝代', '歌':'载歌载舞',
+  '书':'琴棋书画', '墨':'墨韵书香', '忆':'铭记于心',
+  '念':'念念不忘', '惜':'惜玉怜香', '静':'静如处子',
+  '真':'天真烂漫', '初':'初心不改', '庭':'庭院深深',
+  '素':'素心如月', '问':'暖语问花', '忘':'忘忧含笑',
+  '夏':'夏荷初绽', '采':'采撷芳华', '蓝':'蓝田日暖',
+  '长':'长乐未央', '凤':'百鸟朝凤', '锦':'锦心绣口',
+  '含':'含章可贞', '笑':'笑靥如花', '露':'金风玉露',
+  '梳':'梳云掠月', '影':'疏影暗香', '踏':'踏雪寻梅',
+  '音':'大音希声', '幽':'幽谷独芳', '饮':'饮露餐英',
+  '研':'研精覃思', '捧':'捧心西子', '玲':'玲珑剔透',
+  '璇':'璇玑玉衡', '瑟':'锦瑟年华', '邪':'天真无邪',
+  '沅':'沅芷澧兰', '澧':'澧兰沅芷', '药':'红药知春',
+  '归':'燕归春回', '丝':'青丝绾月', '袅':'袅袅婷婷',
+  '菱':'菱歌泛夜', '英':'英姿飒爽', '玉':'冰清玉润',
+  '梅':'梅骨兰心', '秀':'秀外慧中', '芳':'芳华绝代',
+  '芬':'芬芳馥郁', '珍':'奇珍异宝', '玲':'八面玲珑',
+};
+
+// ==================== AUTO-EXPLANATION GENERATOR ====================
+function generateExplanation(name, styleId, genderId, roleId) {
+  // For non-Chinese styles, use style-specific explanations
+  const nonCN = ['japanese','western','russian','medieval','fantasy','scifi','cyberpunk','apocalypse','steampunk'];
+  if (nonCN.includes(styleId)) {
+    return generateNonCNExplanation(name, styleId, roleId, genderId);
+  }
+  return generateCNExplanation(name, styleId, roleId, genderId);
+}
+
+function generateCNExplanation(fullName, styleId, roleId, genderId) {
+  // Separate surname and given name
+  let givenName = '';
+  // Try to strip known compound surnames and single surnames
+  const knownSurnames = [...POOLS.cnSurnames, ...POOLS.cnCompound].sort((a,b)=>b.length-a.length);
+  let temp = fullName.replace(/^【[^】]*】\s*/, '');
+  for (const s of knownSurnames) {
+    if (temp.startsWith(s)) { givenName = temp.slice(s.length); break; }
+  }
+  if (!givenName || givenName.length === 0) givenName = temp;
+
+  // Analyze each character in given name
+  const chars = [...givenName];
+  const meanings = [];
+  let knownChars = 0;
+  for (const ch of chars) {
+    if (CHAR_MEANING[ch]) { meanings.push(CHAR_MEANING[ch]); knownChars++; }
+  }
+  // If no known chars, use generic analysis
+  if (knownChars === 0) {
+    return generateGenericExplanation(fullName, styleId, roleId);
+  }
+
+  // Build explanation
+  const templates = pickExplanationTemplate(styleId, roleId, givenName);
+  const category = templates.category;
+  const body = templates.body(meanings, givenName, fullName);
+  return { category, body };
+}
+
+function pickExplanationTemplate(styleId, roleId, givenName) {
+  const templates = [];
+
+  // Classical poetry template
+  templates.push({
+    weight: 3,
+    category: '取自古诗词意境',
+    body: (meanings, given, full) => {
+      const poetryRefs = [
+        '《诗经·国风》', '《楚辞·九歌》', '《古诗十九首》', '《唐诗三百首》',
+        '《全宋词》', '《乐府诗集》', '《文选》', '《玉台新咏》',
+        '《花间集》', '《纳兰词》', '《人间词话》',
+      ];
+      const phrases = [
+        '意境深远，颇有古风韵味',
+        '字字珠玑，文采斐然',
+        '如诗如画，余韵悠长',
+        '取意高古，格调不凡',
+        '清雅脱俗，意蕴绵长',
+      ];
+      const ref = rand(poetryRefs);
+      const phrase = rand(phrases);
+      let text = `此名灵感源于${ref}。\n\n逐字解读：\n`;
+      meanings.forEach((m,i) => { text += `"${given[i]}"——${m}\n`; });
+      text += `\n整体${phrase}。读之如品香茗，唇齿留香，既有古典诗词的典雅气韵，又不失现代审美情趣。`;
+      return text;
+    }
+  });
+
+  // Meaning-based template
+  templates.push({
+    weight: 4,
+    category: '字义寓意分析',
+    body: (meanings, given, full) => {
+      const virtues = ['君子之风','仁德之心','凌云之志','温润如玉','清正之气','雅量高致'];
+      let text = `此名寓意美好，寄托了深厚的期望。\n\n字义逐析：\n`;
+      meanings.forEach((m,i) => { text += `"${given[i]}" — ${m}\n`; });
+      text += `\n各字之间相辅相成，组合在一起蕴含${rand(virtues)}。命名者选用这几个字，显然是精心斟酌过的，希望以此名寄托对未来的美好祝愿。整体音韵和谐，寓意深刻。`;
+      return text;
+    }
+  });
+
+  // Statistics reference
+  templates.push({
+    weight: 2,
+    category: '近年姓名统计热门',
+    body: (meanings, given, full) => {
+      const years = ['2019','2020','2021','2022','2023','2024'];
+      const ranks = ['前50名','前100名','热门榜单','高频用字前列'];
+      let text = `据全国姓名统计数据显示，"${given}"所用之字在${rand(years)}年度新生儿姓名报告中均位列${rand(ranks)}。\n\n`;
+      meanings.forEach((m,i) => { text += `"${given[i]}"是近年的取名热门字——${m}。\n`; });
+      text += `\n这些字之所以流行，正是因为其音韵优美、寓意佳好。名字虽然常见，但正是因为确实好——既朗朗上口，又寓意深远，是经过大众验证的好名字。`;
+      return text;
+    }
+  });
+
+  // Sound/aesthetics template
+  templates.push({
+    weight: 3,
+    category: '音韵美感分析',
+    body: (meanings, given, full) => {
+      const tones = ['平仄相间','抑扬顿挫','朗朗上口','音韵流转','余音绕梁'];
+      let text = `"${full}"四字读来${rand(tones)}，音韵结构极为优美。\n\n`;
+      meanings.forEach((m,i) => { text += `"${given[i]}"——${m}\n`; });
+      text += `\n名字的音节起伏自然，没有拗口之处，喊起来响亮悦耳，记起来也十分容易。一个好的名字，首先是好听的，此名在音韵上堪称佳作。`;
+      return text;
+    }
+  });
+
+  // Natural imagery template
+  templates.push({
+    weight: 3,
+    category: '源于自然意象',
+    body: (meanings, given, full) => {
+      const natures = ['山川草木','日月星河','风花雪月','春夏秋冬','云水之间'];
+      let text = `此名取意于${rand(natures)}，充满了自然的灵气与诗意的美感。\n\n`;
+      meanings.forEach((m,i) => { text += `"${given[i]}"——${m}\n`; });
+      text += `\n古人云"天地有大美而不言"，好名字就是自然之美在人名中的投射。此名不事雕琢，浑然天成，有一种从容淡泊、与天地同呼吸的悠然气度。`;
+      return text;
+    }
+  });
+
+  // Novel character fit
+  templates.push({
+    weight: 2,
+    category: '契合角色设定',
+    body: (meanings, given, full) => {
+      const roles = {
+        protagonist: '主角',
+        supporter: '重要配角',
+        villain: '反派',
+        elder: '长辈',
+        deity: '神魔',
+        extra: '龙套'
+      };
+      const roleLabel = roles[roleId] || '角色';
+      let text = `此名作为${roleLabel}姓名十分贴切，与角色定位高度契合。\n\n`;
+      meanings.forEach((m,i) => { text += `"${given[i]}"——${m}\n`; });
+      text += `\n好的角色名字应当让人一听就感受到角色的气质。此名无论从音韵、含义还是整体感觉上，都自然地传达了角色的特质，读者一看到名字，脑海中就能浮现出相应的人物形象。`;
+      return text;
+    }
+  });
+
+  // Unique/rare character(s)
+  if (givenName.length >= 1 && givenName.split('').some(c => !['轩','宇','泽','辰','昊','然','浩','博','子','涵','萱','琪','瑶','婷','雪','琳'].includes(c))) {
+    templates.push({
+      weight: 1,
+      category: '用字独特少见',
+      body: (meanings, given, full) => {
+        let text = `"${full}"用字独特，不落俗套。相比于当下泛滥的"子轩""梓涵"之流，此名在选字上更有自己的坚持。\n\n`;
+        meanings.forEach((m,i) => { text += `"${given[i]}"——${m}\n`; });
+        text += `\n独特不意味着怪异。此名的特别在于作者没有偷懒从热门名字里随便挑一个，而是认真考虑了每个字的含义和搭配。这种用心读者是能感受到的。`;
+        return text;
+      }
+    });
+  }
+
+  // Style-specific templates
+  if (styleId === 'xianxia') {
+    templates.push({
+      weight: 4,
+      category: '仙侠意境解说',
+      body: (meanings, given, full) => {
+        const realms = ['长生久视','逍遥天地','剑指苍穹','问道长生','万古长空'];
+        let text = `仙侠之名，当有凌云之气。此名意境深远，仿佛已见一位修士立于云端，${rand(realms)}。\n\n`;
+        meanings.forEach((m,i) => { text += `"${given[i]}"——${m}\n`; });
+        text += `\n仙侠小说中的好名字，应当一个字就能让读者感受到修仙者的风骨与气度。此名暗合道家"道法自然"之妙，读之飘然若仙，极具画面感。`;
+        return text;
+      }
+    });
+  }
+  if (styleId === 'ancient') {
+    templates.push({
+      weight: 5,
+      category: '古人命名雅趣',
+      body: (meanings, given, full) => {
+        let text = `古人之名，重在意蕴。此名颇有魏晋名士之风，让人联想到那些琴棋书画、诗酒风流的年代。\n\n`;
+        meanings.forEach((m,i) => { text += `"${given[i]}"——${m}\n`; });
+        text += `\n古人云"名者，命也"。名字承载的不仅是称呼，更是一个人的品格与命运。此名取字考究，一字一句皆含深意，放在古代背景下毫无违和感。`;
+        return text;
+      }
+    });
+  }
+  if (styleId === 'wuxia') {
+    templates.push({
+      weight: 4,
+      category: '江湖侠名点评',
+      body: (meanings, given, full) => {
+        let text = `江湖儿女，快意恩仇。此名既有侠客的豪迈，又有几分风流蕴藉。\n\n`;
+        meanings.forEach((m,i) => { text += `"${given[i]}"——${m}\n`; });
+        text += `\n金庸先生云"侠之大者，为国为民"，古龙先生云"人在江湖，身不由己"。好名字就像一柄利剑，出鞘便有锋芒。此名响当当、亮堂堂，让人一听便知是江湖中人。`;
+        return text;
+      }
+    });
+  }
+  if (styleId === 'republic') {
+    templates.push({
+      weight: 4,
+      category: '民国风貌解读',
+      body: (meanings, given, full) => {
+        let text = `民国时期的名字，往往新旧交融，既有传统底蕴，又有新文化运动的开明气息。\n\n`;
+        meanings.forEach((m,i) => { text += `"${given[i]}"——${m}\n`; });
+        text += `\n在那个风云变幻的大时代，一个人的名字折射着家国情怀与时代精神。此名文雅不迂腐，开明不轻浮，很有民国文人的风骨。`;
+        return text;
+      }
+    });
+  }
+
+  // Weighted random selection
+  const totalWeight = templates.reduce((s,t) => s + t.weight, 0);
+  let randVal = Math.random() * totalWeight;
+  for (const t of templates) {
+    randVal -= t.weight;
+    if (randVal <= 0) return t;
+  }
+  return templates[0];
+}
+
+function generateNonCNExplanation(name, styleId, roleId, genderId) {
+  const explanations = {
+    japanese: {
+      category: '日式命名文化解读',
+      body: `"${name}"遵循了日式命名的传统。日本名字通常由姓氏（苗字）和名字组成，讲究音韵的和谐与汉字的寓意。"${name}"所选用的汉字在日语中都有着美好的含义，读起来也符合日语五十音的韵律节奏。在日本文化中，名字承载着父母对孩子的祝福和期望，此名无论是字面意思还是音读都体现了这一传统。`
+    },
+    western: {
+      category: '英语国家命名分析',
+      body: `"${name}"是一个经典的英语国家风格名字。名字部分（First Name）在英语世界中使用广泛，在近年来的美国社会保障署（SSA）婴儿名字排名中表现不俗。姓氏（Last Name）也是常见的英语姓氏，有明确的历史渊源可以追溯。整个名字读起来流畅自然，在国际化的场景下既正式得体又不失亲和力。`
+    },
+    russian: {
+      category: '俄式命名传统解析',
+      body: `"${name}"完整地呈现了俄式命名的"名+父名+姓"三件套结构。父名（Отчество）是俄罗斯文化的重要特征，体现了对父辈的尊敬和家族传承的重视。名字部分是俄罗斯最经典的教名之一，在俄罗斯文学和历史上有着悠久的传统。这个全名读起来铿锵有力，带有浓厚的斯拉夫文化气息。`
+    },
+    medieval: {
+      category: '中世纪命名考据',
+      body: `"${name}"具有浓厚的中世纪欧洲风格。名字部分在中世纪的英格兰/法兰西地区十分常见，许多历史人物和文学作品中的角色都曾使用此名。附加的地名/家族名后缀暗示了角色的出身与地位。这种命名方式在中世纪欧洲贵族中十分普遍——一个人的名字往往与其领地、家族紧密相连。`
+    },
+    fantasy: {
+      category: '奇幻世界命名法',
+      body: `"${name}"是一个经典的奇幻风格名字。它由富有韵律感的前缀和后缀组合而成，符合托尔金式（Tolkienesque）的精灵语/通用语命名规则。音节流畅优美，读起来有一种古老语言的神秘感。在奇幻世界中，名字往往暗含力量——每个音节都可能是某种古老语言中代表"光""星辰""勇气"的词根。`
+    },
+    scifi: {
+      category: '科幻命名风格',
+      body: `"${name}"具有鲜明的科幻/太空歌剧风格。这种命名方式在科幻作品中非常典型——偏向简洁、富有科技感的音节组合，或者带有编号/识别码的未来感命名。在星际文明中，名字也许不再仅仅是称呼，更是个体在整个银河系中的唯一标识。此名在星际背景下既有辨识度又不失人性化。`
+    },
+    cyberpunk: {
+      category: '赛博朋克代号解读',
+      body: `"${name}"是典型的高科技低生活（High Tech, Low Life）世界中的街头代号。在赛博朋克的世界观下，真名已经不重要了——重要的是你在网络上的ID、你的街头绰号、你作为佣兵/黑客/义体人的代号。此名冷酷、简短、有力，让人联想到霓虹灯下的雨夜和后巷的义体诊所。`
+    },
+    apocalypse: {
+      category: '废土命名风格',
+      body: `"${name}"充满了末日废土的粗粝质感。在文明崩塌之后，精致的姓名体系也随之瓦解。废土居民的名字往往来自自然元素（灰烬、铁锈、石、骨）或生存技能（猎手、行者、破坏者）。此名简短有力，像一把用旧了但还很锋利的刀——在那个世界里，这才是好名字的标准。`
+    },
+    steampunk: {
+      category: '蒸汽朋克风格',
+      body: `"${name}"带着维多利亚时代的优雅和蒸汽机的轰鸣。蒸汽朋克的名字既要体现19世纪绅士/淑女的风度，又要暗示那个齿轮与黄铜交织的科技世界。此名仿佛出自某位戴着单片眼镜、穿着燕尾服的发明家，或是一位驾驶飞艇穿越云海的冒险家。`
+    },
+    mystery: {
+      category: '悬疑气质解读',
+      body: `"${name}"自带一种沉静而锋利的悬疑气质。好的侦探/悬疑角色名字，应当像一把收在鞘中的刀——平时不显山露水，关键时刻见血封喉。此名用字考究，表面上不动声色，但细细品味却有一种洞察力藏在其中。非常适合推理、悬疑、犯罪题材的角色。`
+    },
+    cthulhu: {
+      category: '克苏鲁式命名',
+      body: `"${name}"——这不是普通的名字，这是某种不可名状存在的低语。在克苏鲁神话体系中，旧日支配者们的真名往往由人类的声带难以发出的音节组成。此名仅仅是其真正名字的一个粗陋的近似翻译。当有人念出这个名字的时候，某个沉睡在深渊中的存在也许会微微转动它的眼睛。`
+    },
+  };
+  const exp = explanations[styleId];
+  if (exp) return exp;
+  return {
+    category: '命名风格简评',
+    body: `"${name}"是一个典型的${DATA.styles.find(s => s.id === styleId)?.label || ''}风格名字，符合该风格下的命名惯例和审美取向。`
+  };
+}
+
+function generateGenericExplanation(fullName, styleId, roleId) {
+  return {
+    category: '综合命名点评',
+    body: `"${fullName}"作为一个完整的名字，从整体上看具有以下几个优点：\n\n1. 音韵和谐——名字的声母韵母搭配得当，读起来流畅自然，没有拗口或歧义。\n\n2. 字形美观——所选汉字的结构均衡，笔画繁简适中，视觉上给人以舒适的观感。\n\n3. 整体印象——作为${DATA.styles.find(s=>s.id===styleId)?.label||''}题材中的${DATA.charTypes.find(c=>c.id===roleId)?.label||'角色'}姓名，此名是合适且得体的。\n\n一个好的角色名字，就是读者第一次认识这个角色的窗口。此名已经完成了这个使命。`
+  };
+}
+
+// ==================== HELPERS ====================
+const rand = arr => arr[Math.random() * arr.length | 0];
+const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36);
+
+// ==================== GENERATORS ====================
+function cnName(gender) {
+  const useCompound = Math.random() < 0.06;
+  const sur = useCompound ? rand(POOLS.cnCompound) : rand(POOLS.cnSurnames);
+  let given;
+  if (gender === 'male') {
+    if (Math.random() < 0.5) {
+      given = rand(POOLS.cnMaleG);
+    } else {
+      const c1 = rand(POOLS.cnMaleC);
+      const c2 = rand(POOLS.cnMaleC);
+      given = c1 + (c1 !== c2 ? c2 : rand(POOLS.cnMaleC));
+    }
+  } else {
+    if (Math.random() < 0.5) {
+      given = rand(POOLS.cnFemaleG);
+    } else {
+      const c1 = rand(POOLS.cnFemaleC);
+      const c2 = rand(POOLS.cnFemaleC);
+      given = c1 + (c1 !== c2 ? c2 : rand(POOLS.cnFemaleC));
+    }
+  }
+  return sur + given;
+}
+
+const GEN = {};
+GEN.protagonist = (style, gender) => {
+  switch(style) {
+    case 'urban': return cnName(gender);
+    case 'xianxia': return gender==='male' ? rand(POOLS.xianxiaMale1) : rand(POOLS.xianxiaFemale1);
+    case 'ancient': return rand(POOLS.cnSurnames) + (gender==='male'?rand(POOLS.ancientMale1):rand(POOLS.ancientFemale1));
+    case 'wuxia': return cnName(gender);
+    case 'republic': return rand(POOLS.cnSurnames) + (gender==='male'?rand(POOLS.repubMale):rand(POOLS.repubFemale));
+    case 'mystery': return rand(POOLS.cnSurnames) + (gender==='male'?rand(POOLS.mysteryMale):rand(POOLS.mysteryFemale));
+    case 'japanese': return rand(POOLS.jpSurname) + ' ' + (gender==='male'?rand(POOLS.jpMale):rand(POOLS.jpFemale));
+    case 'western': return (gender==='male'?rand(POOLS.westMale):rand(POOLS.westFemale)) + ' · ' + rand(POOLS.westLast);
+    case 'russian': return gender==='male' ? rand(POOLS.ruMale)+' '+rand(POOLS.ruPatroM)+' '+rand(POOLS.ruLast) : rand(POOLS.ruFemale)+' '+rand(POOLS.ruPatroF)+' '+rand(POOLS.ruLast);
+    case 'medieval': return (gender==='male'?rand(POOLS.westMedievalM):rand(POOLS.westMedievalF)) + ' · ' + rand(POOLS.westMedievalL);
+    case 'fantasy': return rand(POOLS.fanPre) + rand(POOLS.fanSuf);
+    case 'scifi': return rand(POOLS.scifiCode) + '-' + rand(POOLS.scifiSuf);
+    case 'cyberpunk': return rand(POOLS.cyberCode) + ' (' + rand(POOLS.cyberPre).toLowerCase() + '_' + rand(POOLS.cyberSuf) + ')';
+    case 'apocalypse': return rand(POOLS.apocSimple);
+    case 'steampunk': return rand(POOLS.steamPre) + ' · ' + rand(POOLS.steamSuf);
+    case 'cthulhu': return rand(POOLS.cthulhuPre) + rand(POOLS.cthulhuSuf);
+    default: return cnName(gender);
+  }
+};
+GEN.supporter = (style, gender) => {
+  if (['urban','ancient','wuxia','mystery','republic'].includes(style)) {
+    if (gender==='male') {
+      const sur = rand(POOLS.cnSurnames);
+      return sur + (Math.random()<0.5 ? rand(POOLS.cnMaleG) : rand(POOLS.cnMaleC)+rand(POOLS.cnMaleC));
+    }
+    const sur = rand(POOLS.cnSurnames);
+    return sur + (Math.random()<0.5 ? rand(POOLS.cnFemaleG) : rand(POOLS.cnFemaleC)+rand(POOLS.cnFemaleC));
+  }
+  return GEN.protagonist(style, gender);
+};
+GEN.villain = (style, gender) => {
+  if (['urban','ancient','wuxia','republic'].includes(style)) {
+    return rand(POOLS.cnSurnames) + (gender==='male'?rand(POOLS.villainMale):rand(POOLS.villainFemale));
+  }
+  if (style==='xianxia') return gender==='male' ? rand(POOLS.villainPrefix)+rand(POOLS.xianxiaMale1).slice(1)+(Math.random()<0.5?'魔':'尊') : rand(POOLS.villainPrefix)+rand(POOLS.xianxiaFemale1).slice(1)+(Math.random()<0.5?'姬':'妖');
+  if (['medieval','western'].includes(style)) return (gender==='male'?'Lord ':'Lady ') + (gender==='male'?rand(POOLS.westMale):rand(POOLS.westFemale)) + ' ' + rand(POOLS.westLast);
+  if (style==='cyberpunk') return rand(POOLS.villainPrefix)+rand(POOLS.cyberCode);
+  if (style==='japanese') return rand(POOLS.jpSurname)+' '+rand(POOLS.jpMale)+(Math.random()<0.4?'(暗影)':'');
+  if (style==='fantasy') return 'Dark '+rand(POOLS.fanPre)+rand(POOLS.fanSuf);
+  if (style==='scifi') return rand(POOLS.scifiPre)+' '+rand(POOLS.scifiSuf)+' (反派)';
+  if (style==='apocalypse') return rand(POOLS.apocPre)+rand(POOLS.apocSuf);
+  if (style==='russian') return rand(POOLS.ruMale)+' '+rand(POOLS.ruPatroM)+' '+rand(POOLS.ruLast);
+  if (style==='cthulhu') return rand(POOLS.cthulhuPre)+rand(POOLS.cthulhuSuf)+' · '+rand(POOLS.cthulhuTitle);
+  return GEN.protagonist(style, gender) + '(邪)';
+};
+GEN.elder = (style, gender) => {
+  if (['urban','ancient','wuxia','mystery','republic'].includes(style)) {
+    return gender==='male' ? rand(POOLS.cnSurnames)+rand(POOLS.elderMale)+rand(POOLS.elderTitle) : rand(POOLS.cnSurnames)+rand(POOLS.elderFemale);
+  }
+  if (style==='xianxia') return gender==='male' ? rand(POOLS.xianxiaTitle) : rand(POOLS.cnSurnames)+rand(POOLS.xianxiaFemale1)+'(仙子)';
+  if (['medieval','western'].includes(style)) return (gender==='male'?'Elder ':'Old Lady ') + (gender==='male'?rand(POOLS.westMale):rand(POOLS.westFemale)) + ' ' + rand(POOLS.westLast);
+  if (style==='japanese') return rand(POOLS.jpSurname)+' '+(gender==='male'?rand(POOLS.jpMale)+'翁':rand(POOLS.jpFemale)+'婆');
+  if (style==='russian') return rand(POOLS.ruMale)+' '+rand(POOLS.ruLast)+'(老)';
+  if (style==='fantasy') return 'Archmage '+rand(POOLS.fanPre)+rand(POOLS.fanSuf);
+  return GEN.supporter(style, gender);
+};
+GEN.deity = (style, gender) => {
+  if (['xianxia','ancient','wuxia'].includes(style)) return Math.random()<0.4?rand(POOLS.xianxiaTitle):rand(POOLS.xianxiaPrefix)+rand(POOLS.xianxiaSuffix);
+  if (style==='urban') return rand(POOLS.cnSurnames)+rand(POOLS.cnMaleG)+(Math.random()<0.5?'(觉醒)':'');
+  if (style==='medieval') return rand(POOLS.fanPre)+rand(POOLS.fanSuf)+' the Divine';
+  if (style==='fantasy') return rand(POOLS.fanPre)+rand(POOLS.fanSuf)+' the '+(gender==='male'?'God':'Goddess');
+  if (style==='cthulhu') return rand(POOLS.cthulhuPre)+rand(POOLS.cthulhuSuf)+' · '+rand(POOLS.cthulhuTitle);
+  if (style==='japanese') return rand(POOLS.jpSurname)+' '+rand(POOLS.jpMale)+'命(みこと)';
+  if (style==='cyberpunk') return '//'+rand(POOLS.cyberCode).toUpperCase()+'_AI//';
+  if (style==='scifi') return rand(POOLS.scifiCode)+' (高维存在)';
+  return rand(POOLS.xianxiaTitle);
+};
+GEN.extra = (style, gender) => {
+  if (['urban','ancient','wuxia','mystery','republic'].includes(style)) {
+    if (gender==='male') return rand(POOLS.cnSurnames)+rand(POOLS.cnMaleC)+rand(POOLS.cnMaleC);
+    return rand(POOLS.cnSurnames)+rand(POOLS.cnFemaleC)+rand(POOLS.cnFemaleC);
+  }
+  if (style==='xianxia') return rand(POOLS.cnSurnames)+(gender==='male'?rand(POOLS.cnMaleC)+rand(POOLS.cnMaleC):rand(POOLS.cnFemaleC)+rand(POOLS.cnFemaleC));
+  if (['medieval','western'].includes(style)) return (gender==='male'?rand(POOLS.westMale):rand(POOLS.westFemale))+' '+rand(POOLS.westLast);
+  if (style==='japanese') return rand(POOLS.jpSurname)+' '+(gender==='male'?rand(POOLS.jpMale):rand(POOLS.jpFemale));
+  if (style==='fantasy') return rand(POOLS.fanPre)+rand(POOLS.fanSuf);
+  if (style==='scifi') return 'Civ-'+rand(POOLS.scifiCode);
+  if (style==='cyberpunk') return rand(POOLS.cyberCode)+'_extra';
+  if (style==='apocalypse') return rand(POOLS.apocSimple)+' (幸存者)';
+  if (style==='russian') return rand(POOLS.ruMale)+' '+rand(POOLS.ruLast);
+  return cnName(gender);
+};
+
+function getTitle(roleId, styleId, genderId) {
+  const r = roleId, t = styleId, g = genderId;
+  const titlePools = {
+    xianxia: {
+      protagonist_male: ['【天帝转世】','【万古第一】','【轮回重生】','【天命之子】','【盖世帝尊】','【无上至尊】','【诸天之主】'],
+      protagonist_female: ['【九天玄女】','【万古圣女】','【无上女帝】','【神女转世】','【仙界第一美人】'],
+      elder: ['【上古大能】','【隐世高人】','【万年老怪】','【远古巨擘】','【一方老祖】'],
+      deity: ['【天道化身】','【鸿钧道祖】','【大道本源】','【混沌之主】'],
+      villain: ['【魔道至尊】','【血煞魔君】','【灭世魔头】','【邪道巨擘】'],
+    },
+    urban: { protagonist_male: ['【隐世高手】','【商业奇才】','【重生者】','【王牌保镖】','【最强赘婿】'], protagonist_female: ['【绝美女神】','【职场女王】','【冰山总裁】','【豪门千金】'] },
+    wuxia: { protagonist_male: ['【武林盟主】','【剑道天才】','【绝世高手】','【江湖浪子】'], protagonist_female: ['【江湖第一美人】','【女侠客】','【剑术宗师】','【苗疆圣女】'] },
+    republic: { protagonist_male: ['【留洋才子】','【革命志士】','【大亨之子】','【军阀少帅】'], protagonist_female: ['【名门闺秀】','【进步女性】','【旗袍佳人】'] },
+    cyberpunk: { protagonist_male: ['【王牌黑客】','【义体改造者】','【地下城之王】'], protagonist_female: ['【数据女王】','【赛博魅影】','【网络幽灵】'] },
+    medieval: { protagonist_male: ['【龙裔】','【天命勇者】','【被选中之人】'], protagonist_female: ['【精灵公主】','【圣光之女】','【龙之母】'], deity: ['【众神之王】','【光明之神】','【暗影主宰】'] },
+    fantasy: { protagonist_male: ['【龙裔】','【天命勇者】','【被选中之人】','【弑神者】'], protagonist_female: ['【精灵公主】','【圣光之女】','【龙之母】','【女巫之王】'], deity: ['【众神之王】','【光明之神】','【暗影主宰】'] },
+    cthulhu: { deity: ['【'+rand(POOLS.cthulhuTitle)+'】'], villain: ['【'+rand(POOLS.cthulhuTitle)+'】'], default: ['【被污染者】','【调查员】','【疯狂边缘】'] },
+    scifi: { protagonist_male: ['【星际指挥官】','【银河探险家】','【舰队司令】'], protagonist_female: ['【星舰舰长】','【星系外交官】','【银河系考古学家】'] },
+    steampunk: { protagonist: ['【天才发明家】','【飞艇船长】','【蒸汽工程师】'] },
+    apocalypse: { protagonist_male: ['【末世霸主】','【生存大师】','【觉醒者】'], protagonist_female: ['【末世女王】','【治愈者】','【幸存者领袖】'] },
+    mystery: { protagonist_male: ['【名侦探】','【神探】','【犯罪心理专家】'], protagonist_female: ['【女侦探】','【法医专家】','【犯罪侧写师】'] },
+  };
+  const pool = titlePools[t];
+  if (!pool) return '';
+  const key1 = r+'_'+g;
+  const key2 = r;
+  const key3 = 'default';
+  const candidates = pool[key1] || pool[key2] || pool[key3];
+  if (candidates && candidates.length) return rand(candidates);
+  return '';
+}
+
+// ==================== GENERATE ====================
+function generate() {
+  const roleId = document.querySelector('#roleTypeBtns .active')?.dataset?.value || 'protagonist';
+  const styleId = document.querySelector('#styleBtns .active')?.dataset?.value || 'urban';
+  const genderId = document.querySelector('#genderBtns .active')?.dataset?.value || 'male';
+  const count = parseInt(document.getElementById('countSelect').value);
+  const role = DATA.charTypes.find(c => c.id === roleId);
+  const style = DATA.styles.find(s => s.id === styleId);
+  const gender = DATA.genders.find(g => g.id === genderId);
+  const inclTitle = document.getElementById('includeTitle').checked;
+
+  document.getElementById('selectionDisplay').textContent = role.label + ' · ' + gender.label + ' · ' + style.label;
+
+  const genFn = GEN[roleId] || GEN.protagonist;
+  const names = [];
+  for (let i = 0; i < count; i++) {
+    const rawName = genFn(styleId, genderId);
+    const title = inclTitle ? getTitle(roleId, styleId, genderId) : '';
+    const display = title ? title + ' ' + rawName : rawName;
+    names.push({ display, rawName, title, style: style.label, styleId, role: role.label, roleId, gender: gender.label, genderId });
+  }
+  renderResults(names);
+}
+
+function renderResults(names) {
+  const area = document.getElementById('resultArea');
+  if (!names.length) {
+    area.innerHTML = '<div class="empty-state"><div class="icon">🎭</div><p>选择角色类型和风格，点击「生成名字」</p></div>';
+    return;
+  }
+  const list = document.createElement('div');
+  list.className = 'name-list';
+  names.forEach(n => {
+    const card = document.createElement('div');
+    card.className = 'name-card';
+    card.innerHTML = `<div class="name">${n.display}</div><div class="desc">${n.role} · ${n.gender} · ${n.style}</div><div class="card-actions"><button class="btn-sm copy-btn">📋 复制</button><button class="btn-sm highlight save-btn">💾 保存</button></div>`;
+    card.querySelector('.copy-btn').addEventListener('click', e => { e.stopPropagation();
+      navigator.clipboard.writeText(n.display).then(() => showToast('✅ 已复制到剪贴板')).catch(() => showToast('复制失败'));
+    });
+    card.querySelector('.save-btn').addEventListener('click', e => { e.stopPropagation();
+      saveNameToLibrary(n, card);
+    });
+    list.appendChild(card);
+  });
+  area.innerHTML = '';
+  area.appendChild(list);
+}
+
+// ==================== LIBRARY SYSTEM ====================
+let books = [];
+function loadBooks() { try { books = JSON.parse(localStorage.getItem('novel_books2') || '[]'); } catch(e) { books = []; } }
+function saveBooks() { localStorage.setItem('novel_books2', JSON.stringify(books)); }
+function getBook(id) { return books.find(b => b.id === id); }
+
+function saveNameToLibrary(n, cardEl) {
+  if (!books.length) { showCreateBookModal(n); return; }
+  showSaveModal(n, cardEl);
+}
+
+function showSaveModal(n, cardEl) {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal">
+      <h3>💾 保存到书册</h3>
+      <label>选择书册</label>
+      <div class="book-selector">
+        <select id="saveBookSelect">${books.map(b => `<option value="${b.id}">${b.title} (${b.characters.length}个角色)</option>`).join('')}</select>
+        <div class="create-book-link" id="createNewFromSave">+ 新建书册</div>
+      </div>
+      <div style="background:#16182a;border-radius:8px;padding:12px;margin-bottom:16px;border:1px solid #2a2d4a;">
+        <div style="font-size:0.9rem;color:#fff;font-weight:600;">${n.display}</div>
+        <div style="font-size:0.78rem;color:#888;margin-top:4px;">${n.role} · ${n.gender} · ${n.style}</div>
+      </div>
+      <div class="modal-actions"><button class="btn-cancel" id="saveCancel">取消</button><button class="btn-gen" id="saveConfirm">保存</button></div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.querySelector('#createNewFromSave').addEventListener('click', () => { overlay.remove(); showCreateBookModal(n); });
+  overlay.querySelector('#saveCancel').addEventListener('click', () => overlay.remove());
+  overlay.querySelector('#saveConfirm').addEventListener('click', () => {
+    const bookId = overlay.querySelector('#saveBookSelect').value;
+    const book = getBook(bookId);
+    if (!book) { showToast('书册不存在'); overlay.remove(); return; }
+    // Auto-generate explanation on save
+    const exp = generateExplanation(n.display, n.styleId, n.genderId, n.roleId);
+    book.characters.push({
+      id: uid(),
+      display: n.display, rawName: n.rawName, title: n.title,
+      role: n.role, roleId: n.roleId,
+      gender: n.gender, genderId: n.genderId,
+      style: n.style, styleId: n.styleId,
+      explanation: exp,
+      remarks: '',
+      createdAt: new Date().toISOString(),
+    });
+    book.updatedAt = new Date().toISOString();
+    saveBooks();
+    overlay.remove();
+    if (cardEl) { cardEl.classList.add('saved'); cardEl.querySelector('.save-btn').textContent = '✅ 已保存'; }
+    showToast('✅ 已保存到《' + book.title + '》');
+  });
+}
+
+function showCreateBookModal(saveAfter) {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal">
+      <h3>📖 新建书册</h3>
+      <label>小说书名</label><input id="bookTitleInput" placeholder="例如：剑来" maxlength="30">
+      <label>作者名（笔名）</label><input id="bookAuthorInput" placeholder="例如：烽火戏诸侯" maxlength="20">
+      <label>简介（可选）</label><textarea id="bookDescInput" placeholder="写一段简短的故事介绍..." maxlength="200"></textarea>
+      <label>风格</label><select id="bookStyleSelect">${DATA.styles.map(s => `<option value="${s.id}">${s.label} ${s.desc}</option>`).join('')}</select>
+      <div class="modal-actions"><button class="btn-cancel" id="createCancel">取消</button><button class="btn-gen" id="createConfirm">创建</button></div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.querySelector('#createCancel').addEventListener('click', () => overlay.remove());
+  overlay.querySelector('#createConfirm').addEventListener('click', () => {
+    const title = overlay.querySelector('#bookTitleInput').value.trim();
+    if (!title) { showToast('请输入书名'); return; }
+    const book = {
+      id: uid(),
+      title,
+      author: overlay.querySelector('#bookAuthorInput').value.trim() || '佚名',
+      description: overlay.querySelector('#bookDescInput').value.trim(),
+      style: overlay.querySelector('#bookStyleSelect').value,
+      characters: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    books.push(book); saveBooks(); overlay.remove();
+    showToast('✅ 书册《' + title + '》已创建');
+    if (saveAfter) { showSaveModal(saveAfter, null); } else { renderLibrary(); }
+  });
+  overlay.querySelector('#bookTitleInput').focus();
+}
+
+function renderLibrary() {
+  const area = document.getElementById('libraryContent');
+  if (!books.length) {
+    area.innerHTML = `<div class="empty-state"><div class="icon">📚</div><p>还没有创建任何书册</p><p style="color:#555;font-size:0.85rem;margin-top:8px;">在生成器中生成名字后保存，或直接创建书册</p><button class="btn-gen" id="firstBookBtn">📖 创建第一本书册</button></div>`;
+    area.querySelector('#firstBookBtn')?.addEventListener('click', () => showCreateBookModal(null));
+    return;
+  }
+  const styleIcons = { urban:'🏙️', xianxia:'☯️', ancient:'🏯', wuxia:'⚔️', medieval:'🏰', cyberpunk:'🤖', japanese:'🗾', western:'🗽', russian:'❄️', fantasy:'🐉', scifi:'🚀', apocalypse:'☢️', steampunk:'⚙️', mystery:'🔍', cthulhu:'🐙', republic:'🎭' };
+  area.innerHTML = `<div class="lib-header"><div class="lib-title">📚 我的书库 <span>(${books.length}本)</span></div><button class="btn-gen small" id="newBookBtn">+ 新建书册</button></div>
+    <div class="book-grid">${books.map(b => `<div class="book-card" data-id="${b.id}"><div class="book-icon">${styleIcons[b.style]||'📖'}</div><div class="book-title">${b.title}</div><div class="book-meta">✍️ ${b.author} · ${new Date(b.updatedAt).toLocaleDateString()}</div>${b.description?`<div class="book-desc">${b.description}</div>`:''}<div class="book-count">${b.characters.length}个角色</div><button class="delete-book" data-id="${b.id}">🗑️ 删除</button></div>`).join('')}</div>`;
+  area.querySelector('#newBookBtn').addEventListener('click', () => showCreateBookModal(null));
+  area.querySelectorAll('.book-card').forEach(card => { card.addEventListener('click', e => { if(e.target.closest('.delete-book')) return; renderBookDetail(card.dataset.id); }); });
+  area.querySelectorAll('.delete-book').forEach(btn => { btn.addEventListener('click', e => { e.stopPropagation(); const b = getBook(btn.dataset.id); if(!b) return; if(confirm(`确定删除《${b.title}》及其中${b.characters.length}个角色？`)){ books = books.filter(x=>x.id!==b.id); saveBooks(); renderLibrary(); showToast('已删除《'+b.title+'》'); } }); });
+}
+
+function renderBookDetail(bookId) {
+  const book = getBook(bookId);
+  if (!book) { renderLibrary(); return; }
+  const area = document.getElementById('libraryContent');
+  area.innerHTML = `<div class="back-bar"><button class="back-btn" id="backToLibrary">← 返回书库</button></div>
+    <div class="book-info-card"><h2>${book.title}</h2><div class="sub">✍️ ${book.author} · ${book.characters.length}个角色 · 创建于 ${new Date(book.createdAt).toLocaleDateString()}</div>${book.description?`<div style="color:#999;font-size:0.85rem;margin-top:6px;">${book.description}</div>`:''}</div>
+    <div class="char-header"><h3>角色名单</h3><div style="display:flex;gap:8px;align-items:center;"><button class="btn-gen small" id="exportBookBtn">📤 导出</button><span style="font-size:0.8rem;color:#666;">${book.characters.length} 人</span></div></div>
+    ${book.characters.length===0 ? `<div class="empty-state"><div class="icon">📭</div><p>还没有角色</p></div>` : `<div class="char-grid">${book.characters.map(c => {
+      const expl = c.explanation;
+      const hasRemarks = c.remarks && c.remarks.trim();
+      return `<div class="char-card" data-charid="${c.id}">
+        <div class="char-name">${c.title?c.title+'<br>':''}${c.display}</div>
+        <div class="char-tags"><span class="char-tag">${c.role}</span><span class="char-tag">${c.gender}</span><span class="char-tag">${c.style}</span></div>
+        ${expl ? `<div class="char-section"><div class="char-section-label">🤖 模拟器解读</div><div class="char-explain"><span class="reason-tag" style="font-size:0.7rem;padding:2px 8px;border-radius:4px;background:#6a82fb22;color:#6a82fb;margin-bottom:4px;font-weight:600;">${expl.category}</span><br>${expl.body.replace(/\n/g,'<br>')}</div></div>` : `<div class="char-section"><div class="char-section-label">🤖 模拟器解读</div><div class="char-explain" style="color:#555;">尚未生成解释</div></div>`}
+        ${hasRemarks ? `<div class="char-section"><div class="char-section-label">📝 我的备注</div><div class="char-remark">${c.remarks}</div></div>` : ''}
+        <div class="char-actions">
+          <button class="btn-sm edit-explain-btn">🔄 重新解读</button>
+          <button class="btn-sm remark-btn">📝 ${hasRemarks?'编辑备注':'添加备注'}</button>
+          <button class="btn-sm delete-char">🗑️</button>
+        </div>
+      </div>`; }).join('')}</div>`}`;
+  area.querySelector('#backToLibrary').addEventListener('click', renderLibrary);
+  area.querySelector('#exportBookBtn')?.addEventListener('click', () => {
+    let text = `《${book.title}》角色名单\n作者：${book.author}\n共 ${book.characters.length} 个角色\n${'─'.repeat(30)}\n\n`;
+    book.characters.forEach((c,i) => {
+      text += `${i+1}. ${c.display}\n   角色：${c.role} · ${c.gender} · ${c.style}\n`;
+      if(c.explanation) text += `   解读：${c.explanation.category}——${c.explanation.body.replace(/\n/g,' ')}\n`;
+      if(c.remarks) text += `   备注：${c.remarks}\n`;
+      text += '\n';
+    });
+    const blob = new Blob([text],{type:'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download=`${book.title}_角色名单.txt`; a.click(); URL.revokeObjectURL(url);
+    showToast('✅ 已导出');
+  });
+  area.querySelectorAll('.edit-explain-btn').forEach(btn => { btn.addEventListener('click', e => { const charId = e.target.closest('.char-card').dataset.charid; showRegenerateExplanationModal(bookId, charId); }); });
+  area.querySelectorAll('.remark-btn').forEach(btn => { btn.addEventListener('click', e => { const charId = e.target.closest('.char-card').dataset.charid; showRemarkModal(bookId, charId); }); });
+  area.querySelectorAll('.delete-char').forEach(btn => { btn.addEventListener('click', e => { const charId = e.target.closest('.char-card').dataset.charid; if(confirm('确定移除此角色？')){ book.characters = book.characters.filter(c=>c.id!==charId); book.updatedAt=new Date().toISOString(); saveBooks(); renderBookDetail(bookId); showToast('已移除'); } }); });
+}
+
+// ==================== REGENERATE EXPLANATION ====================
+function showRegenerateExplanationModal(bookId, charId) {
+  const book = getBook(bookId);
+  if (!book) return;
+  const ch = book.characters.find(c => c.id === charId);
+  if (!ch) return;
+
+  const newExp = generateExplanation(ch.display, ch.styleId, ch.genderId, ch.roleId);
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal">
+      <h3>🔄 重新解读 — ${ch.display}</h3>
+      <div style="color:#888;font-size:0.8rem;margin-bottom:12px;">模拟器为该名字生成的全新解读：</div>
+      <div class="explain-box">
+        <div class="exp-category">${newExp.category}</div>
+        ${newExp.body.replace(/\n/g,'<br>')}
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="regCancel">取消</button>
+        <button class="btn-gen" id="regSave">应用新解读</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.querySelector('#regCancel').addEventListener('click', () => overlay.remove());
+  overlay.querySelector('#regSave').addEventListener('click', () => {
+    ch.explanation = newExp;
+    book.updatedAt = new Date().toISOString();
+    saveBooks();
+    overlay.remove();
+    renderBookDetail(bookId);
+    showToast('✅ 解读已更新');
+  });
+}
+
+// ==================== REMARK MODAL ====================
+function showRemarkModal(bookId, charId) {
+  const book = getBook(bookId);
+  if (!book) return;
+  const ch = book.characters.find(c => c.id === charId);
+  if (!ch) return;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal">
+      <h3>📝 备注 — ${ch.display}</h3>
+      <label>在此写下任何你想记录的内容（例如：这个角色是女主的前男友、性格阴郁等）</label>
+      <textarea class="rem-textarea" id="remarkInput" placeholder="输入你的备注...">${ch.remarks||''}</textarea>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="remarkCancel">取消</button>
+        ${ch.remarks ? `<button class="btn-cancel" id="remarkClear" style="color:#fc5c7d;">清除备注</button>` : ''}
+        <button class="btn-gen" id="remarkSave">保存</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.querySelector('#remarkCancel').addEventListener('click', () => overlay.remove());
+  overlay.querySelector('#remarkClear')?.addEventListener('click', () => {
+    ch.remarks = '';
+    book.updatedAt = new Date().toISOString();
+    saveBooks();
+    overlay.remove();
+    renderBookDetail(bookId);
+    showToast('已清除备注');
+  });
+  overlay.querySelector('#remarkSave').addEventListener('click', () => {
+    ch.remarks = overlay.querySelector('#remarkInput').value.trim();
+    book.updatedAt = new Date().toISOString();
+    saveBooks();
+    overlay.remove();
+    renderBookDetail(bookId);
+    showToast('✅ 备注已保存');
+  });
+}
+
+// ==================== TOAST ====================
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+// ==================== UI INIT ====================
+function initGeneratorUI() {
+  const roleC = document.getElementById('roleTypeBtns');
+  DATA.charTypes.forEach(ct => {
+    const b = document.createElement('button');
+    b.className='btn-opt'+(ct.id==='protagonist'?' active':'');
+    b.dataset.value=ct.id;
+    b.innerHTML=ct.label+'<br><span style="font-size:0.7rem;color:#888;font-weight:400;">'+ct.desc+'</span>';
+    b.addEventListener('click',()=>{ roleC.querySelectorAll('.btn-opt').forEach(x=>x.classList.remove('active')); b.classList.add('active'); });
+    roleC.appendChild(b);
+  });
+  const genderC = document.getElementById('genderBtns');
+  DATA.genders.forEach(g => {
+    const b = document.createElement('button');
+    b.className='btn-opt small'+(g.id==='male'?' active':'');
+    b.dataset.value=g.id; b.textContent=g.label;
+    b.addEventListener('click',()=>{ genderC.querySelectorAll('.btn-opt').forEach(x=>x.classList.remove('active')); b.classList.add('active'); });
+    genderC.appendChild(b);
+  });
+  const styleC = document.getElementById('styleBtns');
+  DATA.styles.forEach(s => {
+    const b = document.createElement('button');
+    b.className='btn-opt'+(s.id==='urban'?' active':'');
+    b.dataset.value=s.id;
+    b.innerHTML=s.label+'<br><span style="font-size:0.7rem;color:#888;font-weight:400;">'+s.desc+'</span>';
+    b.addEventListener('click',()=>{ styleC.querySelectorAll('.btn-opt').forEach(x=>x.classList.remove('active')); b.classList.add('active'); });
+    styleC.appendChild(b);
+  });
+  document.getElementById('generateBtn').addEventListener('click', generate);
+  generate();
+}
+
+function initTabs() {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+      if(btn.dataset.tab==='library') renderLibrary();
+    });
+  });
+}
+
+loadBooks();
+document.addEventListener('DOMContentLoaded', () => { initTabs(); initGeneratorUI(); });
+</script>
+</body>
+</html>
