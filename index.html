@@ -397,9 +397,49 @@ header p { color: #888; margin-top: 6px; font-size: 0.9rem; }
 }
 .conflict-output h4 { color: #f0c27f; margin: 16px 0 8px; font-size: 0.95rem; }
 .conflict-output h4:first-child { margin-top: 0; }
+/* ===== AI NAMING ===== */
+.settings-btn { position: fixed; top: 16px; right: 24px; z-index: 100; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #2a2d4a; background: #16182a; color: #888; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+.settings-btn:hover { border-color: #6a82fb; color: #fff; background: #1e2038; }
+.settings-btn.configured { border-color: #4ade80; }
+.settings-btn.configured::after { content: ''; position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; border-radius: 50%; background: #4ade80; }
+.desc-section { margin-bottom: 20px; }
+.desc-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid #2a2d4a; background: #1a1c32; color: #e0e0e0; font-size: 0.9rem; font-family: inherit; resize: vertical; min-height: 80px; max-height: 200px; transition: border-color .2s; box-sizing: border-box; }
+.desc-input:focus { border-color: #6a82fb; outline: none; }
+.desc-input::placeholder { color: #555; }
+.desc-hint { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; font-size: 0.75rem; color: #555; }
+.badge-ai { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 20px; background: linear-gradient(135deg,#6a82fb33,#fc5c7d33); color: #f0c27f; font-size: 0.7rem; font-weight: 600; }
+.badge-local { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 20px; background: #1e2038; color: #888; font-size: 0.7rem; }
+.ai-badge { display: inline-block; font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; background: linear-gradient(135deg,#6a82fb55,#fc5c7d55); color: #f0c27f; margin-left: 6px; vertical-align: middle; }
+.batch-ai-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 8px; border: 1px solid #2a2d4a; background: #1a1c32; color: #aaa; cursor: pointer; font-size: 0.8rem; transition: all .2s; font-family: inherit; }
+.batch-ai-toggle:hover { border-color: #6a82fb; color: #fff; }
+.batch-ai-toggle.active { border-color: #6a82fb; color: #f0c27f; background: #1e2040; }
+.batch-ai-entries { display: none; flex-direction: column; gap: 8px; margin-top: 10px; }
+.batch-ai-entries.visible { display: flex; }
+.batch-ai-entry { display: flex; gap: 8px; align-items: flex-start; }
+.batch-ai-label { flex-shrink: 0; width: 50px; padding: 12px 0; font-size: 0.8rem; color: #888; font-weight: 600; }
+.batch-ai-entry textarea { flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid #2a2d4a; background: #0d0f1a; color: #e0e0e0; font-size: 0.85rem; font-family: inherit; resize: none; height: 56px; min-height: 56px; box-sizing: border-box; }
+.batch-ai-entry textarea:focus { border-color: #6a82fb; outline: none; }
+.batch-ai-add { margin-top: 8px; padding: 6px 16px; border-radius: 8px; border: 1px dashed #2a2d4a; background: transparent; color: #888; cursor: pointer; font-size: 0.8rem; font-family: inherit; }
+.batch-ai-add:hover { border-color: #6a82fb; color: #f0c27f; }
+.skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.skeleton-card { background: #1a1c32; border: 1px solid #2a2d4a; border-radius: 10px; padding: 16px; height: 100px; animation: shimmer 1.5s infinite; }
+@keyframes shimmer { 0% { opacity: 0.4; } 50% { opacity: 0.7; } 100% { opacity: 0.4; } }
+.btn-deep { padding: 4px 10px; border-radius: 6px; border: 1px solid #6a82fb44; background: #6a82fb11; color: #6a82fb; cursor: pointer; font-size: 0.7rem; transition: all .2s; font-family: inherit; }
+.btn-deep:hover { background: #6a82fb22; color: #fff; }
+.deep-explain-box { margin-top: 10px; padding: 12px; border-radius: 8px; background: #0d0f1a; border: 1px solid #2a2d4a; font-size: 0.8rem; color: #aaa; line-height: 1.6; display: none; }
+.deep-explain-box.visible { display: block; }
+.deep-section { margin-bottom: 10px; }
+.deep-section:last-child { margin-bottom: 0; }
+.deep-label { font-weight: 600; color: #f0c27f; margin-bottom: 2px; font-size: 0.75rem; }
+.result-group { margin-bottom: 20px; padding: 16px; border-radius: 12px; background: #0d0f1a; border: 1px solid #2a2d4a; }
+.result-group-title { font-weight: 600; color: #f0c27f; margin-bottom: 12px; font-size: 0.9rem; }
+.retry-banner { text-align: center; padding: 24px; color: #888; }
+.retry-banner button { margin-top: 12px; }
 </style>
 </head>
 <body>
+
+<button class="settings-btn" id="settingsBtn" title="AI 设置">⚙️</button>
 
 <div class="app">
   <header>
@@ -443,6 +483,27 @@ header p { color: #888; margin-top: 6px; font-size: 0.9rem; }
           </select></label>
           <label><input type="checkbox" id="includeTitle" checked> 含称号/头衔</label>
           <label style="margin-left:auto;font-size:0.8rem;color:#666;">悬停可见·保存·复制</label>
+        </div>
+        <div class="desc-section">
+          <textarea class="desc-input" id="descInput" placeholder="📝 描述你的角色，越详细名字越贴合。&#10;例如：她是修仙世家庶女，母亲早逝，从小被嫡母打压，性格隐忍聪慧，擅长医术，后期黑化复仇。&#10;&#10;留空则使用本地名字池随机生成。"></textarea>
+          <div class="desc-hint">
+            <span>Ctrl + Enter 快捷生成</span>
+            <span class="mode-indicator">
+              <span id="modeBadge" class="badge-local">📦 本地模式</span>
+              <button class="batch-ai-toggle" id="batchAIToggle" type="button">📋 AI 批量模式</button>
+            </span>
+          </div>
+          <div class="batch-ai-entries" id="batchAIEntries">
+            <div class="batch-ai-entry">
+              <span class="batch-ai-label">角色1</span>
+              <textarea placeholder="描述第一个角色..."></textarea>
+            </div>
+            <div class="batch-ai-entry">
+              <span class="batch-ai-label">角色2</span>
+              <textarea placeholder="描述第二个角色..."></textarea>
+            </div>
+            <button class="batch-ai-add" id="batchAIAddBtn">+ 添加角色</button>
+          </div>
         </div>
         <div id="resultArea"></div>
       </div>
@@ -2088,13 +2149,535 @@ loadBooks();
 document.addEventListener('DOMContentLoaded', () => {
   try {
     initTabs();
+    loadAIConfig(); updateSettingsBadge(); updateModeBadge();
     setTimeout(function() {
       try { initGeneratorUI(); } catch(e) { console.error('initGeneratorUI error:', e.message); }
     }, 100);
+    initBatchAIMode();
+    initKeyboardShortcut();
+    initDescMonitor();
+    initSettingsModal();
   } catch(e) {
     console.error('DOMContentLoaded error:', e.message);
   }
 });
+
+// ==================== AI CONFIG ====================
+const AI_CONFIG_KEY = 'ai_naming_config_v2';
+let aiConfig = null;
+
+function loadAIConfig() {
+  try { aiConfig = JSON.parse(localStorage.getItem(AI_CONFIG_KEY)); } catch(e) { aiConfig = null; }
+  if (!aiConfig) aiConfig = { provider: 'deepseek', baseUrl: 'https://api.deepseek.com/v1', model: 'deepseek-chat', apiKey: '' };
+  return aiConfig;
+}
+
+function saveAIConfig() {
+  localStorage.setItem(AI_CONFIG_KEY, JSON.stringify(aiConfig));
+  updateSettingsBadge();
+}
+
+function updateSettingsBadge() {
+  const btn = document.getElementById('settingsBtn');
+  if (btn) {
+    if (aiConfig && aiConfig.apiKey) btn.classList.add('configured');
+    else btn.classList.remove('configured');
+  }
+}
+
+function showSettingsModal() {
+  loadAIConfig();
+  document.getElementById('apiProvider').value = aiConfig.provider || 'deepseek';
+  document.getElementById('apiKey').value = aiConfig.apiKey || '';
+  document.getElementById('apiBaseUrl').value = aiConfig.baseUrl || 'https://api.deepseek.com/v1';
+  document.getElementById('apiModel').value = aiConfig.model || 'deepseek-chat';
+  document.getElementById('settingsModal').style.display = 'flex';
+}
+
+function hideSettingsModal() {
+  document.getElementById('settingsModal').style.display = 'none';
+}
+
+function saveSettings() {
+  aiConfig.provider = document.getElementById('apiProvider').value;
+  aiConfig.apiKey = document.getElementById('apiKey').value.trim();
+  aiConfig.baseUrl = document.getElementById('apiBaseUrl').value.trim();
+  aiConfig.model = document.getElementById('apiModel').value.trim();
+  saveAIConfig();
+  hideSettingsModal();
+  showToast('✅ AI 设置已保存');
+  updateModeBadge();
+}
+
+function initSettingsModal() {
+  document.getElementById('settingsBtn').addEventListener('click', showSettingsModal);
+  document.getElementById('settingsCancel').addEventListener('click', hideSettingsModal);
+  document.getElementById('settingsSave').addEventListener('click', saveSettings);
+  document.getElementById('settingsModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('settingsModal')) hideSettingsModal();
+  });
+  document.getElementById('apiProvider').addEventListener('change', function() {
+    const v = this.value;
+    if (v === 'deepseek') { document.getElementById('apiBaseUrl').value = 'https://api.deepseek.com/v1'; document.getElementById('apiModel').value = 'deepseek-chat'; }
+    else if (v === 'openai') { document.getElementById('apiBaseUrl').value = 'https://api.openai.com/v1'; document.getElementById('apiModel').value = 'gpt-4o-mini'; }
+    else { document.getElementById('apiBaseUrl').value = ''; document.getElementById('apiModel').value = ''; }
+  });
+}
+
+// ==================== AI NAME GENERATION ====================
+function isAIMode() {
+  const desc = document.getElementById('descInput');
+  return desc && desc.value.trim() && aiConfig && aiConfig.apiKey;
+}
+
+function isBatchAIMode() {
+  return document.getElementById('batchAIToggle').classList.contains('active');
+}
+
+function updateModeBadge() {
+  const badge = document.getElementById('modeBadge');
+  const desc = document.getElementById('descInput');
+  if (!badge || !desc) return;
+  if (desc.value.trim() && aiConfig && aiConfig.apiKey) {
+    badge.className = 'badge-ai'; badge.textContent = '🤖 AI 模式';
+  } else if (desc.value.trim() && (!aiConfig || !aiConfig.apiKey)) {
+    badge.className = 'badge-local'; badge.textContent = '⚠️ 未配置 Key';
+  } else {
+    badge.className = 'badge-local'; badge.textContent = '📦 本地模式';
+  }
+}
+
+async function generateAINames(description, styleId, genderId, roleId, count) {
+  const style = DATA.styles.find(s => s.id === styleId);
+  const gender = DATA.genders.find(g => g.id === genderId);
+  const role = DATA.charTypes.find(c => c.id === roleId);
+
+  const systemPrompt = `你是一个专业的小说角色取名专家。你必须严格按 JSON 格式返回结果，不要输出任何 JSON 之外的内容。
+
+格式示例：
+[{"name":"沈韫清","meaning":"韫，藏也；清，冷也。暗喻隐忍之才藏于清冷外表之下","fitReason":"姓氏沈谐音深，暗示城府深藏，与黑化线呼应"}]`;
+
+  const userPrompt = `请为以下角色生成 ${count} 个名字：
+
+角色设定：${description}
+风格背景：${style.label}（${style.desc}）
+性别：${gender.label}
+角色类型：${role.label}（${role.desc}）
+
+要求：
+1. 名字必须符合所选风格背景（${style.label}）
+2. 每个名字必须返回 name（名字）、meaning（名字含义，50字以内）、fitReason（为什么适合这个角色，50字以内）
+3. 名字要有文学性和创意，避免俗套
+4. 严格返回 JSON 数组格式`;
+
+  const url = aiConfig.baseUrl.replace(/\/+$/, '') + '/chat/completions';
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + aiConfig.apiKey },
+    body: JSON.stringify({
+      model: aiConfig.model,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt }
+      ],
+      temperature: 0.9,
+      max_tokens: 2000
+    }),
+    signal: AbortSignal.timeout(15000)
+  });
+
+  if (!resp.ok) {
+    const errText = await resp.text();
+    if (resp.status === 401) throw new Error('API Key 无效，请检查设置');
+    if (resp.status === 402 || resp.status === 429) throw new Error('API 额度不足或请求过于频繁');
+    throw new Error('API 请求失败: ' + resp.status + ' ' + errText.slice(0, 100));
+  }
+
+  const data = await resp.json();
+  const content = data.choices[0].message.content;
+  let jsonStr = content.trim();
+  jsonStr = jsonStr.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/, '');
+  const names = JSON.parse(jsonStr);
+  if (!Array.isArray(names)) throw new Error('AI 返回格式异常');
+  return names.map(n => ({ ...n, fromAI: true }));
+}
+
+async function generateBatchAINames(batchDescs, styleId, genderId, roleId) {
+  const style = DATA.styles.find(s => s.id === styleId);
+  const gender = DATA.genders.find(g => g.id === genderId);
+  const role = DATA.charTypes.find(c => c.id === roleId);
+
+  const descriptionsText = batchDescs.map((d, i) => `角色${i+1}：${d.text}`).join('\n');
+
+  const systemPrompt = `你是一个专业的小说角色取名专家。你必须严格按 JSON 格式返回结果，不要输出任何 JSON 之外的内容。`;
+
+  const userPrompt = `请为以下多个角色分别生成 3 个名字：
+
+风格背景：${style.label}（${style.desc}）
+性别：${gender.label}
+${descriptionsText}
+
+返回格式：
+[
+  {"roleIndex":0, "names":[
+    {"name":"名字","meaning":"含义","fitReason":"理由"}
+  ]},
+  {"roleIndex":1, "names":[...]}
+]
+roleIndex 对应角色的序号（从0开始）。
+严格返回 JSON 数组格式。`;
+
+  const url = aiConfig.baseUrl.replace(/\/+$/, '') + '/chat/completions';
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + aiConfig.apiKey },
+    body: JSON.stringify({
+      model: aiConfig.model,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt }
+      ],
+      temperature: 0.9,
+      max_tokens: 3000
+    }),
+    signal: AbortSignal.timeout(30000)
+  });
+
+  if (!resp.ok) {
+    if (resp.status === 401) throw new Error('API Key 无效，请检查设置');
+    if (resp.status === 402 || resp.status === 429) throw new Error('API 额度不足或请求过于频繁');
+    throw new Error('API 请求失败: ' + resp.status);
+  }
+
+  const data = await resp.json();
+  const content = data.choices[0].message.content;
+  let jsonStr = content.trim();
+  jsonStr = jsonStr.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/, '');
+  return JSON.parse(jsonStr);
+}
+
+// ==================== AI DEEP EXPLANATION ====================
+async function getDeepExplanation(name, styleId, roleId, genderId) {
+  if (!aiConfig || !aiConfig.apiKey) throw new Error('请先配置 AI API Key');
+
+  const style = DATA.styles.find(s => s.id === styleId);
+  const role = DATA.charTypes.find(c => c.id === roleId);
+  const gender = DATA.genders.find(g => g.id === genderId);
+
+  const userPrompt = `请对角色名字"${name}"进行深度解读：
+
+风格背景：${style.label}
+角色类型：${role.label}
+性别：${gender.label}
+
+返回格式：
+{
+  "charAnalysis": [{"char":"字","meaning":"字义"}],
+  "wuxing": "五行属性分析（20字以内）",
+  "tonal": "音律平仄评价（30字以内）",
+  "roleFit": "适用角色类型建议（30字以内）",
+  "similar": ["相似风格名字1","相似风格名字2"]
+}`;
+
+  const url = aiConfig.baseUrl.replace(/\/+$/, '') + '/chat/completions';
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + aiConfig.apiKey },
+    body: JSON.stringify({
+      model: aiConfig.model,
+      messages: [
+        { role: 'system', content: '你是一个专业的小说角色取名分析专家。你必须严格按 JSON 格式返回结果，不要输出任何 JSON 之外的内容。' },
+        { role: 'user', content: userPrompt }
+      ],
+      temperature: 0.7,
+      max_tokens: 1000
+    }),
+    signal: AbortSignal.timeout(15000)
+  });
+
+  if (!resp.ok) throw new Error('API 请求失败: ' + resp.status);
+  const data = await resp.json();
+  const content = data.choices[0].message.content;
+  let jsonStr = content.trim();
+  jsonStr = jsonStr.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/, '');
+  return JSON.parse(jsonStr);
+}
+
+// ==================== SKELETON & HELPERS ====================
+function showSkeleton(targetId) {
+  document.getElementById(targetId).innerHTML = '<div class="skeleton-grid">' + Array(6).fill('<div class="skeleton-card"></div>').join('') + '</div>';
+}
+
+function showError(targetId, msg, onRetry) {
+  const area = document.getElementById(targetId);
+  area.innerHTML = '<div class="retry-banner"><p>❌ ' + msg + '</p>' + (onRetry ? '<button class="btn-gen ghost small" onclick="(' + onRetry.toString() + ')()">🔄 重试</button>' : '') + '</div>';
+}
+
+function getCurrentParams() {
+  return {
+    roleId: document.querySelector('#roleTypeBtns .active')?.dataset?.value || 'protagonist',
+    styleId: document.querySelector('#styleBtns .active')?.dataset?.value || 'urban',
+    genderId: document.querySelector('#genderBtns .active')?.dataset?.value || 'male',
+    count: parseInt(document.getElementById('countSelect').value),
+    inclTitle: document.getElementById('includeTitle').checked
+  };
+}
+
+// ==================== OVERRIDE generate() FOR AI ====================
+const _originalGenerate = generate;
+
+generate = async function() {
+  const params = getCurrentParams();
+  const desc = document.getElementById('descInput')?.value?.trim() || '';
+
+  document.getElementById('selectionDisplay').textContent =
+    (DATA.charTypes.find(c => c.id === params.roleId)?.label || '') + ' · ' +
+    (DATA.genders.find(g => g.id === params.genderId)?.label || '') + ' · ' +
+    (DATA.styles.find(s => s.id === params.styleId)?.label || '');
+
+  // AI batch mode
+  if (isBatchAIMode()) { await generateAIWithBatch(params); return; }
+
+  // AI mode with description
+  if (desc && aiConfig && aiConfig.apiKey) { await generateWithAI(params, desc); return; }
+
+  // No AI key but has description
+  if (desc && (!aiConfig || !aiConfig.apiKey)) { showToast('⚠️ 请先配置 AI API Key（点击右上角⚙️）'); }
+
+  // Local mode
+  _originalGenerate();
+};
+
+async function generateWithAI(params, desc) {
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true; btn.textContent = '🤖 AI 构思中...';
+  showSkeleton('resultArea');
+  try {
+    const aiNames = await generateAINames(desc, params.styleId, params.genderId, params.roleId, params.count);
+    const role = DATA.charTypes.find(c => c.id === params.roleId);
+    const style = DATA.styles.find(s => s.id === params.styleId);
+    const gender = DATA.genders.find(g => g.id === params.genderId);
+    const names = aiNames.map(n => {
+      const rawName = n.name;
+      const zi = ['urban','ancient','wuxia','xianxia','republic','mystery'].includes(params.styleId) ? generateZi(rawName, params.genderId) : '';
+      const hao = ['urban','ancient','wuxia','xianxia','republic','mystery'].includes(params.styleId) ? generateHao(params.styleId) : '';
+      const nickname = generateNickname(params.styleId);
+      const wuxing = detectWuxing([...rawName]);
+      const pingze = detectPingZe(rawName);
+      const title = params.inclTitle ? getTitle(params.roleId, params.styleId, params.genderId) : '';
+      const display = title ? title + ' ' + rawName : rawName;
+      n.display=display; n.rawName=rawName; n.title=title;
+      n.role=role.label; n.roleId=params.roleId;
+      n.style=style.label; n.styleId=params.styleId;
+      n.gender=gender.label; n.genderId=params.genderId;
+      n.zi=zi; n.hao=hao; n.nickname=nickname; n.wuxing=wuxing; n.pingze=pingze;
+      return n;
+    });
+    window._lastGeneratedNames = names;
+    renderAIResults(names);
+    showToast('✅ AI 已生成 ' + names.length + ' 个名字');
+  } catch (err) {
+    showError('resultArea', err.message, () => generateWithAI(params, desc));
+    showToast('❌ ' + err.message);
+  } finally {
+    btn.disabled = false; btn.textContent = '生成名字';
+  }
+}
+
+async function generateAIWithBatch(params) {
+  const entries = document.querySelectorAll('.batch-ai-entry textarea');
+  const batchDescs = [];
+  entries.forEach((ta, i) => {
+    const text = ta.value.trim();
+    if (text) batchDescs.push({ index: i, text: text, label: ta.parentElement.querySelector('.batch-ai-label')?.textContent || ('角色' + (i + 1)) });
+  });
+
+  if (!batchDescs.length) { showToast('请在批量模式中至少填写一个角色描述'); return; }
+  if (!aiConfig || !aiConfig.apiKey) { showToast('⚠️ 批量模式需要配置 AI API Key'); return; }
+
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true; btn.textContent = '🤖 AI 批量构思中...';
+  showSkeleton('resultArea');
+
+  try {
+    const results = await generateBatchAINames(batchDescs, params.styleId, params.genderId, params.roleId);
+    const role = DATA.charTypes.find(c => c.id === params.roleId);
+    const style = DATA.styles.find(s => s.id === params.styleId);
+    const gender = DATA.genders.find(g => g.id === params.genderId);
+
+    const area = document.getElementById('resultArea');
+    area.innerHTML = '';
+    results.forEach(group => {
+      const descEntry = batchDescs.find(d => d.index === group.roleIndex);
+      const groupDiv = document.createElement('div');
+      groupDiv.className = 'result-group';
+      groupDiv.innerHTML = '<div class="result-group-title">📌 ' + (descEntry?.label || ('角色' + (group.roleIndex + 1))) + '</div>';
+      const listDiv = document.createElement('div');
+      listDiv.className = 'name-list';
+      (group.names || []).forEach(n => {
+        const rawName = n.name;
+        const zi = ['urban','ancient','wuxia','xianxia','republic','mystery'].includes(params.styleId) ? generateZi(rawName, params.genderId) : '';
+        const hao = ['urban','ancient','wuxia','xianxia','republic','mystery'].includes(params.styleId) ? generateHao(params.styleId) : '';
+        const nickname = generateNickname(params.styleId);
+        const wuxing = detectWuxing([...rawName]);
+        const pingze = detectPingZe(rawName);
+        const title = params.inclTitle ? getTitle(params.roleId, params.styleId, params.genderId) : '';
+        const display = title ? title + ' ' + rawName : rawName;
+        const enriched = { ...n, display, rawName, title, role: role.label, roleId: params.roleId, style: style.label, styleId: params.styleId, gender: gender.label, genderId: params.genderId, zi, hao, nickname, wuxing, pingze, fromAI: true };
+        const card = document.createElement('div');
+        card.innerHTML = formatAICard(enriched);
+        card.querySelectorAll('.name-card').forEach(c => { attachAICardEvents(c, enriched); listDiv.appendChild(c); });
+      });
+      groupDiv.appendChild(listDiv);
+      area.appendChild(groupDiv);
+    });
+    showToast('✅ 批量生成完成');
+  } catch (err) {
+    showError('resultArea', err.message, () => generateAIWithBatch(params));
+    showToast('❌ ' + err.message);
+  } finally {
+    btn.disabled = false; btn.textContent = '生成名字';
+  }
+}
+
+function formatAICard(n) {
+  const aiTag = n.fromAI ? '<span class="ai-badge">🤖AI</span>' : '';
+  const extrasHTML = (n.zi || n.hao || n.nickname) ? `<div style="font-size:0.73rem;color:#999;margin-top:4px;">${n.zi?'<span style="color:#aaa;">字:</span> '+n.zi+' ':''}${n.hao?'<span style="color:#aaa;">号:</span> '+n.hao+' ':''}${n.nickname?'<span style="color:#888;">绰号: '+n.nickname+'</span> ':''}<span style="color:#888;">[五行:${n.wuxing||'?'}]</span> <span style="color:#888;">[${n.pingze||'?'}]</span></div>` : '';
+  return `<div class="name-card" data-raw="${(n.display||'').replace(/"/g, '&quot;')}">
+    <div class="name">${n.display||n.name}${aiTag}</div>
+    ${n.meaning ? '<div class="desc" style="color:#ccc;margin-top:4px;">' + n.meaning + '</div>' : ''}
+    ${n.fitReason ? '<div class="desc" style="color:#888;font-size:0.75rem;">💡 ' + n.fitReason + '</div>' : ''}
+    <div class="desc" style="font-size:0.7rem;color:#555;">${n.role||''} · ${n.gender||''} · ${n.style||''}</div>
+    ${extrasHTML}
+    <div class="card-actions">
+      <button class="btn-sm copy-btn">📋 复制</button>
+      <button class="btn-sm highlight save-btn">💾 保存</button>
+      ${n.fromAI ? '<button class="btn-deep deep-btn">🔍 AI深度</button>' : ''}
+    </div>
+    ${n.fromAI ? '<div class="deep-explain-box"></div>' : ''}
+  </div>`;
+}
+
+function attachAICardEvents(card, nameObj) {
+  card.querySelector('.copy-btn')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const raw = card.dataset.raw || nameObj.name || nameObj.display || '';
+    navigator.clipboard.writeText(raw).then(() => showToast('✅ 已复制')).catch(() => showToast('复制失败'));
+  });
+  card.querySelector('.save-btn')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const entry = {
+      display: nameObj.display||nameObj.name, rawName: nameObj.rawName||nameObj.name,
+      title: nameObj.title||'', style: nameObj.style||'', styleId: nameObj.styleId||'urban',
+      role: nameObj.role||'', roleId: nameObj.roleId||'protagonist',
+      gender: nameObj.gender||'', genderId: nameObj.genderId||'male',
+      zi: nameObj.zi||'', hao: nameObj.hao||'', nickname: nameObj.nickname||'',
+      wuxing: nameObj.wuxing||'', pingze: nameObj.pingze||'',
+    };
+    saveNameToLibrary(entry, card);
+  });
+  card.querySelector('.deep-btn')?.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const box = card.querySelector('.deep-explain-box');
+    if (box.classList.contains('visible')) { box.classList.remove('visible'); return; }
+    box.classList.add('visible');
+    box.innerHTML = '<div style="color:#888;text-align:center;padding:10px;">🤔 AI 分析中...</div>';
+    try {
+      const params = getCurrentParams();
+      const result = await getDeepExplanation(nameObj.name || nameObj.display, params.styleId, params.roleId, params.genderId);
+      let html = '';
+      if (result.charAnalysis) {
+        html += '<div class="deep-section"><div class="deep-label">字义拆解</div>';
+        result.charAnalysis.forEach(c => { html += c.char + '：' + c.meaning + ' &nbsp; '; });
+        html += '</div>';
+      }
+      if (result.wuxing) html += '<div class="deep-section"><div class="deep-label">五行属性</div>' + result.wuxing + '</div>';
+      if (result.tonal) html += '<div class="deep-section"><div class="deep-label">音律评价</div>' + result.tonal + '</div>';
+      if (result.roleFit) html += '<div class="deep-section"><div class="deep-label">角色适用</div>' + result.roleFit + '</div>';
+      if (result.similar && result.similar.length) html += '<div class="deep-section"><div class="deep-label">相似推荐</div>' + result.similar.join('、') + '</div>';
+      box.innerHTML = html || '暂无解读结果';
+    } catch (err) {
+      box.innerHTML = '<div style="color:#fc5c7d;">❌ ' + err.message + '</div>';
+    }
+  });
+}
+
+function renderAIResults(names) {
+  const area = document.getElementById('resultArea');
+  const list = document.createElement('div');
+  list.className = 'name-list';
+  names.forEach(n => {
+    const card = document.createElement('div');
+    card.innerHTML = formatAICard(n);
+    card.querySelectorAll('.name-card').forEach(c => {
+      attachAICardEvents(c, n);
+      list.appendChild(c);
+    });
+  });
+  area.innerHTML = '';
+  area.appendChild(list);
+}
+
+// ==================== BATCH AI MODE ====================
+function initBatchAIMode() {
+  const toggle = document.getElementById('batchAIToggle');
+  const entries = document.getElementById('batchAIEntries');
+  const addBtn = document.getElementById('batchAIAddBtn');
+  const descInput = document.getElementById('descInput');
+
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('active');
+    entries.classList.toggle('visible');
+    descInput.style.display = toggle.classList.contains('active') ? 'none' : '';
+    updateModeBadge();
+  });
+
+  addBtn.addEventListener('click', () => {
+    const count = entries.querySelectorAll('.batch-ai-entry').length + 1;
+    const entry = document.createElement('div');
+    entry.className = 'batch-ai-entry';
+    entry.innerHTML = '<span class="batch-ai-label">角色' + count + '</span><textarea placeholder="描述第' + count + '个角色..."></textarea>';
+    entries.insertBefore(entry, addBtn);
+    entry.querySelector('textarea').focus();
+  });
+}
+
+// ==================== KEYBOARD SHORTCUT ====================
+function initKeyboardShortcut() {
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      document.getElementById('generateBtn').click();
+    }
+  });
+}
+
+// ==================== DESC MONITOR ====================
+function initDescMonitor() {
+  document.getElementById('descInput').addEventListener('input', updateModeBadge);
+}
 </script>
+<!-- AI Settings Modal -->
+<div class="modal-overlay" id="settingsModal" style="display:none;">
+  <div class="modal">
+    <h3>⚙️ AI 设置</h3>
+    <label>API 提供商</label>
+    <select id="apiProvider">
+      <option value="deepseek">DeepSeek (推荐)</option>
+      <option value="openai">OpenAI</option>
+      <option value="custom">自定义</option>
+    </select>
+    <label>API Key</label>
+    <input type="password" id="apiKey" placeholder="sk-...">
+    <label>Base URL</label>
+    <input type="text" id="apiBaseUrl" placeholder="https://api.deepseek.com/v1">
+    <label>模型名称</label>
+    <input type="text" id="apiModel" placeholder="deepseek-chat">
+    <div class="modal-actions">
+      <button class="btn-cancel" id="settingsCancel">取消</button>
+      <button class="btn-gen" id="settingsSave">💾 保存设置</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
