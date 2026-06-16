@@ -5,33 +5,129 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>小说取名模拟器</title>
 <style>
+:root, [data-theme="dark"] {
+  --bg-primary: #0d0f1a;
+  --bg-secondary: #16182a;
+  --bg-tertiary: #1a1c32;
+  --bg-surface: #1e2038;
+  --bg-hover: #2a2d5a;
+  --border: #2a2d4a;
+  --text-primary: #e0e0e0;
+  --text-secondary: #ccc;
+  --text-tertiary: #aaa;
+  --text-dim: #888;
+  --text-faint: #666;
+  --accent: #6a82fb;
+  --accent-gold: #f0c27f;
+  --accent-rose: #fc5c7d;
+  --accent-green: #4ade80;
+  --gradient-btn: linear-gradient(135deg, #6a82fb, #fc5c7d);
+  --gradient-header: linear-gradient(135deg, #f0c27f, #fc5c7d, #6a82fb);
+  --input-bg: #0d0f1a;
+  --overlay: #00000088;
+  --card-hover: #22244a;
+  --text-bright: #fff;
+  --shadow: #00000044;
+}
+[data-theme="classical"] {
+  --bg-primary: #f5f0e8;
+  --bg-secondary: #ede4d6;
+  --bg-tertiary: #e8dcc8;
+  --bg-surface: #dfd0b8;
+  --bg-hover: #d4c4a8;
+  --border: #c4b8a0;
+  --text-primary: #3d2e1c;
+  --text-secondary: #5a4430;
+  --text-tertiary: #7d6b55;
+  --text-dim: #9e8e7a;
+  --text-faint: #b8a898;
+  --accent: #8b4513;
+  --accent-gold: #b8860b;
+  --accent-rose: #cd5c5c;
+  --accent-green: #6b8e23;
+  --gradient-btn: linear-gradient(135deg, #8b4513, #cd5c5c);
+  --gradient-header: linear-gradient(135deg, #b8860b, #cd5c5c, #8b4513);
+  --input-bg: #faf7f2;
+  --overlay: #3d2e1c88;
+  --card-hover: #d8c8b0;
+  --text-bright: #1a1008;
+  --shadow: #3d2e1c22;
+}
+[data-theme="xianxia"] {
+  --bg-primary: #0a0e27;
+  --bg-secondary: #111640;
+  --bg-tertiary: #181d4a;
+  --bg-surface: #1f2558;
+  --bg-hover: #2a3068;
+  --border: #2d3366;
+  --text-primary: #d0d8ff;
+  --text-secondary: #b0b8e0;
+  --text-tertiary: #8088b8;
+  --text-dim: #606898;
+  --text-faint: #485078;
+  --accent: #7c8cf8;
+  --accent-gold: #e8c860;
+  --accent-rose: #e87890;
+  --accent-green: #60d8a0;
+  --gradient-btn: linear-gradient(135deg, #7c8cf8, #a878e8);
+  --gradient-header: linear-gradient(135deg, #e8c860, #e87890, #7c8cf8);
+  --input-bg: #0a0e27;
+  --overlay: #0a0e2788;
+  --card-hover: #252d60;
+  --text-bright: #fff;
+  --shadow: #0a0e2744;
+}
+[data-theme="forest"] {
+  --bg-primary: #0f1a14;
+  --bg-secondary: #16281e;
+  --bg-tertiary: #1c3026;
+  --bg-surface: #243a2e;
+  --bg-hover: #2e483a;
+  --border: #324a3e;
+  --text-primary: #d8e8dc;
+  --text-secondary: #b8ccbe;
+  --text-tertiary: #8aa898;
+  --text-dim: #6a8a78;
+  --text-faint: #4a6a58;
+  --accent: #5aac78;
+  --accent-gold: #c8b858;
+  --accent-rose: #d07070;
+  --accent-green: #60d870;
+  --gradient-btn: linear-gradient(135deg, #5aac78, #8ac858);
+  --gradient-header: linear-gradient(135deg, #c8b858, #d07070, #5aac78);
+  --input-bg: #0f1a14;
+  --overlay: #0f1a1488;
+  --card-hover: #2a4a34;
+  --text-bright: #fff;
+  --shadow: #0f1a1444;
+}
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-  background: #0d0f1a;
-  color: #e0e0e0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
 }
 .app { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
 header { text-align: center; padding: 24px 0 16px; }
 header h1 {
   font-size: 2rem;
-  background: linear-gradient(135deg, #f0c27f, #fc5c7d, #6a82fb);
+  background: var(--gradient-header);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text; font-weight: 800; letter-spacing: 2px;
 }
-header p { color: #888; margin-top: 6px; font-size: 0.9rem; }
+header p { color: var(--text-dim); margin-top: 6px; font-size: 0.9rem; }
 .tab-bar {
-  display: flex; background: #16182a; border-radius: 12px;
-  border: 1px solid #2a2d4a; overflow: hidden; margin: 16px 0 24px;
+  display: flex; background: var(--bg-secondary); border-radius: 12px;
+  border: 1px solid var(--border); overflow: hidden; margin: 16px 0 24px;
 }
 .tab-btn {
   flex: 1; padding: 14px 20px; border: none; background: transparent;
-  color: #888; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+  color: var(--text-dim); font-size: 0.95rem; font-weight: 600; cursor: pointer;
   transition: all .2s; font-family: inherit; position: relative;
 }
-.tab-btn:hover { color: #ccc; background: #1e2038; }
-.tab-btn.active { color: #fff; background: linear-gradient(135deg, #6a82fb22, #fc5c7d22); }
+.tab-btn:hover { color: var(--text-secondary); background: var(--bg-surface); }
+.tab-btn.active { color: var(--text-bright); background: linear-gradient(135deg, #6a82fb22, #fc5c7d22); }
 .tab-btn.active::after {
   content: ''; position: absolute; bottom: 0; left: 20%; width: 60%; height: 2px;
   background: linear-gradient(90deg, #6a82fb, #fc5c7d); border-radius: 1px;
@@ -41,80 +137,80 @@ header p { color: #888; margin-top: 6px; font-size: 0.9rem; }
 .main-layout { display: grid; grid-template-columns: 220px 1fr; gap: 24px; }
 @media (max-width: 768px) { .main-layout { grid-template-columns: 1fr; } }
 .sidebar {
-  background: #16182a; border-radius: 16px; padding: 20px 16px;
-  border: 1px solid #2a2d4a; height: fit-content;
+  background: var(--bg-secondary); border-radius: 16px; padding: 20px 16px;
+  border: 1px solid var(--border); height: fit-content;
 }
 .sidebar-section { margin-bottom: 20px; }
 .sidebar-section:last-child { margin-bottom: 0; }
 .sidebar-label {
-  font-size: 0.75rem; color: #888; text-transform: uppercase;
+  font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase;
   letter-spacing: 1px; margin-bottom: 10px; font-weight: 600;
 }
-.btn-group { display: flex; flex-direction: column; gap: 6px; }
+.btn-group { display: flex; flex-direction: column; gap: 6px; max-height: 420px; overflow-y: auto; }
 .btn-group-h { display: flex; gap: 6px; flex-wrap: wrap; }
 .btn-opt {
-  padding: 8px 14px; border-radius: 8px; border: 1px solid #2a2d4a;
-  background: #1e2038; color: #bbb; cursor: pointer; font-size: 0.85rem;
+  padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--bg-surface); color: var(--text-primary); cursor: pointer; font-size: 0.85rem;
   transition: all .2s; text-align: left; font-family: inherit;
 }
-.btn-opt:hover { background: #2a2d5a; color: #fff; }
-.btn-opt.active { background: linear-gradient(135deg,#6a82fb33,#fc5c7d33); border-color: #6a82fb; color: #fff; }
+.btn-opt:hover { background: #2a2d5a; color: var(--text-bright); }
+.btn-opt.active { background: linear-gradient(135deg,#6a82fb33,#fc5c7d33); border-color: var(--accent); color: var(--text-bright); }
 .btn-opt.small { padding: 6px 14px; font-size: 0.8rem; text-align: center; flex:1; }
 .content {
-  background: #16182a; border-radius: 16px; border: 1px solid #2a2d4a;
+  background: var(--bg-secondary); border-radius: 16px; border: 1px solid var(--border);
   padding: 28px; min-height: 400px;
 }
 .content-top {
   display: flex; justify-content: space-between; align-items: center;
   flex-wrap: wrap; gap: 12px; margin-bottom: 24px;
 }
-.content-top .info { font-size: 0.9rem; color: #aaa; }
-.content-top .info span { color: #f0c27f; font-weight: 600; }
+.content-top .info { font-size: 0.9rem; color: var(--text-tertiary); }
+.content-top .info span { color: var(--accent-gold); font-weight: 600; }
 .btn-gen {
   padding: 12px 36px; border: none; border-radius: 12px;
   background: linear-gradient(135deg, #6a82fb, #fc5c7d);
-  color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer;
+  color: var(--text-bright); font-size: 1rem; font-weight: 600; cursor: pointer;
   transition: transform .15s, box-shadow .15s; font-family: inherit; letter-spacing: 1px;
 }
 .btn-gen:hover { transform: translateY(-2px); box-shadow: 0 8px 24px #6a82fb44; }
 .btn-gen:active { transform: translateY(0); }
 .btn-gen.small { padding: 8px 16px; font-size: 0.8rem; }
 .btn-gen.ghost {
-  background: transparent; border: 1px solid #2a2d4a; color: #aaa;
+  background: transparent; border: 1px solid var(--border); color: var(--text-tertiary);
 }
-.btn-gen.ghost:hover { background: #2a2d5a; color: #fff; box-shadow: none; }
+.btn-gen.ghost:hover { background: #2a2d5a; color: var(--text-bright); box-shadow: none; }
 .controls-row {
   display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
-  margin-bottom: 24px; padding: 16px; background: #1a1c32; border-radius: 12px;
+  margin-bottom: 24px; padding: 16px; background: var(--bg-tertiary); border-radius: 12px;
 }
-.controls-row label { font-size: 0.85rem; color: #aaa; display: flex; align-items: center; gap: 8px; }
+.controls-row label { font-size: 0.85rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 8px; }
 .controls-row select, .controls-row input {
-  background: #0d0f1a; border: 1px solid #2a2d4a; color: #e0e0e0;
+  background: var(--bg-primary); border: 1px solid var(--border); color: var(--text-primary);
   padding: 6px 10px; border-radius: 6px; font-size: 0.85rem; font-family: inherit;
 }
-.controls-row select option { background: #1a1c32; }
-.controls-row input[type=checkbox] { accent-color: #6a82fb; width: 16px; height: 16px; }
+.controls-row select option { background: var(--bg-tertiary); }
+.controls-row input[type=checkbox] { accent-color: var(--accent); width: 16px; height: 16px; }
 .name-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
 .name-card {
-  background: #1a1c32; border: 1px solid #2a2d4a; border-radius: 10px;
+  background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 10px;
   padding: 14px 16px; transition: all .2s; position: relative;
   user-select: none; display: flex; flex-direction: column;
 }
-.name-card:hover { border-color: #6a82fb; background: #22244a; }
-.name-card .name { font-size: 1.1rem; font-weight: 600; color: #fff; }
-.name-card .desc { font-size: 0.75rem; color: #888; margin-top: 4px; }
+.name-card:hover { border-color: var(--accent); background: #22244a; }
+.name-card .name { font-size: 1.1rem; font-weight: 600; color: var(--text-bright); }
+.name-card .desc { font-size: 0.75rem; color: var(--text-dim); margin-top: 4px; }
 .name-card .card-actions {
   display: flex; gap: 6px; margin-top: 10px; justify-content: flex-end;
   opacity: 0; transition: opacity .2s;
 }
 .name-card:hover .card-actions { opacity: 1; }
 .card-actions .btn-sm {
-  padding: 4px 12px; border-radius: 6px; border: 1px solid #2a2d4a;
-  background: #0d0f1a; color: #aaa; cursor: pointer; font-size: 0.75rem;
+  padding: 4px 12px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--bg-primary); color: var(--text-tertiary); cursor: pointer; font-size: 0.75rem;
   font-family: inherit; transition: all .15s;
 }
-.card-actions .btn-sm:hover { background: #2a2d5a; color: #fff; border-color: #6a82fb; }
-.card-actions .btn-sm.highlight { border-color: #f0c27f66; color: #f0c27f; }
+.card-actions .btn-sm:hover { background: #2a2d5a; color: var(--text-bright); border-color: var(--accent); }
+.card-actions .btn-sm.highlight { border-color: #f0c27f66; color: var(--accent-gold); }
 .name-card.saved { border-color: #4ade8066; background: #1a2a2a; }
 .empty-state { text-align: center; padding: 40px 20px; color: #666; }
 .empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
@@ -124,25 +220,25 @@ header p { color: #888; margin-top: 6px; font-size: 0.9rem; }
   display: flex; justify-content: space-between; align-items: center;
   flex-wrap: wrap; gap: 12px; margin-bottom: 24px;
 }
-.lib-title { font-size: 1.3rem; font-weight: 700; color: #fff; }
-.lib-title span { color: #f0c27f; }
+.lib-title { font-size: 1.3rem; font-weight: 700; color: var(--text-bright); }
+.lib-title span { color: var(--accent-gold); }
 .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
 .book-card {
   background: linear-gradient(145deg, #1a1c32, #1e2038);
-  border: 1px solid #2a2d4a; border-radius: 14px; padding: 22px 20px;
+  border: 1px solid var(--border); border-radius: 14px; padding: 22px 20px;
   cursor: pointer; transition: all .25s; position: relative; overflow: hidden;
 }
-.book-card:hover { border-color: #6a82fb; transform: translateY(-3px); box-shadow: 0 8px 24px #00000044; }
+.book-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 8px 24px #00000044; }
 .book-card .book-icon { font-size: 2rem; margin-bottom: 12px; }
-.book-card .book-title { font-size: 1.15rem; font-weight: 700; color: #fff; }
-.book-card .book-meta { font-size: 0.8rem; color: #888; margin-top: 6px; }
+.book-card .book-title { font-size: 1.15rem; font-weight: 700; color: var(--text-bright); }
+.book-card .book-meta { font-size: 0.8rem; color: var(--text-dim); margin-top: 6px; }
 .book-card .book-desc {
-  font-size: 0.82rem; color: #999; margin-top: 10px;
+  font-size: 0.82rem; color: var(--text-dim); margin-top: 10px;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 .book-card .book-count {
   position: absolute; top: 16px; right: 16px;
-  background: #6a82fb33; color: #6a82fb; font-size: 0.75rem;
+  background: #6a82fb33; color: var(--accent); font-size: 0.75rem;
   padding: 2px 10px; border-radius: 20px; font-weight: 600;
 }
 .book-card .delete-book {
@@ -154,48 +250,48 @@ header p { color: #888; margin-top: 6px; font-size: 0.9rem; }
 .book-card .delete-book:hover { color: #fc5c7d; background: #fc5c7d22; }
 .back-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
 .back-btn {
-  background: none; border: 1px solid #2a2d4a; color: #aaa;
+  background: none; border: 1px solid var(--border); color: var(--text-tertiary);
   padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem;
   transition: all .15s; font-family: inherit;
 }
-.back-btn:hover { background: #2a2d5a; color: #fff; }
+.back-btn:hover { background: #2a2d5a; color: var(--text-bright); }
 .book-info-card {
-  background: #1a1c32; border: 1px solid #2a2d4a; border-radius: 12px;
+  background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 12px;
   padding: 20px 24px; margin-bottom: 24px;
 }
-.book-info-card h2 { font-size: 1.2rem; color: #fff; margin-bottom: 6px; }
-.book-info-card .sub { font-size: 0.85rem; color: #888; }
+.book-info-card h2 { font-size: 1.2rem; color: var(--text-bright); margin-bottom: 6px; }
+.book-info-card .sub { font-size: 0.85rem; color: var(--text-dim); }
 .char-header {
   display: flex; justify-content: space-between; align-items: center;
   flex-wrap: wrap; gap: 12px; margin-bottom: 16px;
 }
-.char-header h3 { font-size: 1rem; color: #ddd; }
+.char-header h3 { font-size: 1rem; color: var(--text-secondary); }
 .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
 .char-card {
-  background: #1a1c32; border: 1px solid #2a2d4a; border-radius: 12px;
+  background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 12px;
   padding: 18px 20px; transition: all .15s;
 }
 .char-card:hover { border-color: #6a82fb44; }
-.char-card .char-name { font-size: 1.1rem; font-weight: 600; color: #fff; }
+.char-card .char-name { font-size: 1.1rem; font-weight: 600; color: var(--text-bright); }
 .char-card .char-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
 .char-card .char-tag {
   font-size: 0.7rem; padding: 2px 8px; border-radius: 4px;
-  background: #2a2d4a; color: #aaa;
+  background: #2a2d4a; color: var(--text-tertiary);
 }
 .char-card .char-section { margin-top: 10px; }
 .char-card .char-section-label {
-  font-size: 0.7rem; color: #888; text-transform: uppercase;
+  font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase;
   letter-spacing: 1px; margin-bottom: 4px; font-weight: 600;
 }
 .char-card .char-explain {
-  padding: 10px 12px; background: #16182a;
+  padding: 10px 12px; background: var(--bg-secondary);
   border-radius: 8px; border: 1px solid #2a2d4a22;
-  font-size: 0.82rem; color: #bbb; line-height: 1.6;
+  font-size: 0.82rem; color: var(--text-primary); line-height: 1.6;
 }
 .char-card .char-remark {
-  padding: 8px 12px; background: #16182a;
+  padding: 8px 12px; background: var(--bg-secondary);
   border-radius: 8px; border: 1px dashed #2a2d4a44;
-  font-size: 0.8rem; color: #999; line-height: 1.5;
+  font-size: 0.8rem; color: var(--text-dim); line-height: 1.5;
   font-style: italic;
 }
 .char-card .char-actions {
@@ -203,10 +299,10 @@ header p { color: #888; margin-top: 6px; font-size: 0.9rem; }
 }
 .char-card .char-actions .btn-sm {
   padding: 3px 10px; font-size: 0.7rem; border-radius: 6px;
-  border: 1px solid #2a2d4a; background: #0d0f1a; color: #aaa;
+  border: 1px solid var(--border); background: var(--bg-primary); color: var(--text-tertiary);
   cursor: pointer; font-family: inherit; transition: all .15s;
 }
-.char-card .char-actions .btn-sm:hover { background: #2a2d5a; color: #fff; border-color: #6a82fb; }
+.char-card .char-actions .btn-sm:hover { background: #2a2d5a; color: var(--text-bright); border-color: var(--accent); }
 .char-card .delete-char:hover { border-color: #fc5c7d66 !important; color: #fc5c7d !important; }
 .modal-overlay {
   position: fixed; inset: 0; background: #00000088;
@@ -214,54 +310,54 @@ header p { color: #888; margin-top: 6px; font-size: 0.9rem; }
   z-index: 1000; padding: 20px; backdrop-filter: blur(4px);
 }
 .modal {
-  background: #1e2038; border: 1px solid #2a2d4a; border-radius: 16px;
+  background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px;
   padding: 28px; max-width: 560px; width: 100%; max-height: 90vh;
   overflow-y: auto; box-shadow: 0 24px 64px #00000066;
 }
-.modal h3 { font-size: 1.1rem; color: #fff; margin-bottom: 20px; }
-.modal label { font-size: 0.85rem; color: #bbb; display: block; margin-bottom: 6px; }
+.modal h3 { font-size: 1.1rem; color: var(--text-bright); margin-bottom: 20px; }
+.modal label { font-size: 0.85rem; color: var(--text-primary); display: block; margin-bottom: 6px; }
 .modal input, .modal textarea, .modal select {
-  width: 100%; background: #0d0f1a; border: 1px solid #2a2d4a; color: #e0e0e0;
+  width: 100%; background: var(--bg-primary); border: 1px solid var(--border); color: var(--text-primary);
   padding: 10px 12px; border-radius: 8px; font-size: 0.9rem;
   font-family: inherit; margin-bottom: 16px; box-sizing: border-box;
 }
 .modal textarea { min-height: 80px; resize: vertical; }
-.modal input:focus, .modal textarea:focus, .modal select:focus { outline: none; border-color: #6a82fb; }
+.modal input:focus, .modal textarea:focus, .modal select:focus { outline: none; border-color: var(--accent); }
 .modal-actions {
   display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px;
 }
 .modal-actions .btn-gen { padding: 10px 24px; font-size: 0.9rem; }
 .modal-actions .btn-cancel {
-  padding: 10px 24px; border: 1px solid #2a2d4a; border-radius: 12px;
-  background: transparent; color: #aaa; cursor: pointer; font-size: 0.9rem;
+  padding: 10px 24px; border: 1px solid var(--border); border-radius: 12px;
+  background: transparent; color: var(--text-tertiary); cursor: pointer; font-size: 0.9rem;
   font-family: inherit; transition: all .15s;
 }
-.modal-actions .btn-cancel:hover { background: #2a2d5a; color: #fff; }
+.modal-actions .btn-cancel:hover { background: #2a2d5a; color: var(--text-bright); }
 .explain-box {
-  background: #0d0f1a; border: 1px solid #2a2d4a; border-radius: 10px;
+  background: var(--bg-primary); border: 1px solid var(--border); border-radius: 10px;
   padding: 16px; margin-bottom: 16px; font-size: 0.88rem;
-  color: #ccc; line-height: 1.7; max-height: 200px; overflow-y: auto;
+  color: var(--text-secondary); line-height: 1.7; max-height: 200px; overflow-y: auto;
 }
 .explain-box .exp-category {
   display: inline-block; font-size: 0.7rem; padding: 2px 10px;
-  border-radius: 4px; background: #6a82fb22; color: #6a82fb;
+  border-radius: 4px; background: #6a82fb22; color: var(--accent);
   margin-bottom: 8px; font-weight: 600;
 }
 .toast {
   position: fixed; bottom: 30px; left: 50%;
   transform: translateX(-50%) translateY(80px);
-  background: #1e2038; border: 1px solid #2a2d4a;
+  background: var(--bg-surface); border: 1px solid var(--border);
   padding: 12px 24px; border-radius: 10px; font-size: 0.85rem;
   opacity: 0; transition: all .3s; pointer-events: none; z-index: 999;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .rem-textarea {
-  width: 100%; background: #0d0f1a; border: 1px solid #2a2d4a; color: #e0e0e0;
+  width: 100%; background: var(--bg-primary); border: 1px solid var(--border); color: var(--text-primary);
   padding: 10px 12px; border-radius: 8px; font-size: 0.85rem;
   font-family: inherit; margin-bottom: 16px; min-height: 60px; resize: vertical;
   box-sizing: border-box;
 }
-.rem-textarea:focus { outline: none; border-color: #f0c27f; }
+.rem-textarea:focus { outline: none; border-color: var(--accent-gold); }
 .btn-sm.remark-btn { border-color: #f0c27f44 !important; color: #f0c27f !important; }
 .btn-sm.remark-btn:hover { border-color: #f0c27f !important; background: #f0c27f22 !important; }
 .explain-info {
@@ -285,21 +381,21 @@ header p { color: #888; margin-top: 6px; font-size: 0.9rem; }
 }
 .daily-fortune .fortune-icon { font-size: 1.5rem; }
 .daily-fortune .fortune-text { flex: 1; }
-.daily-fortune .fortune-name { font-weight: 700; color: #f0c27f; font-size: 1.05rem; }
-.daily-fortune .fortune-desc { font-size: 0.78rem; color: #999; margin-top: 2px; }
+.daily-fortune .fortune-name { font-weight: 700; color: var(--accent-gold); font-size: 1.05rem; }
+.daily-fortune .fortune-desc { font-size: 0.78rem; color: var(--text-dim); margin-top: 2px; }
 .bl-mgmt-chip {
   display: inline-flex; align-items: center; gap: 4px;
-  background: #2a2d4a; color: #aaa; font-size: 0.75rem;
+  background: #2a2d4a; color: var(--text-tertiary); font-size: 0.75rem;
   padding: 4px 10px; border-radius: 6px; cursor: pointer;
   transition: all .15s; border: 1px solid transparent;
 }
 .bl-mgmt-chip:hover { color: #fc5c7d; border-color: #fc5c7d44; }
 .bl-item {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 8px 12px; background: #1a1c32; border-radius: 6px;
+  padding: 8px 12px; background: var(--bg-tertiary); border-radius: 6px;
   margin-bottom: 6px;
 }
-.bl-item .bl-name { font-size: 0.9rem; color: #ddd; }
+.bl-item .bl-name { font-size: 0.9rem; color: var(--text-secondary); }
 .bl-item .bl-remove {
   background: none; border: none; color: #555; cursor: pointer;
   font-size: 0.8rem; padding: 2px 8px; border-radius: 4px; transition: all .15s;
@@ -307,33 +403,34 @@ header p { color: #888; margin-top: 6px; font-size: 0.9rem; }
 .bl-item .bl-remove:hover { color: #fc5c7d; background: #fc5c7d22; }
 /* Phase 2: Filter section */
 .filter-section { margin-bottom: 16px; }
+.filter-section.hidden { display: none; }
 .filter-section .sidebar-label { margin-bottom: 8px; }
 .filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
 .filter-chip {
-  padding: 5px 10px; border-radius: 6px; border: 1px solid #2a2d4a;
-  background: #1e2038; color: #999; cursor: pointer; font-size: 0.75rem;
+  padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--bg-surface); color: var(--text-dim); cursor: pointer; font-size: 0.75rem;
   transition: all .15s; font-family: inherit;
 }
-.filter-chip:hover { background: #2a2d5a; color: #ccc; }
-.filter-chip.active { background: #6a82fb22; border-color: #6a82fb; color: #6a82fb; }
+.filter-chip:hover { background: #2a2d5a; color: var(--text-secondary); }
+.filter-chip.active { background: #6a82fb22; border-color: var(--accent); color: var(--accent); }
 .mode-switch {
-  display: flex; background: #1a1c32; border-radius: 8px;
-  border: 1px solid #2a2d4a; overflow: hidden; margin-top: 12px;
+  display: flex; background: var(--bg-tertiary); border-radius: 8px;
+  border: 1px solid var(--border); overflow: hidden; margin-top: 12px;
 }
 .mode-switch .mode-btn {
   flex: 1; padding: 8px 12px; border: none; background: transparent;
-  color: #888; cursor: pointer; font-size: 0.8rem; font-family: inherit;
+  color: var(--text-dim); cursor: pointer; font-size: 0.8rem; font-family: inherit;
   transition: all .15s;
 }
-.mode-switch .mode-btn.active { background: #6a82fb22; color: #fff; }
+.mode-switch .mode-btn.active { background: #6a82fb22; color: var(--text-bright); }
 .batch-bar {
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-  padding: 10px 14px; background: #1a1c32; border-radius: 8px;
-  margin-top: 12px; border: 1px solid #2a2d4a;
+  padding: 10px 14px; background: var(--bg-tertiary); border-radius: 8px;
+  margin-top: 12px; border: 1px solid var(--border);
 }
 .name-card .batch-check {
   position: absolute; top: 10px; left: 10px;
-  width: 18px; height: 18px; accent-color: #6a82fb; display: none;
+  width: 18px; height: 18px; accent-color: var(--accent); display: none;
 }
 .name-card.batch-mode { padding-left: 36px; }
 .name-card.batch-mode .batch-check { display: block; }
@@ -343,103 +440,106 @@ header p { color: #888; margin-top: 6px; font-size: 0.9rem; }
   margin-bottom: 12px;
 }
 .profile-field label {
-  font-size: 0.8rem; color: #888; display: block; margin-bottom: 4px;
+  font-size: 0.8rem; color: var(--text-dim); display: block; margin-bottom: 4px;
   text-transform: uppercase; letter-spacing: 0.5px;
 }
 .profile-field input, .profile-field textarea {
-  width: 100%; background: #0d0f1a; border: 1px solid #2a2d4a;
-  color: #e0e0e0; padding: 8px 10px; border-radius: 6px;
+  width: 100%; background: var(--bg-primary); border: 1px solid var(--border);
+  color: var(--text-primary); padding: 8px 10px; border-radius: 6px;
   font-size: 0.85rem; font-family: inherit; box-sizing: border-box;
 }
 .profile-field textarea { min-height: 50px; resize: vertical; }
 .profile-display {
-  background: #16182a; border: 1px solid #2a2d4a; border-radius: 10px;
+  background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 10px;
   padding: 20px; margin-bottom: 16px;
 }
-.profile-display .pf-name { font-size: 1.2rem; color: #fff; font-weight: 700; margin-bottom: 12px; }
+.profile-display .pf-name { font-size: 1.2rem; color: var(--text-bright); font-weight: 700; margin-bottom: 12px; }
 .profile-display .pf-row { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 10px; }
 .profile-display .pf-item { flex: 1; min-width: 120px; }
-.profile-display .pf-label { font-size: 0.7rem; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
-.profile-display .pf-value { font-size: 0.88rem; color: #ccc; line-height: 1.5; }
+.profile-display .pf-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+.profile-display .pf-value { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; }
 /* Phase 3: Relationship graph */
 .graph-container {
-  position: relative; background: #0d0f1a; border: 1px solid #2a2d4a;
+  position: relative; background: var(--bg-primary); border: 1px solid var(--border);
   border-radius: 12px; overflow: hidden; margin-bottom: 16px;
 }
 .graph-container canvas { display: block; cursor: default; }
 .graph-legend {
-  display: flex; gap: 16px; flex-wrap: wrap; padding: 12px 16px;
-  background: #1a1c32; border-radius: 8px; margin-top: 12px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 4px 12px;
+  padding: 12px 16px; background: var(--bg-tertiary); border-radius: 8px; margin-top: 12px;
 }
-.legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: #aaa; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--text-tertiary); }
 .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
 .legend-line { width: 20px; height: 2px; border-radius: 1px; }
 .rel-modal-chars {
   display: flex; gap: 16px; align-items: center; justify-content: center;
-  margin-bottom: 16px; font-size: 1rem; color: #fff;
+  margin-bottom: 16px; font-size: 1rem; color: var(--text-bright);
 }
-.rel-modal-chars .rel-arrow { color: #6a82fb; font-size: 1.2rem; }
+.rel-modal-chars .rel-arrow { color: var(--accent); font-size: 1.2rem; }
 .rel-type-grid {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
   margin-bottom: 16px;
 }
 .rel-type-btn {
-  padding: 8px; border-radius: 8px; border: 1px solid #2a2d4a;
-  background: #1e2038; color: #bbb; cursor: pointer; font-size: 0.8rem;
+  padding: 8px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--bg-surface); color: var(--text-primary); cursor: pointer; font-size: 0.8rem;
   text-align: center; transition: all .15s; font-family: inherit;
 }
-.rel-type-btn:hover { background: #2a2d5a; color: #fff; }
-.rel-type-btn.selected { background: #6a82fb33; border-color: #6a82fb; color: #6a82fb; }
+.rel-type-btn:hover { background: #2a2d5a; color: var(--text-bright); }
+.rel-type-btn.selected { background: #6a82fb33; border-color: var(--accent); color: var(--accent); }
 /* Phase 3: Plot conflict */
 .conflict-output {
-  background: #0d0f1a; border: 1px solid #2a2d4a; border-radius: 10px;
-  padding: 20px; margin-top: 16px; line-height: 1.8; font-size: 0.88rem; color: #ccc;
+  background: var(--bg-primary); border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px; margin-top: 16px; line-height: 1.8; font-size: 0.88rem; color: var(--text-secondary);
 }
-.conflict-output h4 { color: #f0c27f; margin: 16px 0 8px; font-size: 0.95rem; }
+.conflict-output h4 { color: var(--accent-gold); margin: 16px 0 8px; font-size: 0.95rem; }
 .conflict-output h4:first-child { margin-top: 0; }
 /* ===== AI NAMING ===== */
-.settings-btn { position: fixed; top: 16px; right: 24px; z-index: 100; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #2a2d4a; background: #16182a; color: #888; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
-.settings-btn:hover { border-color: #6a82fb; color: #fff; background: #1e2038; }
+.settings-btn { position: fixed; top: 16px; right: 24px; z-index: 100; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-dim); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+.settings-btn:hover { border-color: var(--accent); color: var(--text-bright); background: var(--bg-surface); }
 .settings-btn.configured { border-color: #4ade80; }
 .settings-btn.configured::after { content: ''; position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; border-radius: 50%; background: #4ade80; }
+.theme-btn { position: fixed; top: 16px; right: 74px; z-index: 100; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-dim); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+.theme-btn:hover { border-color: var(--accent); color: var(--text-bright); background: var(--bg-surface); }
 .desc-section { margin-bottom: 20px; }
-.desc-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid #2a2d4a; background: #1a1c32; color: #e0e0e0; font-size: 0.9rem; font-family: inherit; resize: vertical; min-height: 80px; max-height: 200px; transition: border-color .2s; box-sizing: border-box; }
-.desc-input:focus { border-color: #6a82fb; outline: none; }
+.desc-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-tertiary); color: var(--text-primary); font-size: 0.9rem; font-family: inherit; resize: vertical; min-height: 80px; max-height: 200px; transition: border-color .2s; box-sizing: border-box; }
+.desc-input:focus { border-color: var(--accent); outline: none; }
 .desc-input::placeholder { color: #555; }
 .desc-hint { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; font-size: 0.75rem; color: #555; }
-.badge-ai { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 20px; background: linear-gradient(135deg,#6a82fb33,#fc5c7d33); color: #f0c27f; font-size: 0.7rem; font-weight: 600; }
-.badge-local { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 20px; background: #1e2038; color: #888; font-size: 0.7rem; }
-.ai-badge { display: inline-block; font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; background: linear-gradient(135deg,#6a82fb55,#fc5c7d55); color: #f0c27f; margin-left: 6px; vertical-align: middle; }
-.batch-ai-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 8px; border: 1px solid #2a2d4a; background: #1a1c32; color: #aaa; cursor: pointer; font-size: 0.8rem; transition: all .2s; font-family: inherit; }
-.batch-ai-toggle:hover { border-color: #6a82fb; color: #fff; }
-.batch-ai-toggle.active { border-color: #6a82fb; color: #f0c27f; background: #1e2040; }
+.badge-ai { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 20px; background: linear-gradient(135deg,#6a82fb33,#fc5c7d33); color: var(--accent-gold); font-size: 0.7rem; font-weight: 600; }
+.badge-local { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 20px; background: var(--bg-surface); color: var(--text-dim); font-size: 0.7rem; }
+.ai-badge { display: inline-block; font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; background: linear-gradient(135deg,#6a82fb55,#fc5c7d55); color: var(--accent-gold); margin-left: 6px; vertical-align: middle; }
+.batch-ai-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-tertiary); color: var(--text-tertiary); cursor: pointer; font-size: 0.8rem; transition: all .2s; font-family: inherit; }
+.batch-ai-toggle:hover { border-color: var(--accent); color: var(--text-bright); }
+.batch-ai-toggle.active { border-color: var(--accent); color: var(--accent-gold); background: #1e2040; }
 .batch-ai-entries { display: none; flex-direction: column; gap: 8px; margin-top: 10px; }
 .batch-ai-entries.visible { display: flex; }
 .batch-ai-entry { display: flex; gap: 8px; align-items: flex-start; }
-.batch-ai-label { flex-shrink: 0; width: 50px; padding: 12px 0; font-size: 0.8rem; color: #888; font-weight: 600; }
-.batch-ai-entry textarea { flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid #2a2d4a; background: #0d0f1a; color: #e0e0e0; font-size: 0.85rem; font-family: inherit; resize: none; height: 56px; min-height: 56px; box-sizing: border-box; }
-.batch-ai-entry textarea:focus { border-color: #6a82fb; outline: none; }
-.batch-ai-add { margin-top: 8px; padding: 6px 16px; border-radius: 8px; border: 1px dashed #2a2d4a; background: transparent; color: #888; cursor: pointer; font-size: 0.8rem; font-family: inherit; }
-.batch-ai-add:hover { border-color: #6a82fb; color: #f0c27f; }
+.batch-ai-label { flex-shrink: 0; width: 50px; padding: 12px 0; font-size: 0.8rem; color: var(--text-dim); font-weight: 600; }
+.batch-ai-entry textarea { flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-primary); color: var(--text-primary); font-size: 0.85rem; font-family: inherit; resize: none; height: 56px; min-height: 56px; box-sizing: border-box; }
+.batch-ai-entry textarea:focus { border-color: var(--accent); outline: none; }
+.batch-ai-add { margin-top: 8px; padding: 6px 16px; border-radius: 8px; border: 1px dashed #2a2d4a; background: transparent; color: var(--text-dim); cursor: pointer; font-size: 0.8rem; font-family: inherit; }
+.batch-ai-add:hover { border-color: var(--accent); color: var(--accent-gold); }
 .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
-.skeleton-card { background: #1a1c32; border: 1px solid #2a2d4a; border-radius: 10px; padding: 16px; height: 100px; animation: shimmer 1.5s infinite; }
+.skeleton-card { background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 10px; padding: 16px; height: 100px; animation: shimmer 1.5s infinite; }
 @keyframes shimmer { 0% { opacity: 0.4; } 50% { opacity: 0.7; } 100% { opacity: 0.4; } }
-.btn-deep { padding: 4px 10px; border-radius: 6px; border: 1px solid #6a82fb44; background: #6a82fb11; color: #6a82fb; cursor: pointer; font-size: 0.7rem; transition: all .2s; font-family: inherit; }
-.btn-deep:hover { background: #6a82fb22; color: #fff; }
-.deep-explain-box { margin-top: 10px; padding: 12px; border-radius: 8px; background: #0d0f1a; border: 1px solid #2a2d4a; font-size: 0.8rem; color: #aaa; line-height: 1.6; display: none; }
+.btn-deep { padding: 4px 10px; border-radius: 6px; border: 1px solid #6a82fb44; background: #6a82fb11; color: var(--accent); cursor: pointer; font-size: 0.7rem; transition: all .2s; font-family: inherit; }
+.btn-deep:hover { background: #6a82fb22; color: var(--text-bright); }
+.deep-explain-box { margin-top: 10px; padding: 12px; border-radius: 8px; background: var(--bg-primary); border: 1px solid var(--border); font-size: 0.8rem; color: var(--text-tertiary); line-height: 1.6; display: none; }
 .deep-explain-box.visible { display: block; }
 .deep-section { margin-bottom: 10px; }
 .deep-section:last-child { margin-bottom: 0; }
-.deep-label { font-weight: 600; color: #f0c27f; margin-bottom: 2px; font-size: 0.75rem; }
-.result-group { margin-bottom: 20px; padding: 16px; border-radius: 12px; background: #0d0f1a; border: 1px solid #2a2d4a; }
-.result-group-title { font-weight: 600; color: #f0c27f; margin-bottom: 12px; font-size: 0.9rem; }
-.retry-banner { text-align: center; padding: 24px; color: #888; }
+.deep-label { font-weight: 600; color: var(--accent-gold); margin-bottom: 2px; font-size: 0.75rem; }
+.result-group { margin-bottom: 20px; padding: 16px; border-radius: 12px; background: var(--bg-primary); border: 1px solid var(--border); }
+.result-group-title { font-weight: 600; color: var(--accent-gold); margin-bottom: 12px; font-size: 0.9rem; }
+.retry-banner { text-align: center; padding: 24px; color: var(--text-dim); }
 .retry-banner button { margin-top: 12px; }
 </style>
 </head>
 <body>
 
 <button class="settings-btn" id="settingsBtn" title="AI 设置">⚙️</button>
+<button class="theme-btn" id="themeBtn" title="切换主题">🎨</button>
 
 <div class="app">
   <header>
@@ -538,8 +638,13 @@ const DATA = {
     { id:'elder',       label:'长辈', desc:'年长角色' },
     { id:'deity',       label:'神明/妖魔', desc:'超自然存在' },
     { id:'extra',       label:'路人/龙套', desc:'背景角色' },
+    { id:'mentor',      label:'导师', desc:'指导者/师父' },
+    { id:'lover',       label:'恋人', desc:'爱情对象' },
+    { id:'family',      label:'家族成员', desc:'父母/手足/子女' },
+    { id:'rival',       label:'竞争对手', desc:'实力匹敌的对手' },
+    { id:'beast',       label:'妖兽/灵兽', desc:'非人存在' },
   ],
-  genders: [{ id:'male', label:'男' }, { id:'female', label:'女' }],
+  genders: [{ id:'male', label:'男' }, { id:'female', label:'女' }, { id:'neutral', label:'无性别' }, { id:'dual', label:'双性' }],
   styles: [
     { id:'urban',      label:'都市',       desc:'现代都市背景' },
     { id:'xianxia',    label:'修仙',       desc:'仙侠/修真世界' },
@@ -658,6 +763,57 @@ const POOLS = {
     hanTang: ['卓文君','王昭君','班婕妤','赵飞燕','赵合德','甄宓','蔡文姬','王元姬','贾南风','绿珠','谢道韫','苏蕙','冯小怜','独孤伽罗','长孙皇后','武则天','上官婉儿','杨玉环','江采苹','薛涛','鱼玄机','李冶','花蕊夫人','周娥皇'],
     songYuan: ['李清照','朱淑真','吴淑姬','唐琬','梁红玉','王清惠','管道升','曹妙清','郑允端','薛兰英','黄娥'],
     mingQing: ['马湘兰','柳如是','陈沅沅','董小宛','李香君','顾横波','寇白门','卞玉京','周淑禧','恽冰','马荃','恽珠','席佩兰','吴藻','顾太清','沈宜修','叶小鸾','方维仪','商景兰','祁德琼','金逸','吴规臣','张纨英','徐灿','林以宁','端木顺','吴尚熹','王贞仪','秋瑾']
+  },
+};
+
+// ==================== SPECIAL RELATIONSHIP NAMING ====================
+DATA.specialNaming = {
+  familySameGen: {
+    label:'家族同辈字', desc:'同辈兄弟姐妹使用相同字辈',
+    genChars: {
+      male: '文,明,德,仁,义,礼,智,信,忠,孝,永,世,家,邦,承,继,光,宗,耀,祖,福,禄,寿,喜,安,康,宁,和,清,正,廉,学,思,敏,行,修,齐,治,平,元,亨,利,贞,景,运,宏,开,贤,良,俊,杰,英,才,伟,宇,辰,浩,博,瑞,霖,逸,飞,铭,泽,子,伯,仲,叔,季,孟'.split(','),
+      female: '淑,婉,慧,雅,静,芳,秀,丽,玲,瑶,琪,婷,萱,兰,梅,菊,荷,莲,桂,珍,珠,玉,瑛,琳,珊,瑚,瑞,琴,瑟,韵,音,若,如,清,澄,沁,涵,洁,冰,霜,雪,云,霞,月,星,虹,燕,莺,凤,鹃,蝶,芷,蕙,蕊,萃,芸,菁,菲,薇,杏,桃'.split(','),
+    },
+    suffixMale: '郎,哥,兄,弟,公子,少爷,君,卿'.split(','),
+    suffixFemale: '娘,姐,妹,姑娘,小姐,媛,淑,娟'.split(','),
+  },
+  coupleNames: {
+    label:'情侣配对名', desc:'对偶/互文/互补的名字组',
+    pairs: [
+      ['龙','凤'],['日','月'],['星','辰'],['风','云'],['山','水'],['花','月'],
+      ['琴','瑟'],['剑','箫'],['诗','画'],['歌','舞'],['墨','书'],['棋','琴'],
+      ['玉','金'],['碧','朱'],['明','暗'],['晴','雨'],['春','秋'],['夏','冬'],
+      ['朝','暮'],['晨','夕'],['晓','晚'],['初','末'],['白','青'],['红','翠'],
+      ['鸾','凤'],['鹤','鹭'],['蝶','蜂'],['燕','莺'],['鸿','雁'],['鹄','雀'],
+      ['松','竹'],['梅','兰'],['菊','荷'],['桃','李'],['柳','杨'],['梧','桐'],
+      ['江','海'],['湖','川'],['溪','涧'],['泉','潭'],['雷','电'],['光','影'],
+      ['冰','火'],['金','木'],['水','火'],['天','地'],['乾','坤'],['阴','阳'],
+      ['玄','素'],['虚','实'],['有','无'],['清','浊'],['柔','刚'],['静','动'],
+      ['锦','绣'],['丝','竹'],['罗','绮'],['琼','瑶'],['璇','玑'],['琳','琅'],
+      ['凤鸣','龙吟'],['青云','紫烟'],['朝露','晚霞'],['清风','明月'],['流云','飞雪'],
+      ['寒霜','暖玉'],['碧落','黄泉'],['沧海','桑田'],['南山','北海'],['东篱','西窗'],
+      ['踏雪','寻梅'],['凌霜','傲雪'],['追风','逐月'],['听雨','望云'],['摘星','揽月'],
+      ['弄玉','吹箫'],['抚琴','舞剑'],['点墨','研砂'],['藏珠','捧玉'],['织锦','裁云'],
+      ['忘忧','含笑'],['解语','知心'],['念君','忆卿'],['怀瑾','握瑜'],['思齐','见贤'],
+      ['长歌','短笛'],['高山','流水'],['阳春','白雪'],['幽兰','孤松'],['清溪','朗月'],
+    ],
+  },
+  sectSamePrefix: {
+    label:'同宗门前缀', desc:'同门师兄姐妹共用道号/前缀',
+    xianxia: '青云,紫霄,太虚,无极,九霄,碧落,玄天,苍穹,万古,混元,纯阳,太乙,玉虚,灵宝,道德,清微,神霄,天心,丹霞,紫阳,翠微,云笈,玉皇,太极,鸿蒙,逍遥,长生,凌霄,星辰,皓月'.split(','),
+    wuxia: '铁剑,快刀,飞花,落叶,追风,逐日,破空,裂石,断水,焚天,覆雨,翻云,逍遥,凌波,踏雪,无痕,夺命,索魂,追命,冷血,铁胆,金刀,银枪,铜锤,玉笔,金笛,青衫,白衣,紫衫,玄衣'.split(','),
+    ancient: '青云,紫烟,碧落,黄泉,太虚,清微,灵宝,道德,逍遥,长生,玄真,通玄,洞灵,清虚,正一,全真,太一,混元,玉清,上清,太清'.split(','),
+    fantasy: '星辰,月影,烈焰,冰霜,风暴,暗影,圣光,苍穹,深海,雷鸣,翡翠,白银,黄金,黑曜,紫晶,赤焰,碧海,烈风,大地,天空'.split(','),
+  },
+  regionalStyle: {
+    label:'地域风格', desc:'按地域文化特色生成名字',
+    regions: {
+      jiangnan: { label:'江南', desc:'婉约清雅', surnames:'沈,陆,顾,钱,吴,周,范,卢,施,张,柳,苏,叶'.split(','), maleC:'文,书,清,逸,秀,润,和,安,明,轩'.split(','), femaleC:'婉,秀,娟,丽,雅,静,柔,慧,洁,芳'.split(','), flavor:'桥,雨,烟,柳,荷,燕,波,月,云,窗,梦,影,帘,舟,笛'.split(',') },
+      shuzhong: { label:'蜀中', desc:'天府之国，豪爽侠义', surnames:'李,王,张,陈,杨,赵,何,杜,马,向,魏,唐,范'.split(','), maleC:'云,川,峰,岳,锦,明,刚,豪,毅,武'.split(','), femaleC:'蓉,竹,秀,美,雪,霞,青,翠,瑶,婷'.split(','), flavor:'锦,竹,蓉,岷,峨,蜀,都,巴,剑,阁,巫,峡,栈,关'.split(',') },
+      guanzhong: { label:'关中', desc:'秦地雄浑，古朴厚重', surnames:'秦,赵,韩,魏,郑,杨,杜,韦,苏,马,白,郭,冯'.split(','), maleC:'雄,武,霸,强,威,刚,镇,岳,山,泰'.split(','), femaleC:'贞,淑,庄,穆,宁,素,厚,毅,直,方'.split(','), flavor:'秦,渭,华,潼,终,岐,镐,雍,霸,陵,关,原,陇,泾'.split(',') },
+      saibei: { label:'塞北', desc:'大漠孤烟，豪放粗犷', surnames:'胡,刘,石,林,赵,马,铁,霍,卫,萧,武'.split(',').concat('尉迟,慕容'.split(',')), maleC:'漠,风,沙,朔,远,雄,野,鹏,飞,阔'.split(','), femaleC:'塞,雁,天,云,霜,雪,鸿,燕,高,英'.split(','), flavor:'漠,塞,关,烽,驼,鹰,狼,草,雪,沙,原,川,苍,茫'.split(',') },
+      lingnan: { label:'岭南', desc:'南国风情，灵秀多姿', surnames:'陈,林,黄,梁,郑,许,刘,谢,苏,钟,黎,冯,莫'.split(','), maleC:'海,潮,涛,澜,粤,越,明,光,亮,辉'.split(','), femaleC:'珠,荔,兰,梅,桂,玲,秀,妙,巧,灵'.split(','), flavor:'珠,荔,梅,潮,榕,蕉,海,粤,南,涯,岭,越,江,潭'.split(',') },
+    },
   },
 };
 
@@ -1103,7 +1259,8 @@ function getDailyFortune() {
 
 // ==================== ZI, HAO, NICKNAME GENERATORS ====================
 function generateZi(givenName, gender) {
-  if (gender === 'male') return rand(POOLS.ziMale);
+  const g = (gender === 'neutral' || gender === 'dual') ? (Math.random() < 0.5 ? 'male' : 'female') : gender;
+  if (g === 'male') return rand(POOLS.ziMale);
   return rand(POOLS.ziFemale);
 }
 function generateHao(styleId) {
@@ -1116,7 +1273,8 @@ function generateNickname(styleId) {
 
 // ==================== DYNASTY FILTER ====================
 function getNameForDynasty(dynasty, gender) {
-  const pool = (gender==='male'?POOLS.dynastyMale:POOLS.dynastyFemale)[dynasty];
+  const g = (gender === 'neutral' || gender === 'dual') ? (Math.random() < 0.5 ? 'male' : 'female') : gender;
+  const pool = (g==='male'?POOLS.dynastyMale:POOLS.dynastyFemale)[dynasty];
   if (pool && pool.length) return rand(pool);
   return null;
 }
@@ -1130,7 +1288,9 @@ function cnName(gender) {
   const useCompound = Math.random() < 0.06;
   const sur = useCompound ? rand(POOLS.cnCompound) : rand(POOLS.cnSurnames);
   let given;
-  if (gender === 'male') {
+  // neutral/dual use mixed male+female pools
+  const g = (gender === 'neutral' || gender === 'dual') ? (Math.random() < 0.5 ? 'male' : 'female') : gender;
+  if (g === 'male') {
     if (Math.random() < 0.5) {
       given = rand(POOLS.cnMaleG);
     } else {
@@ -1235,6 +1395,49 @@ GEN.extra = (style, gender) => {
   if (style==='russian') return rand(POOLS.ruMale)+' '+rand(POOLS.ruLast);
   return cnName(gender);
 };
+GEN.mentor = (style, gender) => {
+  if (['xianxia','ancient','wuxia'].includes(style)) return rand(POOLS.xianxiaPrefix)+rand(POOLS.xianxiaSuffix);
+  if (style==='urban') return rand(POOLS.cnSurnames)+(gender==='male'?rand(POOLS.elderMale):rand(POOLS.elderFemale))+'老师';
+  if (['medieval','western'].includes(style)) return 'Master '+(gender==='male'?rand(POOLS.westMale):rand(POOLS.westFemale))+' '+rand(POOLS.westLast);
+  if (style==='japanese') return rand(POOLS.jpSurname)+' 先生(せんせい)';
+  if (style==='fantasy') return 'Sage '+rand(POOLS.fanPre)+rand(POOLS.fanSuf);
+  return GEN.elder(style, gender);
+};
+GEN.lover = (style, gender) => {
+  if (['urban','ancient','wuxia','republic','mystery'].includes(style)) return cnName(gender);
+  if (style==='xianxia') return gender==='male'?rand(POOLS.xianxiaMale1):rand(POOLS.xianxiaFemale1);
+  if (style==='western') return (gender==='male'?rand(POOLS.westMale):rand(POOLS.westFemale))+' '+rand(POOLS.westLast);
+  if (style==='medieval') return (gender==='male'?rand(POOLS.westMedievalM):rand(POOLS.westMedievalF))+' '+rand(POOLS.westLast);
+  if (style==='japanese') return rand(POOLS.jpSurname)+' '+(gender==='male'?rand(POOLS.jpMale):rand(POOLS.jpFemale));
+  if (style==='russian') return (gender==='male'?rand(POOLS.ruMale):rand(POOLS.ruFemale))+' '+rand(POOLS.ruLast);
+  return cnName(gender);
+};
+GEN.family = (style, gender) => {
+  if (['urban','ancient','wuxia','republic','mystery'].includes(style)) return rand(POOLS.cnSurnames)+(gender==='male'?rand(POOLS.elderMale):rand(POOLS.elderFemale));
+  if (style==='xianxia') return rand(POOLS.cnSurnames)+(gender==='male'?rand(POOLS.cnMaleC)+rand(POOLS.cnMaleC):rand(POOLS.cnFemaleC)+rand(POOLS.cnFemaleC));
+  if (['medieval','western'].includes(style)) return (gender==='male'?rand(POOLS.westMale):rand(POOLS.westFemale))+' '+rand(POOLS.westLast)+' ('+rand(['Jr.','Sr.','II','III'])+')';
+  if (style==='japanese') return rand(POOLS.jpSurname)+' '+(gender==='male'?rand(POOLS.jpMale)+'郎':rand(POOLS.jpFemale)+'子');
+  return cnName(gender);
+};
+GEN.rival = (style, gender) => {
+  if (['xianxia','ancient','wuxia'].includes(style)) return gender==='male'?rand(POOLS.villainPrefix)+rand(POOLS.xianxiaMale1).slice(1):rand(POOLS.xianxiaFemale1);
+  if (style==='urban') return rand(POOLS.cnSurnames)+(gender==='male'?rand(POOLS.cnMaleG):rand(POOLS.cnFemaleG));
+  if (['medieval','western'].includes(style)) return 'Lord '+(gender==='male'?rand(POOLS.westMale):rand(POOLS.westFemale))+' '+rand(POOLS.westLast);
+  if (style==='japanese') return rand(POOLS.jpSurname)+' '+(gender==='male'?rand(POOLS.jpMale):rand(POOLS.jpFemale))+' ライバル';
+  if (style==='fantasy') return rand(POOLS.fanPre)+rand(POOLS.fanSuf)+' the Rival';
+  if (style==='scifi') return rand(POOLS.scifiCode)+'-X';
+  if (style==='cyberpunk') return rand(POOLS.cyberCode)+'_prime';
+  return cnName(gender);
+};
+GEN.beast = (style, gender) => {
+  const beastNames = ['九尾天狐','金翅大鹏','幽冥玄蛇','紫电麒麟','赤焰凤凰','寒冰巨龙','噬天魔兽','碧水玄龟','追风神驹','踏云仙鹤','啸月苍狼','天眼神鹰','裂地暴熊','深海魔鲸','九头妖蛇','双翼天马','玉角灵犀','幻影灵猫','青铜巨象','金刚战猿'];
+  const beastSuffix = ['兽','妖','灵','精','怪','魔','仙兽','神兽','圣兽','灵宠'];
+  if (style==='xianxia'||style==='ancient'||style==='wuxia') return rand(beastNames)+'('+rand(beastSuffix)+')';
+  if (style==='fantasy') return rand(['Shadow Dragon','Phoenix Lord','Frost Wolf','Thunder Beast','Void Serpent'])+', the '+(gender==='male'?'Elder':'Ancient');
+  if (style==='medieval') return 'The '+(gender==='male'?'Great ':'')+rand(['Dragon','Wyvern','Griffin','Basilisk','Manticore','Chimera','Kraken','Behemoth']);
+  if (style==='cthulhu') return rand(POOLS.cthulhuPre)+'之'+rand(['子嗣','化身','眷属','从者','投影']);
+  return rand(beastNames)+'('+rand(beastSuffix)+')';
+};
 
 function getTitle(roleId, styleId, genderId) {
   const r = roleId, t = styleId, g = genderId;
@@ -1245,18 +1448,23 @@ function getTitle(roleId, styleId, genderId) {
       elder: ['【上古大能】','【隐世高人】','【万年老怪】','【远古巨擘】','【一方老祖】'],
       deity: ['【天道化身】','【鸿钧道祖】','【大道本源】','【混沌之主】'],
       villain: ['【魔道至尊】','【血煞魔君】','【灭世魔头】','【邪道巨擘】'],
+      mentor: ['【隐世高人】','【宗门长老】','【散修大能】','【世外仙师】'],
+      lover: ['【道侣】','【红颜知己】','【仙界仙侣】','【天命伴侣】'],
+      family: ['【修仙世家】','【上古遗族】','【隐世宗族】'],
+      rival: ['【宿命之敌】','【道争对手】','【天骄对决】'],
+      beast: ['【远古神兽】','【护宗灵兽】','【仙兽化形】','【上古异种】'],
     },
-    urban: { protagonist_male: ['【隐世高手】','【商业奇才】','【重生者】','【王牌保镖】','【最强赘婿】'], protagonist_female: ['【绝美女神】','【职场女王】','【冰山总裁】','【豪门千金】'] },
-    wuxia: { protagonist_male: ['【武林盟主】','【剑道天才】','【绝世高手】','【江湖浪子】'], protagonist_female: ['【江湖第一美人】','【女侠客】','【剑术宗师】','【苗疆圣女】'] },
-    republic: { protagonist_male: ['【留洋才子】','【革命志士】','【大亨之子】','【军阀少帅】'], protagonist_female: ['【名门闺秀】','【进步女性】','【旗袍佳人】'] },
-    cyberpunk: { protagonist_male: ['【王牌黑客】','【义体改造者】','【地下城之王】'], protagonist_female: ['【数据女王】','【赛博魅影】','【网络幽灵】'] },
-    medieval: { protagonist_male: ['【龙裔】','【天命勇者】','【被选中之人】'], protagonist_female: ['【精灵公主】','【圣光之女】','【龙之母】'], deity: ['【众神之王】','【光明之神】','【暗影主宰】'] },
-    fantasy: { protagonist_male: ['【龙裔】','【天命勇者】','【被选中之人】','【弑神者】'], protagonist_female: ['【精灵公主】','【圣光之女】','【龙之母】','【女巫之王】'], deity: ['【众神之王】','【光明之神】','【暗影主宰】'] },
-    cthulhu: { deity: ['【'+rand(POOLS.cthulhuTitle)+'】'], villain: ['【'+rand(POOLS.cthulhuTitle)+'】'], default: ['【被污染者】','【调查员】','【疯狂边缘】'] },
-    scifi: { protagonist_male: ['【星际指挥官】','【银河探险家】','【舰队司令】'], protagonist_female: ['【星舰舰长】','【星系外交官】','【银河系考古学家】'] },
-    steampunk: { protagonist: ['【天才发明家】','【飞艇船长】','【蒸汽工程师】'] },
-    apocalypse: { protagonist_male: ['【末世霸主】','【生存大师】','【觉醒者】'], protagonist_female: ['【末世女王】','【治愈者】','【幸存者领袖】'] },
-    mystery: { protagonist_male: ['【名侦探】','【神探】','【犯罪心理专家】'], protagonist_female: ['【女侦探】','【法医专家】','【犯罪侧写师】'] },
+    urban: { protagonist_male: ['【隐世高手】','【商业奇才】','【重生者】','【王牌保镖】','【最强赘婿】'], protagonist_female: ['【绝美女神】','【职场女王】','【冰山总裁】','【豪门千金】'], mentor: ['【神秘导师】','【创业教父】','【行业泰斗】'], lover: ['【命中注定】','【初恋白月光】','【灵魂伴侣】'], family: ['【豪门世家】','【书香门第】'], rival: ['【商业对手】','【宿命之敌】','【势均力敌】'], beast: ['【名贵宠物】','【稀有品种】'] },
+    wuxia: { protagonist_male: ['【武林盟主】','【剑道天才】','【绝世高手】','【江湖浪子】'], protagonist_female: ['【江湖第一美人】','【女侠客】','【剑术宗师】','【苗疆圣女】'], mentor: ['【隐世剑客】','【武林前辈】','【绝世高手】'], lover: ['【侠侣】','【红颜知己】','【青梅竹马】'], family: ['【武林世家】','【镖局传人】'], rival: ['【一生之敌】','【剑道争锋】','【门派对决】'], beast: ['【护教神兽】','【灵驹宝马】'] },
+    republic: { protagonist_male: ['【留洋才子】','【革命志士】','【大亨之子】','【军阀少帅】'], protagonist_female: ['【名门闺秀】','【进步女性】','【旗袍佳人】'], mentor: ['【学界泰斗】','【革命导师】'], lover: ['【乱世佳人】','【青梅竹马】','【知己良缘】'], family: ['【书香门第】','【实业世家】'], rival: ['【政敌】','【情敌】','【商战对手】'] },
+    cyberpunk: { protagonist_male: ['【王牌黑客】','【义体改造者】','【地下城之王】'], protagonist_female: ['【数据女王】','【赛博魅影】','【网络幽灵】'], mentor: ['【前代黑客】','【AI导师】'], lover: ['【数据情人】','【虚拟恋人】'], rival: ['【企业死敌】','【顶尖黑客对决】'], beast: ['【机械兽】','【AI造物】'] },
+    medieval: { protagonist_male: ['【龙裔】','【天命勇者】','【被选中之人】'], protagonist_female: ['【精灵公主】','【圣光之女】','【龙之母】'], deity: ['【众神之王】','【光明之神】','【暗影主宰】'], mentor: ['【宫廷法师】','【大贤者】'], lover: ['【命中注定】','【禁忌之恋】'], family: ['【王室血脉】','【贵族世家】'], rival: ['【宿命之敌】','【王位争夺者】'], beast: ['【远古巨龙】','【圣兽】'] },
+    fantasy: { protagonist_male: ['【龙裔】','【天命勇者】','【被选中之人】','【弑神者】'], protagonist_female: ['【精灵公主】','【圣光之女】','【龙之母】','【女巫之王】'], deity: ['【众神之王】','【光明之神】','【暗影主宰】'], mentor: ['【大法师】','【上古贤者】'], lover: ['【宿命伴侣】','【真爱之吻】'], family: ['【王室血脉】','【龙族后裔】'], rival: ['【黑暗宿敌】','【宿命之子】'], beast: ['【远古巨龙】','【神话生物】','【元素之灵】'] },
+    cthulhu: { deity: ['【'+rand(POOLS.cthulhuTitle)+'】'], villain: ['【'+rand(POOLS.cthulhuTitle)+'】'], default: ['【被污染者】','【调查员】','【疯狂边缘】'], beast: ['【'+rand(POOLS.cthulhuTitle)+'之子】','【不可名状之物】'] },
+    scifi: { protagonist_male: ['【星际指挥官】','【银河探险家】','【舰队司令】'], protagonist_female: ['【星舰舰长】','【星系外交官】','【银河系考古学家】'], mentor: ['【科学院院士】','【高等文明使者】'], rival: ['【星际宿敌】','【文明竞争者】'], beast: ['【外星生物】','【基因改造兽】'] },
+    steampunk: { protagonist: ['【天才发明家】','【飞艇船长】','【蒸汽工程师】'], mentor: ['【老派工匠】','【发明大师】'], beast: ['【发条兽】','【蒸汽机甲兽】'] },
+    apocalypse: { protagonist_male: ['【末世霸主】','【生存大师】','【觉醒者】'], protagonist_female: ['【末世女王】','【治愈者】','【幸存者领袖】'], mentor: ['【旧世遗民】','【生存导师】'], rival: ['【资源争夺者】','【军阀头目】'], beast: ['【变异巨兽】','【辐射怪物】','【末世进化种】'] },
+    mystery: { protagonist_male: ['【名侦探】','【神探】','【犯罪心理专家】'], protagonist_female: ['【女侦探】','【法医专家】','【犯罪侧写师】'], mentor: ['【退休老刑警】','【犯罪学教授】'], lover: ['【知己恋人】','【暗恋对象】'], rival: ['【老对手】','【高智商罪犯】'] },
   };
   const pool = titlePools[t];
   if (!pool) return '';
@@ -1420,7 +1628,7 @@ function showSaveModal(n, cardEl) {
       wuxing: n.wuxing || '', pingze: n.pingze || '',
       explanation: exp,
       remarks: '',
-      profile: { age: '', appearance: '', personality: '', backstory: '', catchphrase: '', ability: '' },
+      profile: { age: '', appearance: '', personality: '', backstory: '', catchphrase: '', ability: '', cultivation: '', realm: '' },
       createdAt: new Date().toISOString(),
     });
     book.updatedAt = new Date().toISOString();
@@ -1504,7 +1712,7 @@ function renderBookDetail(bookId) {
         ${c.pingze ? `<div style="font-size:0.7rem;color:#777;">平仄: ${c.pingze}</div>` : ''}
         ${expl ? `<div class="char-section"><div class="char-section-label">🤖 模拟器解读</div><div class="char-explain"><span class="reason-tag" style="font-size:0.7rem;padding:2px 8px;border-radius:4px;background:#6a82fb22;color:#6a82fb;margin-bottom:4px;font-weight:600;">${expl.category}</span><br>${expl.body.replace(/\n/g,'<br>')}</div></div>` : `<div class="char-section"><div class="char-section-label">🤖 模拟器解读</div><div class="char-explain" style="color:#555;">尚未生成解释</div></div>`}
         ${hasRemarks ? `<div class="char-section"><div class="char-section-label">📝 我的备注</div><div class="char-remark">${c.remarks}</div></div>` : ''}
-        ${hasProfile ? `<div class="char-section"><div class="char-section-label">📋 角色档案</div><div style="font-size:0.78rem;color:#bbb;">${[c.profile.age&&'年龄:'+c.profile.age, c.profile.personality&&'性格:'+c.profile.personality].filter(Boolean).join(' · ')}</div></div>` : ''}
+        ${hasProfile ? `<div class="char-section"><div class="char-section-label">📋 角色档案</div><div style="font-size:0.78rem;color:#bbb;">${[c.profile.age&&'年龄:'+c.profile.age, c.profile.personality&&'性格:'+c.profile.personality, c.profile.cultivation&&'功法:'+c.profile.cultivation, c.profile.realm&&'境界:'+c.profile.realm].filter(Boolean).join(' · ')}</div></div>` : ''}
         <div class="char-actions">
           <button class="btn-sm edit-explain-btn">🔄 重新解读</button>
           <button class="btn-sm remark-btn">📝 ${hasRemarks?'编辑备注':'添加备注'}</button>
@@ -1620,6 +1828,11 @@ function generateProfileSuggestion(char) {
     supporter: { male:['忠肝义胆的挚友','出身平凡的可靠伙伴','风趣幽默的开心果','沉默寡言的技术高手'], female:['善解人意的闺蜜','率直开朗的搭档','温柔体贴的知心人','古灵精怪的辅助者'] },
     elder: { male:['德高望重的长者','深藏不露的隐世高人','固执却慈祥的长辈','饱经沧桑的守护者'], female:['慈眉善目的老奶奶','严厉却心软的长辈','神秘的古老家族掌管者','睿智通透的过来人'] },
     deity: { male:['俯瞰众生的神明','堕入凡间的谪仙','无心无情的天道','为情所困的神魔'], female:['冷若冰霜的女神','慈悲为怀的圣女','妖艳魅惑的妖后','来历不明的超然存在'] },
+    mentor: { male:['神秘的隐世导师','严厉却用心的师父','学识渊博的引路人','深藏不露的先天高手'], female:['冷面热心的师父','温柔耐心的女先生','隐居山林的绝世高手','精通百家之学的智者'] },
+    lover: { male:['风度翩翩的贵公子','温柔体帖的暖心人','为爱痴狂的痴情种','表面淡漠内心炽热的守护者'], female:['倾国倾城的佳人','外冷内热的傲娇小姐','柔情似水的温婉女子','执著不悔的红颜知己'] },
+    family: { male:['默默守护的兄长','威严不苟的父亲','叛逆却重情的少年','背负家族使命的传人'], female:['温柔贤淑的母亲','活泼灵动的妹妹','端庄大气的长姐','外柔内刚的家族支柱'] },
+    rival: { male:['亦敌亦友的强劲对手','孤高自傲的天才','为胜而生的斗士','可敬的宿敌'], female:['光芒万丈的竞争对手','冷艳高傲的劲敌','实力不相上下的女中豪杰','令人又敬又畏的对头'] },
+    beast: { male:['通灵的远古异兽','高傲不驯的神兽后裔','守护一方的灵兽','邪魅诡谲的妖兽'], female:['化为绝色女子的千年狐妖','温顺聪慧的灵雀','冷艳高贵的龙族公主','神秘莫测的九色鹿'] },
   };
   const r = roleTexts[char.roleId] || roleTexts.supporter;
   const g = r[char.genderId] || Object.values(r)[0];
@@ -1633,7 +1846,7 @@ function generateProfileSuggestion(char) {
 function showProfileEditor(bookId, charId) {
   const book = getBook(bookId); if (!book) return;
   const ch = book.characters.find(c => c.id === charId); if (!ch) return;
-  if (!ch.profile) ch.profile = { age:'', appearance:'', personality:'', backstory:'', catchphrase:'', ability:'' };
+  if (!ch.profile) ch.profile = { age:'', appearance:'', personality:'', backstory:'', catchphrase:'', ability:'', cultivation:'', realm:'' };
   const p = ch.profile;
   const suggestion = generateProfileSuggestion(ch);
   const overlay = document.createElement('div');
@@ -1649,6 +1862,10 @@ function showProfileEditor(bookId, charId) {
       <div class="profile-field"><label>背景故事</label><textarea id="pfBackstory" placeholder="${suggestion.backstory}" style="min-height:60px;">${p.backstory||''}</textarea></div>
       <div class="profile-field"><label>口头禅</label><input id="pfCatchphrase" value="${p.catchphrase||''}" placeholder="${suggestion.catchphrase}"></div>
       <div class="profile-field"><label>特殊能力</label><input id="pfAbility" value="${p.ability||''}" placeholder="武功、法术、天赋、异能..."></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;">
+        <div class="profile-field"><label>修炼功法</label><input id="pfCultivation" value="${p.cultivation||''}" placeholder="功法/修炼体系..."></div>
+        <div class="profile-field"><label>修为境界</label><input id="pfRealm" value="${p.realm||''}" placeholder="筑基/金丹/元婴/化神..."></div>
+      </div>
       <div class="modal-actions">
         <button class="btn-cancel" id="pfCancel">取消</button>
         <button class="btn-cancel" id="pfAutoFill">✨ 智能填充</button>
@@ -1670,6 +1887,8 @@ function showProfileEditor(bookId, charId) {
       backstory: overlay.querySelector('#pfBackstory').value.trim(),
       catchphrase: overlay.querySelector('#pfCatchphrase').value.trim(),
       ability: overlay.querySelector('#pfAbility').value.trim(),
+      cultivation: overlay.querySelector('#pfCultivation').value.trim(),
+      realm: overlay.querySelector('#pfRealm').value.trim(),
     };
     book.updatedAt = new Date().toISOString();
     saveBooks();
@@ -1701,6 +1920,8 @@ function exportBookMarkdown(book) {
       if (c.profile.personality) md += `| 性格 | ${c.profile.personality} |\n`;
       if (c.profile.appearance) md += `| 外貌 | ${c.profile.appearance} |\n`;
       if (c.profile.ability) md += `| 能力 | ${c.profile.ability} |\n`;
+      if (c.profile.cultivation) md += `| 功法 | ${c.profile.cultivation} |\n`;
+      if (c.profile.realm) md += `| 境界 | ${c.profile.realm} |\n`;
       if (c.profile.backstory) md += `| 背景 | ${c.profile.backstory} |\n`;
       if (c.profile.catchphrase) md += `| 口头禅 | ${c.profile.catchphrase} |\n`;
     }
@@ -1712,7 +1933,7 @@ function exportBookMarkdown(book) {
     book.relationships.forEach(r => {
       const from = book.characters.find(c => c.id === r.from);
       const to = book.characters.find(c => c.id === r.to);
-      if (from && to) md += `- **${from.display}** ← ${relTypes[r.type]||r.type} → **${to.display}**\n`;
+      if (from && to) md += `- **${from.display}** ← ${r.type} → **${to.display}**\n`;
     });
   }
   const blob = new Blob([md],{type:'text/markdown;charset=utf-8'});
@@ -1722,6 +1943,54 @@ function exportBookMarkdown(book) {
 }
 
 // ==================== RELATIONSHIP GRAPH ====================
+const ALL_REL_TYPES = {
+  social: { label:'社交关系', types: {
+    '师徒': { color:'#4ade80' },
+    '恋人': { color:'#fc5c7d' },
+    '仇敌': { color:'#dc2626' },
+    '兄弟': { color:'#60a5fa' },
+    '朋友': { color:'#6a82fb' },
+    '主仆': { color:'#f0c27f' },
+    '同盟': { color:'#a78bfa' },
+    '暗恋': { color:'#f472b6' },
+  }},
+  combat: { label:'战斗功法', types: {
+    '克制': { color:'#ff6b35', dash:[6,3] },
+    '碾压': { color:'#e17055', dash:[2,4] },
+    '制衡': { color:'#fdcb6e' },
+    '挑战': { color:'#e74c3c', dash:[8,4] },
+  }},
+  elemental: { label:'五行/相生', types: {
+    '相生': { color:'#00b894', dash:[2,6] },
+    '同源': { color:'#0984e3' },
+    '融合': { color:'#a29bfe' },
+  }},
+  sect: { label:'宗门/组织', types: {
+    '同门': { color:'#0984e3' },
+    '师承': { color:'#55a3e8' },
+    '掌门': { color:'#ffd700' },
+    '弃徒': { color:'#636e72', dash:[4,4] },
+  }},
+  destiny: { label:'宿命/羁绊', types: {
+    '宿敌': { color:'#b71540', dash:[10,4] },
+    '天命': { color:'#f9ca24' },
+    '守护': { color:'#fdcb6e' },
+    '血脉': { color:'#e17055' },
+  }},
+};
+function getRelColor(type) {
+  for (const cat of Object.values(ALL_REL_TYPES)) {
+    if (cat.types[type]) return cat.types[type].color;
+  }
+  return '#888';
+}
+function getRelDash(type) {
+  for (const cat of Object.values(ALL_REL_TYPES)) {
+    if (cat.types[type] && cat.types[type].dash) return cat.types[type].dash;
+  }
+  return [];
+}
+
 function renderRelations() {
   const area = document.getElementById('relationsContent');
   if (!books.length) {
@@ -1732,12 +2001,13 @@ function renderRelations() {
     <select id="relBookSelect" style="background:#0d0f1a;border:1px solid #2a2d4a;color:#e0e0e0;padding:6px 10px;border-radius:6px;font-size:0.85rem;font-family:inherit;">
       ${books.map(b => `<option value="${b.id}">${b.title} (${b.characters.length}个角色)</option>`).join('')}
     </select>
-    <button class="btn-gen small" id="relReset">重置位置</button></div>
+    <button class="btn-gen small" id="relReset">重置位置</button>
+    <span style="font-size:0.78rem;color:#555;margin-left:8px;">点击节点: 选中 → 再点: 详情 → 点两个: 建立关系</span></div>
     <div style="display:flex;gap:16px;flex-wrap:wrap;">
-      <div class="graph-container" style="flex:1;min-width:500px;height:500px;">
-        <canvas id="relCanvas" width="700" height="500"></canvas>
+      <div class="graph-container" style="flex:1;min-width:500px;height:520px;">
+        <canvas id="relCanvas" width="700" height="520"></canvas>
       </div>
-      <div style="width:200px;flex-shrink:0;" id="relSidebar"></div>
+      <div style="width:240px;flex-shrink:0;max-height:520px;overflow-y:auto;" id="relSidebar"></div>
     </div>
     <div class="graph-legend" id="relLegend"></div>`;
   area.querySelector('#relBookSelect').addEventListener('change', () => initGraph());
@@ -1756,7 +2026,6 @@ function initGraph() {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const chars = book.characters;
-  // Assign positions
   const cx = canvas.width/2, cy = canvas.height/2, r = Math.min(cx,cy)-60;
   chars.forEach((c,i) => {
     if (!book.nodePositions[c.id]) {
@@ -1765,9 +2034,19 @@ function initGraph() {
     }
   });
   saveBooks();
-  const roleColors = { protagonist:'#6a82fb',supporter:'#4ade80',villain:'#fc5c7d',elder:'#f0c27f',deity:'#c084fc',extra:'#888' };
-  const relColors = { '师徒':'#4ade80','恋人':'#fc5c7d','仇敌':'#dc2626','兄弟':'#60a5fa','朋友':'#6a82fb','主仆':'#f0c27f','同盟':'#a78bfa','暗恋':'#f472b6' };
-  let selected = null, dragging = null;
+  const roleColors = { protagonist:'#6a82fb',supporter:'#4ade80',villain:'#fc5c7d',elder:'#f0c27f',deity:'#c084fc',extra:'#888',mentor:'#55a3e8',lover:'#fd79a8',family:'#e17055',rival:'#fdcb6e',beast:'#00b894' };
+  let selected = null, dragging = null, dblClickTimer = null;
+
+  function drawArrow(from, to, color) {
+    const angle = Math.atan2(to.y-from.y, to.x-from.x);
+    const len = 10;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(to.x, to.y);
+    ctx.lineTo(to.x-len*Math.cos(angle-Math.PI/6), to.y-len*Math.sin(angle-Math.PI/6));
+    ctx.lineTo(to.x-len*Math.cos(angle+Math.PI/6), to.y-len*Math.sin(angle+Math.PI/6));
+    ctx.closePath(); ctx.fill();
+  }
 
   function draw() {
     ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -1775,20 +2054,39 @@ function initGraph() {
     (book.relationships||[]).forEach(rel => {
       const f = book.nodePositions[rel.from], t = book.nodePositions[rel.to];
       if (!f || !t) return;
+      const color = getRelColor(rel.type);
+      const dash = getRelDash(rel.type);
       ctx.beginPath(); ctx.moveTo(f.x,f.y); ctx.lineTo(t.x,t.y);
-      ctx.strokeStyle = relColors[rel.type]||'#888'; ctx.lineWidth=2; ctx.setLineDash([]); ctx.stroke();
+      ctx.strokeStyle = color; ctx.lineWidth = 2;
+      ctx.setLineDash(dash);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      // Arrowhead(s)
+      drawArrow(f, t, color);
+      if (rel.bidirectional) drawArrow(t, f, color);
       // Label
-      const mx=(f.x+t.x)/2, my=(f.y+t.y)/2;
-      ctx.fillStyle=relColors[rel.type]||'#888'; ctx.font='11px sans-serif'; ctx.fillText(rel.type,mx-12,my-6);
+      const mx = (f.x+t.x)/2, my = (f.y+t.y)/2;
+      ctx.fillStyle = color; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+      const label = rel.type + (rel.bidirectional ? '⇄' : '');
+      ctx.fillText(label, mx, my-6);
+      if (rel.description) {
+        ctx.fillStyle = '#888'; ctx.font = '9px sans-serif';
+        ctx.fillText(rel.description.slice(0,10), mx, my+10);
+      }
     });
     // Draw nodes
     chars.forEach(c => {
       const p = book.nodePositions[c.id];
       if (!p) return;
-      ctx.beginPath(); ctx.arc(p.x,p.y,selected===c.id?20:16,0,2*Math.PI);
+      ctx.beginPath(); ctx.arc(p.x, p.y, selected===c.id ? 20 : 16, 0, 2*Math.PI);
       ctx.fillStyle = roleColors[c.roleId]||'#888';
-      ctx.fill(); ctx.strokeStyle='#0d0f1a'; ctx.lineWidth=2; ctx.stroke();
-      ctx.fillStyle='#fff'; ctx.font='12px sans-serif'; ctx.textAlign='center';
+      ctx.fill();
+      ctx.strokeStyle = '#0d0f1a'; ctx.lineWidth = 2; ctx.stroke();
+      if (selected === c.id) {
+        ctx.beginPath(); ctx.arc(p.x, p.y, 22, 0, 2*Math.PI);
+        ctx.strokeStyle = '#f0c27f'; ctx.lineWidth = 2; ctx.setLineDash([4,3]); ctx.stroke(); ctx.setLineDash([]);
+      }
+      ctx.fillStyle = '#fff'; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
       ctx.fillText(c.display.length>8?c.display.slice(0,7)+'…':c.display, p.x, p.y-24);
     });
   }
@@ -1804,12 +2102,16 @@ function initGraph() {
       if (selected && hit.id !== selected.id) {
         showRelationshipModal(book, selected.id, hit.id, () => { draw(); updateRelSidebar(book); });
         selected = null;
+      } else if (selected === hit.id) {
+        // Clicking already-selected node: show detail
+        showNodeDetail(book, hit.id);
       } else {
-        selected = selected===hit.id ? null : hit.id;
-        dragging = selected ? hit.id : null;
+        selected = hit.id;
+        dragging = hit.id;
+        updateRelSidebar(book);
       }
       draw();
-    } else { selected = null; draw(); }
+    } else { selected = null; draw(); updateRelSidebar(book); }
     if (dragging) { e.preventDefault(); }
   });
   canvas.addEventListener('mousemove', e => {
@@ -1820,19 +2122,49 @@ function initGraph() {
   });
   canvas.addEventListener('mouseup', () => { if (dragging) { saveBooks(); dragging = null; } });
 
+  function showNodeDetail(book, charId) {
+    const sidebar = document.getElementById('relSidebar');
+    const c = book.characters.find(ch => ch.id === charId);
+    if (!c || !sidebar) return;
+    const p = c.profile || {};
+    const charRels = (book.relationships||[]).filter(r => r.from === charId || r.to === charId);
+    sidebar.innerHTML = `<div style="font-size:0.85rem;">
+      <h4 style="color:#f0c27f;margin-bottom:8px;border-bottom:1px solid #2a2d4a;padding-bottom:6px;">${c.display}</h4>
+      <div style="color:#888;font-size:0.75rem;margin-bottom:10px;">${c.role} · ${c.gender} · ${c.style}</div>
+      ${p.age ? `<div style="font-size:0.75rem;color:#aaa;">年龄: ${p.age}</div>` : ''}
+      ${p.personality ? `<div style="font-size:0.75rem;color:#aaa;">性格: ${p.personality}</div>` : ''}
+      ${p.cultivation ? `<div style="font-size:0.75rem;color:#f0c27f;">功法: ${p.cultivation}</div>` : ''}
+      ${p.realm ? `<div style="font-size:0.75rem;color:#4ade80;">境界: ${p.realm}</div>` : ''}
+      ${p.ability ? `<div style="font-size:0.75rem;color:#aaa;">能力: ${p.ability}</div>` : ''}
+      ${p.appearance ? `<div style="font-size:0.75rem;color:#aaa;">外貌: ${p.appearance}</div>` : ''}
+      ${p.backstory ? `<div style="font-size:0.75rem;color:#999;margin-top:8px;line-height:1.4;">${p.backstory.slice(0,120)}${p.backstory.length>120?'...':''}</div>` : ''}
+      <div style="margin-top:12px;border-top:1px solid #2a2d4a;padding-top:8px;">
+        <div style="font-size:0.73rem;color:#888;margin-bottom:6px;">关系 (${charRels.length})</div>
+        ${charRels.length === 0 ? '<div style="font-size:0.7rem;color:#555;">暂无关系</div>' :
+          charRels.map(r => {
+            const other = r.from === charId ? book.characters.find(ch=>ch.id===r.to) : book.characters.find(ch=>ch.id===r.from);
+            return `<div style="font-size:0.7rem;color:#ccc;padding:2px 0;">${r.type} ${r.bidirectional?'⇄':'→'} ${other?other.display:'?'}</div>`;
+          }).join('')}
+      </div>
+      <button class="btn-gen ghost small" style="margin-top:10px;width:100%;" id="relBackBtn">← 返回关系列表</button>
+    </div>`;
+    sidebar.querySelector('#relBackBtn').addEventListener('click', () => updateRelSidebar(book));
+  }
+
   function updateRelSidebar(book) {
     const sidebar = document.getElementById('relSidebar');
     if (!sidebar) return;
     const rels = book.relationships||[];
     sidebar.innerHTML = '<h4 style="color:#ddd;margin-bottom:8px;font-size:0.85rem;">已建立关系</h4>' +
-      (rels.length===0?'<p style="color:#555;font-size:0.8rem;">点击两个角色节点建立关系</p>':
+      (rels.length===0?'<p style="color:#555;font-size:0.8rem;">点击两个角色节点建立关系<br><br>选中节点后再点 → 查看详情</p>':
         rels.map(r => {
           const from = chars.find(c=>c.id===r.from), to = chars.find(c=>c.id===r.to);
-          return `<div style="display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid #1a1c32;font-size:0.78rem;">
+          return `<div style="display:flex;align-items:center;gap:4px;padding:6px 0;border-bottom:1px solid #1a1c32;font-size:0.75rem;">
             <span style="color:#ccc;">${from?from.display:'?'}</span>
-            <span style="color:${relColors[r.type]||'#888'};">${r.type}</span>
+            <span style="color:${getRelColor(r.type)};" title="${r.description||''}">${r.type}${r.bidirectional?'⇄':''}</span>
             <span style="color:#ccc;">${to?to.display:'?'}</span>
-            <button style="margin-left:auto;background:none;border:none;color:#555;cursor:pointer;" data-rel="${r.from}_${r.to}">✕</button></div>`;
+            ${r.description ? `<span style="font-size:0.65rem;color:#555;">${r.description.slice(0,8)}</span>` : ''}
+            <button style="margin-left:auto;background:none;border:none;color:#555;cursor:pointer;font-size:0.7rem;" data-rel="${r.from}_${r.to}">✕</button></div>`;
         }).join(''));
     sidebar.querySelectorAll('button[data-rel]').forEach(b => {
       b.addEventListener('click', () => {
@@ -1844,9 +2176,14 @@ function initGraph() {
   }
 
   // Legend
+  const allTypes = [];
+  for (const cat of Object.values(ALL_REL_TYPES)) {
+    for (const [k,v] of Object.entries(cat.types)) { allTypes.push({ type:k, color:v.color, cat:cat.label }); }
+  }
   document.getElementById('relLegend').innerHTML = [
     ...Object.entries(roleColors).map(([k,v]) => `<div class="legend-item"><div class="legend-dot" style="background:${v}"></div>${DATA.charTypes.find(c=>c.id===k)?.label||k}</div>`),
-    ...Object.entries(relColors).map(([k,v]) => `<div class="legend-item"><div class="legend-line" style="background:${v}"></div>${k}</div>`)
+    `<div class="legend-item" style="grid-column:1/-1;font-size:0.7rem;color:#555;padding:4px 0;">— 关系类型 —</div>`,
+    ...allTypes.map(t => `<div class="legend-item"><div class="legend-line" style="background:${t.color}"></div>${t.type}</div>`)
   ].join('');
 
   draw();
@@ -1856,29 +2193,270 @@ function initGraph() {
 function showRelationshipModal(book, fromId, toId, onSave) {
   const from = book.characters.find(c=>c.id===fromId), to = book.characters.find(c=>c.id===toId);
   if (!from || !to) return;
-  const relTypes = ['师徒','恋人','仇敌','兄弟','朋友','主仆','同盟','暗恋'];
+  const categories = Object.entries(ALL_REL_TYPES);
+  let activeCat = categories[0][0];
   const overlay = document.createElement('div');
   overlay.className = 'modal-overlay';
   overlay.innerHTML = `
-    <div class="modal" style="max-width:420px;">
+    <div class="modal" style="max-width:500px;">
       <h3>🔗 建立关系</h3>
       <div class="rel-modal-chars"><span>${from.display}</span><span class="rel-arrow">→</span><span>${to.display}</span></div>
-      <div class="rel-type-grid">${relTypes.map(t => `<button class="rel-type-btn" data-type="${t}">${t}</button>`).join('')}</div>
-      <div class="modal-actions"><button class="btn-cancel" id="relCancel">取消</button></div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px;" id="relCatBtns">
+        ${categories.map(([k,v]) => `<button class="filter-chip" data-cat="${k}">${v.label}</button>`).join('')}
+      </div>
+      <div class="rel-type-grid" id="relTypeGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;"></div>
+      <div style="margin-top:10px;">
+        <label style="font-size:0.75rem;color:#888;">描述（可选）</label>
+        <input id="relDescription" placeholder="如：表面师徒，实为利用..." style="width:100%;background:#0d0f1a;border:1px solid #2a2d4a;color:#e0e0e0;padding:6px 10px;border-radius:6px;font-size:0.8rem;font-family:inherit;margin-top:4px;box-sizing:border-box;">
+      </div>
+      <label style="font-size:0.78rem;color:#aaa;display:flex;align-items:center;gap:6px;margin-top:8px;">
+        <input type="checkbox" id="relBidirectional"> 双向关系
+      </label>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="relCancel">取消</button>
+      </div>
     </div>`;
   document.body.appendChild(overlay);
-  overlay.querySelector('#relCancel').addEventListener('click', () => overlay.remove());
-  overlay.querySelectorAll('.rel-type-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      book.relationships.push({ from: fromId, to: toId, type: btn.dataset.type });
-      saveBooks(); overlay.remove();
-      if (onSave) onSave();
-      showToast('✅ 关系已建立');
+
+  function renderTypeGrid(catKey) {
+    const grid = overlay.querySelector('#relTypeGrid');
+    const types = ALL_REL_TYPES[catKey].types;
+    grid.innerHTML = Object.entries(types).map(([k,v]) =>
+      `<button class="rel-type-btn" data-type="${k}" style="border-color:${v.color}44;color:${v.color};">${k}</button>`
+    ).join('');
+    grid.querySelectorAll('.rel-type-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        book.relationships.push({
+          from: fromId, to: toId, type: btn.dataset.type,
+          bidirectional: overlay.querySelector('#relBidirectional').checked,
+          description: overlay.querySelector('#relDescription').value.trim()
+        });
+        saveBooks(); overlay.remove();
+        if (onSave) onSave();
+        showToast('✅ 关系已建立');
+      });
+    });
+  }
+
+  overlay.querySelector('#relCatBtns').querySelectorAll('.filter-chip').forEach(chip => {
+    if (chip.dataset.cat === activeCat) chip.classList.add('active');
+    chip.addEventListener('click', () => {
+      overlay.querySelectorAll('#relCatBtns .filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeCat = chip.dataset.cat;
+      renderTypeGrid(activeCat);
     });
   });
+  overlay.querySelector('#relCancel').addEventListener('click', () => overlay.remove());
+  renderTypeGrid(activeCat);
+}
+
+// ==================== SPECIAL RELATIONSHIP NAMING ====================
+function generateFamilyNames(count) {
+  const sn = DATA.specialNaming.familySameGen;
+  const genChar = rand(sn.genChars.male);
+  const results = [];
+  const surnames = POOLS.cnSurnames.slice(0, 100);
+  for (let i = 0; i < count; i++) {
+    const surname = rand(surnames);
+    const gender = Math.random() < 0.5 ? 'male' : 'female';
+    const chars = gender === 'male' ? sn.genChars.male : sn.genChars.female;
+    const suffix = gender === 'male' ? rand(sn.suffixMale) : rand(sn.suffixFemale);
+    const secondChar = rand(chars.filter(c => c !== genChar));
+    results.push({
+      name: surname + genChar + secondChar,
+      display: `${surname}${genChar}${secondChar}（${suffix}）`,
+      gender, genChar, suffix,
+      note: `同辈字"${genChar}"，${gender==='male'?'兄弟':'姐妹'}排行`
+    });
+  }
+  return { genChar, results };
+}
+
+function generateCoupleNames(count) {
+  const sn = DATA.specialNaming.coupleNames;
+  const pair = rand(sn.pairs);
+  const results = [];
+  const surnames = POOLS.cnSurnames.slice(0, 100);
+  for (let i = 0; i < count; i++) {
+    const s1 = rand(surnames), s2 = rand(surnames.filter(s => s !== s1));
+    const extra = ['辰','轩','宇','瑶','萱','晚','曦','逸','然','安','宁','清'][Math.floor(Math.random()*12)];
+    results.push({
+      male: s1 + pair[0] + extra,
+      female: s2 + pair[1] + extra,
+      display: `${s1}${pair[0]}${extra} ♥ ${s2}${pair[1]}${extra}`,
+      pair: pair.join('/'),
+      note: `对偶名"${pair[0]}/${pair[1]}"，寓意${pair[0]==='龙'?'尊贵':pair[0]==='日'?'光明':pair[0]==='琴'?'和谐':'相应'}成双`
+    });
+  }
+  return { pair, results };
+}
+
+function generateSectNames(count, style) {
+  const sn = DATA.specialNaming.sectSamePrefix;
+  const prefixes = sn[style] || sn.xianxia;
+  const prefix = rand(prefixes);
+  const results = [];
+  const titles = style === 'xianxia' ? ['真人','道人','仙子','尊者','散人'] :
+                 style === 'wuxia' ? ['大侠','剑客','刀客','女侠','侠客'] :
+                 style === 'ancient' ? ['先生','道人','散人','居士','仙姑'] :
+                 ['骑士','法师','游侠','贤者','猎手'];
+  for (let i = 0; i < count; i++) {
+    const title = rand(titles);
+    const suffix = style === 'xianxia' ? rand(['子','君','仙','尘','云','风','月','星']) :
+                   style === 'wuxia' ? rand(['风','云','影','行','远','飞','寒','羽']) :
+                   style === 'ancient' ? rand(['之','子','中','和','明','清','玄','真']) :
+                   rand(['尔','斯','恩','特','林','德','亚','娜']);
+    results.push({
+      name: prefix + suffix,
+      display: `${prefix}${suffix}（${title}）`,
+      prefix, title,
+      note: `同门前缀"${prefix}"，${title}称号`
+    });
+  }
+  return { prefix, results };
+}
+
+function generateRegionalNames(count, regionKey) {
+  const sn = DATA.specialNaming.regionalStyle;
+  const region = sn.regions[regionKey] || sn.regions.jiangnan;
+  const results = [];
+  for (let i = 0; i < count; i++) {
+    const surname = rand(region.surnames);
+    const gender = Math.random() < 0.5 ? 'male' : 'female';
+    const chars = gender === 'male' ? region.maleC : region.femaleC;
+    const flavor = rand(region.flavor);
+    const c1 = rand(chars), c2 = rand(chars.filter(c => c !== c1));
+    results.push({
+      name: surname + c1 + c2,
+      display: `${surname}${c1}${c2}（${region.label}）`,
+      gender, region: region.label,
+      note: `${region.desc}，"${flavor}"之意蕴`
+    });
+  }
+  return { region: region.label, results };
+}
+
+async function generateAIRelationshipNames(mode, config) {
+  if (!aiConfig?.apiKey) throw new Error('请先配置 AI');
+  let prompt = '';
+  switch (mode) {
+    case 'family':
+      prompt = `为小说家族${config.genChar ? '以"'+config.genChar+'"为字辈' : ''}生成${config.count||5}个兄弟姐妹名字（含姓氏），每个名字附简短寓意。性别比例约1:1。返回JSON格式：[{"name":"...","meaning":"..."}]。`;
+      break;
+    case 'couple':
+      prompt = `生成${config.count||3}对小说情侣配对名字（含姓氏），每对名字需有对应/互补关系。返回JSON格式：[{"male":"...","female":"...","pairMeaning":"..."}]。`;
+      break;
+    case 'sect':
+      prompt = `为${config.style||'仙侠'}小说的一个宗门/组织生成${config.count||5}个同门成员名字（含道号/前缀），风格需统一。返回JSON格式：[{"name":"...","prefix":"...","meaning":"..."}]。`;
+      break;
+    case 'regional':
+      prompt = `生成${config.count||5}个具有${config.region||'江南'}地域特色的角色名字（含姓氏），名字需体现该地域文化特色。返回JSON格式：[{"name":"...","gender":"male/female","meaning":"..."}]。`;
+      break;
+  }
+  const response = await fetch(`${aiConfig.baseUrl}/chat/completions`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${aiConfig.apiKey}` },
+    body: JSON.stringify({ model: aiConfig.model, messages: [{ role: 'user', content: prompt }], temperature: 0.9, max_tokens: 1500 }),
+  });
+  if (!response.ok) throw new Error(`API 错误: ${response.status}`);
+  const data = await response.json();
+  const text = data.choices?.[0]?.message?.content || '';
+  const jsonMatch = text.match(/\[[\s\S]*\]/);
+  if (!jsonMatch) throw new Error('AI 返回格式异常');
+  return JSON.parse(jsonMatch[0]);
 }
 
 // ==================== PLOT CONFLICT GENERATOR ====================
+const PLOT_CATEGORIES = {
+  character: { label:'人物关系', icon:'💔', types: {
+    emotional: { name:'情感纠葛', icon:'💔',
+      causes:['命运让他们相遇却走到对立面','一段无法言说的感情在两人心中埋下了裂痕','背叛与失望的日积月累，终于在某一天爆发','被第三个人打破的微妙平衡','身份的悬殊带来的自卑与退让，误会从此生根','为保护对方而选择离开，却被误解为背叛','最信任的人从背后捅来的那一刀','青梅竹马的誓言在现实的碾压下变成了笑话'],
+      escalations:['误会越来越深，解释变得苍白无力','嫉妒吞噬了理智，每一个眼神都被解读成敌意','爱得越深，恨得越切','身边的人被无辜卷入漩涡','从冷战到公开对抗，昔日的温存荡然无存','曾经的承诺变成了最锋利的刀刃'],
+      climaxes:['在命运的关键节点，两人才惊觉彼此从未真正理解过对方——但一切都太迟了。','一场意外让其中一方陷入绝境，另一方才发现自己从未放下。','当真相揭开的那一刻，两人才明白，原来所有的恨，都源于太深的爱。'],
+      endings:['悲歌：一方永远消失，留下无尽的遗憾与空白','和解：在第三方的调解下，终于敞开心扉，却发现彼此已经变了','反转：原来所有误会都是被人精心设计的局','释然：时过境迁，两人各自安好，相忘于江湖','新生：经历了这一切，感情反而更加纯粹坚定','遗憾：和解之后，那段时光却再也回不去了']
+    },
+    interest: { name:'利益冲突', icon:'💰',
+      causes:['一方掌握着另一方急需的救命资源','某种力量的分配不公，让昔日的盟友站到了对立面','为了生存而不得不对抗曾经最亲近的人','隐藏的宝藏或秘密引来了各方的觊觎','一场权力的更迭将所有人推向了风口浪尖','一纸契约的背叛，让信任化为灰烬','资源的枯竭让昔日伙伴变成了你死我活的对手'],
+      escalations:['互相设局，每一步都暗藏杀机','盟友变成敌人，中间派被迫站队','代价越来越高，谁也无法回头','从台面下的博弈升级为公开的对抗'],
+      climaxes:['双方都意识到，这场博弈没有赢家——但谁先收手，谁就输了一切。','当最珍视的东西被摆上天平，两人才发现，有些代价根本无法承受。','在一场激烈的交锋后，两败俱伤的结局让所有人都沉默了。'],
+      endings:['双输：双方都付出了无法挽回的代价','妥协：在最后一刻达成了脆弱的和平','第三方介入：更大的力量介入，改变了游戏规则','同归于尽：利益的执念吞噬了一切','觉醒：其中一方终于明白，有些东西比利益更重要']
+    },
+    ideology: { name:'理念对立', icon:'⚖️',
+      causes:['对正义的不同理解让曾经的战友分道扬镳','传统与变革的碰撞，撕裂了整个群体','家族世代传承的信条与个人意志的冲突','不同世界成长起来的人，价值观的鸿沟无法跨越','一条不可逾越的规则成为了两人之间的墙','信仰的差异在关键时刻被无限放大'],
+      escalations:['从争辩到决裂，每一次对话都在加深裂痕','各自纠集支持者，冲突扩大化','原则被证明比感情更重要','当理念之争涉及到了无辜者，谁也无法置身事外'],
+      climaxes:['当两套理念在现实中正面相撞，没有一个理念能完全存活——破碎的，是人的心。','在一次重大的考验面前，两人才发现，自己的理念都有致命的缺陷。','一场悲剧的发生，让所有人都开始反思：坚持的，到底是不是对的？'],
+      endings:['破碎：理念的碰撞毁灭了一切','融合：两种理念在废墟中找到了新的平衡','传承：后人从这场冲突中汲取了教训','独行：各自走上了不同的道路，再无交集','超越：有人跳出了理念的框架，找到了第三条路']
+    },
+    destiny: { name:'宿命对决', icon:'🌑',
+      causes:['古老的预言注定了他们的对立','血脉中的诅咒世代相传','轮回中注定的敌人，无论怎样都无法逃脱','正义与邪恶的最终较量不可避免','一个无法解开的命运死结','两个人都被更大的力量推到了棋盘上'],
+      escalations:['退无可退，命运的车轮碾压一切','身边的人开始倒下，牺牲越来越大','世界在崩塌，谁也无法阻止','当两人发现，他们的敌人其实是同一个人'],
+      climaxes:['宿命说他们必须打——但他们心中都隐约觉得，命运也许只是一场可笑的谎言。','在决战的前夜，两人意外地有了一次平静的对话——那是宿命中唯一的温柔。','当剑锋相对的那一刻，两人同时看到了彼此眼中的疲惫与无奈。'],
+      endings:['打破宿命：两人联手对抗真正的幕后黑手','同归于尽：命运之局以两人的牺牲告终','传承：一人倒下，另一人背负着对方的遗志前行','解脱：宿命被打破，但代价是失去所有珍视的人','轮回：一切回到原点，但这一次，有人留下了不同的选择']
+    },
+    misunderstand: { name:'误会陷阱', icon:'❓',
+      causes:['一个善意的谎言在最不该被揭穿的时候被揭穿','被人蓄意离间，每一个巧合都被精心安排','关键信息在传递中阴差阳错地变了味','不愿解释的倔强让裂痕越来越深','一次意外的目击被错误地解读','为了保护对方而选择了沉默，却被当成了默认'],
+      escalations:['裂痕越来越大，没有任何一方愿意先开口','信任彻底崩塌，连最基本的沟通都变成了奢望','无法原谅的伤害已经造成','当想要解释的时候，发现已经没有了开口的勇气'],
+      climaxes:['真相终于浮出水面——但伤痕已经太深。就算知道是误会，还能回到从前吗？','在最关键的时刻，一个意想不到的证据颠覆了一切。','一个简单的问题就能解开的误会，却因为骄傲和倔强，被彼此埋藏了太久。'],
+      endings:['冰释：误会解除，但两人都变了','遗憾：真相太晚，一切都无法挽回','修好：经历了这一切，关系反而更加牢固','疏远：虽然解开了误会，但再也回不到从前','循环：新的误会又产生了']
+    },
+  }},
+  structure: { label:'剧情结构', icon:'🔥', types: {
+    climax: { name:'高潮剧情', icon:'🔥',
+      causes:['多方势力在一场大会中正面碰撞','隐藏多年的真相即将被揭开','一场精心策划的行动进入了最后阶段','决战前夜，各方都在做最后的准备','天象异变，预示着决定性的时刻到来','古老的封印松动，被压制千年的力量即将出世'],
+      escalations:['各方势力从暗处走向明处，摩擦升级为冲突','盟友的背叛在最后一刻暴露','主角被逼入绝境，退路全无','更大的阴谋浮出水面，之前的认知被颠覆'],
+      climaxes:['在风雪交加的山巅，三方的力量同时碰撞——天地为之色变。','当主角举起手中最后一件法器，整个战场的目光都聚焦在这一刻。','一声巨响过后，整个结界粉碎——所有人都看到了那些年被隐藏的真相。'],
+      endings:['惨胜：主角付出了巨大代价，换来了珍贵的胜利','逆转：看似失败的一刻，其实是主角布的局','牺牲：同伴用生命为主角争取到了最后的希望','新局：旧的问题解决，但更深的谜团浮出水面','和平：各方精疲力竭，达成了暂时的休战']
+    },
+    foreshadowing: { name:'伏笔设计', icon:'🔮',
+      causes:['一个不起眼的物品在关键时刻显露出真正的作用','多年前埋下的一句话，如今应验了','一个看似普通的配角，实际上是整个故事的关键','某次不经意的对话中隐藏着真相的碎片','墙壁上的古老壁画暗藏着失传的功法','主角身世中的秘密在危险的时刻被揭开一角'],
+      escalations:['线索越来越多，拼图逐渐成形','当所有人以为已经接近真相时，更大的谜团出现了','之前埋下的多个伏笔开始彼此呼应','看似无关的事件被串联成一条完整的线'],
+      climaxes:['当三个看似无关的线索被串联在一起——在场的所有人都倒吸了一口凉气。','那件毫不起眼的玉佩发出幽光，墙壁上的壁画活了——一切都在这一刻连接了起来。','主角终于明白了自己为什么会来到这里——从出生开始，每一步都被安排好了。'],
+      endings:['恍然大悟：读者和主角同时理解了之前所有奇怪的事','悬念迭起：旧伏笔回收，新伏笔埋下','颠覆：之前的认知被彻底推翻','呼应：回收的伏笔引出更深的情感共鸣','闭环：故事的起点和终点完美衔接']
+    },
+    turningPoint: { name:'转折点', icon:'💫',
+      causes:['一场意外改变了所有人的命运轨迹','主角做出了一个艰难的选择','外界的巨大变动迫使一切重新洗牌','一位关键人物的登场彻底改变了局势','一封来自远方的信带来了令人震惊的消息','联盟在一夜之间崩溃，新的格局在混乱中形成'],
+      escalations:['旧的关系被打破，新的联盟开始形成','主角被迫面对自己一直逃避的真相','阵营的重组让所有人都措手不及','一个微小的决定引发了连锁反应'],
+      climaxes:['主角站在岔路口——左边是旧日的羁绊，右边是未知的征程。无论选择哪边，都将永远改变一切。','当那个消息传来的那一刻，主角度过了人生中最漫长的三秒钟——然后做出了让所有人都震惊的决定。'],
+      endings:['重生：主角走出舒适区，踏上了新的道路','决裂：与新老盟友的关系全面重组','觉醒：经历转折后，主角真正看清了自己的目标','回望：多年后回看，那个转折点是命运的馈赠'],
+    },
+  }},
+  action: { label:'战斗谋略', icon:'⚔️', types: {
+    battle: { name:'战斗场景', icon:'⚔️',
+      causes:['两股势力在不可调和的对立中终于兵戎相见','主角为了守护重要的人，不再退让','一场突袭打破了长久的和平','远古遗迹的争夺战一触即发','宗门的灭门之仇终于到了清算的时刻','力量的失衡引发了新一轮的争霸'],
+      escalations:['从试探到全力出手，战斗不断升级','各自隐藏的底牌被一张张揭开','战场扩大到整个区域，无辜者被卷入','当所有人都以为胜负已分时，变数出现了'],
+      climaxes:['天地灵气疯狂涌动——主角体内一直被压制的力量在这一刻彻底爆发。','在剑锋即将落下的瞬间，一个身影挡在了前面——那是所有人都没想到的人。'],
+      endings:['力竭：双方精疲力尽，被迫停战','突破：主角在战斗中突破了瓶颈','代价：胜利者付出了惨重的代价','转机：第三方介入改变了战局','布局：这场战斗本身就是一场更大的计谋']
+    },
+    strategy: { name:'谋略博弈', icon:'🧠',
+      causes:['一个足以颠覆格局的秘密被掌握在少数人手中','各方势力在暗中布局，表面上却风平浪静','一张无形的网正在收紧，而猎物还浑然不觉','权力的真空导致了各方势力的明争暗斗','一场精心策划的阴谋已经酝酿了十年'],
+      escalations:['每一个动作都是棋子，每一次对话都是试探','局中局、计中计——谁是猎人，谁是猎物','当自以为掌控全局的人发现，自己也不过是棋盘上的一枚棋子','所有的铺陈在最后一刻汇聚成了惊天一击'],
+      climaxes:['当最后一个棋子落下的那一刻——全场寂静。原来从一开始，真正的博弈就不在战场上。','所有人都以为自己在下棋——直到棋盘被掀翻的那一刻，才惊觉真正的赢家从未入局。'],
+      endings:['完胜：计谋天衣无缝，对手毫无还手之力','反杀：看似中计的一方其实早已看穿了一切','平局：两败俱伤后，双方都收起了轻视','计中计：真正的目的从未暴露','代价：赢家也付出了意料之外的代价']
+    },
+  }},
+  drama: { label:'戏剧冲突', icon:'🕯️', types: {
+    sacrifice: { name:'牺牲与抉择', icon:'🕯️',
+      causes:['为了拯救最重要的人，必须放弃同样珍贵的东西','两条路，只能选一条——每条都有不可接受的代价','时间的紧迫让主角必须在遗憾中做出选择','一个承诺与另一个承诺的冲突','大局与私情的拉扯撕扯着主角的心','被要求的牺牲远远超出了主角的底线'],
+      escalations:['每一次选择都在主角心中刻下更深的伤痕','身边的人开始承受选择带来的后果','当退路一条条消失，选择变成了宿命','主角意识到，无论怎么选，都会有人受伤'],
+      climaxes:['主角闭上眼睛，做出了那个所有人都知道但没有人敢说出口的选择。泪水无声滑落——不是因为软弱，而是因为太清醒。','在最后一刻，主角放弃了唾手可得的力量——因为代价是忘记那个最重要的人。'],
+      endings:['无悔：虽然痛苦，但主角从未后悔','遗憾：有些东西，失去了就再也回不来','传承：牺牲换来了更大的希望','纪念：主角用余生守护那个牺牲换来的和平','追问：多年后，主角仍然在问自己——当初的选择对吗']
+    },
+    reunion: { name:'重逢与离别', icon:'🌙',
+      causes:['多年后的偶然重逢，让埋藏已久的情感重新涌动','一个任务迫使主角回到故乡，面对曾经的遗憾','战场上的宿命相遇，昔日的好友如今却各为其主','寻找多年的人终于出现在眼前——但一切都已经变了','一封迟到了十年的信，开启了一段旅程'],
+      escalations:['重逢的喜悦被岁月带来的隔阂冲淡','曾经的熟悉变成了如今的陌生','想要弥补却发现已经无从下手','当旧日的伤口被揭开，两人都沉默了'],
+      climaxes:['两人相对无言，十年的千言万语，却不知从何说起。最终，一个简单的拥抱胜过了一切语言。','告别的时刻来得比预想的快得多——甚至来不及说出口那句一直在心里的话。'],
+      endings:['和解：隔阂被打破，两人找到了新的相处方式','永别：一次重逢原来是为了更好的告别','同行：两人决定不再分离，一起踏上旅程','释怀：主角终于放下了多年的心结','遗憾：重逢太短，离别太快']
+    },
+    revelation: { name:'真相揭露', icon:'⚡',
+      causes:['一个被隐藏了二十年的秘密终于浮出水面','看似慈祥的长辈其实另有身份','主角的真实身世在危急时刻被揭开','历史的真相与流传的版本截然不同','最不可能的那个人，原来是幕后黑手'],
+      escalations:['真相的碎片一块块拼凑起来','主角的三观被一次次颠覆','身边人的反应让真相变得更加残酷','当最后一个拼图归位——一切都不一样了'],
+      climaxes:['主角站在满是灰尘的档案室中，手中的泛黄文书微微发颤——原来自己的整个人生，都建立在谎言之上。','当那个人平静地说出真相的那一刻，整个房间的空气凝固了。没有愤怒、没有嘶吼——只有让人窒息的沉默。'],
+      endings:['接受：主角选择接受真相，继续前行','复仇：真相引出了更深的仇恨','释怀：明白了真相之后，主角终于放下了执念','追问：真相之上还有更大的谜团','崩塌：真相摧毁了主角信仰的一切']
+    },
+  }}
+};
+
 function renderPlot() {
   const area = document.getElementById('plotContent');
   if (!books.length || books.every(b => b.characters.length < 2)) {
@@ -1886,26 +2464,53 @@ function renderPlot() {
     return;
   }
   const validBooks = books.filter(b => b.characters.length >= 2);
+  const allTypes = [];
+  for (const [catKey, cat] of Object.entries(PLOT_CATEGORIES)) {
+    for (const [typeKey, type] of Object.entries(cat.types)) {
+      allTypes.push({ catKey, catLabel: cat.label, typeKey, ...type });
+    }
+  }
   area.innerHTML = `<div class="back-bar"><label for="plotBookSelect" style="color:#aaa;font-size:0.85rem;">选择书册：</label>
     <select id="plotBookSelect" style="background:#0d0f1a;border:1px solid #2a2d4a;color:#e0e0e0;padding:6px 10px;border-radius:6px;font-size:0.85rem;font-family:inherit;">
       ${validBooks.map(b => `<option value="${b.id}">${b.title} (${b.characters.length}个角色)</option>`).join('')}
     </select></div>
     <div style="background:#1a1c32;border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid #2a2d4a;">
       <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
-        <div style="flex:1;min-width:150px;"><label style="font-size:0.8rem;color:#888;display:block;margin-bottom:4px;">角色 A</label><select id="plotCharA" class="plot-char-sel" style="width:100%;background:#0d0f1a;border:1px solid #2a2d4a;color:#e0e0e0;padding:6px 10px;border-radius:6px;font-size:0.85rem;font-family:inherit;"></select></div>
-        <div style="flex:1;min-width:150px;"><label style="font-size:0.8rem;color:#888;display:block;margin-bottom:4px;">角色 B</label><select id="plotCharB" class="plot-char-sel" style="width:100%;background:#0d0f1a;border:1px solid #2a2d4a;color:#e0e0e0;padding:6px 10px;border-radius:6px;font-size:0.85rem;font-family:inherit;"></select></div>
-        <div style="flex:1;min-width:150px;"><label style="font-size:0.8rem;color:#888;display:block;margin-bottom:4px;">角色 C (可选)</label><select id="plotCharC" class="plot-char-sel" style="width:100%;background:#0d0f1a;border:1px solid #2a2d4a;color:#e0e0e0;padding:6px 10px;border-radius:6px;font-size:0.85rem;font-family:inherit;"><option value="">不使用</option></select></div>
-        <div style="flex:1;min-width:150px;"><label style="font-size:0.8rem;color:#888;display:block;margin-bottom:4px;">冲突类型</label>
-          <select id="plotConflictType" style="width:100%;background:#0d0f1a;border:1px solid #2a2d4a;color:#e0e0e0;padding:6px 10px;border-radius:6px;font-size:0.85rem;font-family:inherit;">
-            <option value="emotional">💔 情感纠葛</option><option value="interest">💰 利益冲突</option><option value="ideology">⚖️ 理念对立</option><option value="destiny">🌑 宿命对决</option><option value="misunderstand">❓ 误会陷阱</option>
-          </select></div>
-        <div><button class="btn-gen" id="genPlotBtn" style="white-space:nowrap;">⚡ 生成冲突剧情</button></div>
+        <div style="flex:1;min-width:130px;"><label style="font-size:0.8rem;color:#888;display:block;margin-bottom:4px;">角色 A</label><select id="plotCharA" style="width:100%;background:#0d0f1a;border:1px solid #2a2d4a;color:#e0e0e0;padding:6px 10px;border-radius:6px;font-size:0.85rem;font-family:inherit;"></select></div>
+        <div style="flex:1;min-width:130px;"><label style="font-size:0.8rem;color:#888;display:block;margin-bottom:4px;">角色 B</label><select id="plotCharB" style="width:100%;background:#0d0f1a;border:1px solid #2a2d4a;color:#e0e0e0;padding:6px 10px;border-radius:6px;font-size:0.85rem;font-family:inherit;"></select></div>
+        <div style="flex:1;min-width:130px;"><label style="font-size:0.8rem;color:#888;display:block;margin-bottom:4px;">角色 C (可选)</label><select id="plotCharC" style="width:100%;background:#0d0f1a;border:1px solid #2a2d4a;color:#e0e0e0;padding:6px 10px;border-radius:6px;font-size:0.85rem;font-family:inherit;"><option value="">不使用</option></select></div>
+        <div style="flex:2;min-width:200px;">
+          <label style="font-size:0.8rem;color:#888;display:block;margin-bottom:4px;">剧情类型</label>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;" id="plotCatBtns">
+            ${Object.entries(PLOT_CATEGORIES).map(([k,v]) => `<button class="filter-chip" data-cat="${k}">${v.icon} ${v.label}</button>`).join('')}
+          </div>
+          <select id="plotConflictType" style="width:100%;background:#0d0f1a;border:1px solid #2a2d4a;color:#e0e0e0;padding:6px 10px;border-radius:6px;font-size:0.85rem;font-family:inherit;"></select>
+        </div>
+        <div><button class="btn-gen" id="genPlotBtn" style="white-space:nowrap;">⚡ 生成剧情</button></div>
       </div>
     </div>
     <div id="plotOutput"></div>`;
   updatePlotCharSelects();
   area.querySelector('#plotBookSelect').addEventListener('change', updatePlotCharSelects);
   area.querySelector('#genPlotBtn').addEventListener('click', generatePlotConflict);
+
+  // Category filtering
+  function populateTypeSelect(catKey) {
+    const sel = area.querySelector('#plotConflictType');
+    if (!sel) return;
+    const cat = PLOT_CATEGORIES[catKey];
+    sel.innerHTML = Object.entries(cat.types).map(([k,v]) => `<option value="${catKey}:${k}">${v.icon} ${v.name}</option>`).join('');
+  }
+  const catBtns = area.querySelector('#plotCatBtns').querySelectorAll('.filter-chip');
+  catBtns[0]?.classList.add('active');
+  populateTypeSelect(Object.keys(PLOT_CATEGORIES)[0]);
+  catBtns.forEach(chip => {
+    chip.addEventListener('click', () => {
+      catBtns.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      populateTypeSelect(chip.dataset.cat);
+    });
+  });
 }
 
 function updatePlotCharSelects() {
@@ -1931,54 +2536,108 @@ function generatePlotConflict() {
   const a = book.characters.find(c=>c.id===document.querySelector('#plotCharA')?.value);
   const b = book.characters.find(c=>c.id===document.querySelector('#plotCharB')?.value);
   const c = book.characters.find(c=>c.id===document.querySelector('#plotCharC')?.value);
-  const conflictType = document.querySelector('#plotConflictType')?.value || 'emotional';
+  const fullType = document.querySelector('#plotConflictType')?.value || 'character:emotional';
+  const [catKey, typeKey] = fullType.split(':');
   if (!a || !b) { showToast('请选择至少两个角色'); return; }
 
-  const typeInfo = {
-    emotional: { name:'情感纠葛', cause:['命运让他们相遇却走到对立面','一段无法明说的感情','背叛与失望的累积','被第三个人打破的平衡'], escalate:['误会越来越深','嫉妒吞噬理智','爱的反面是恨'], climax:'在某个关键节点，两人才惊觉彼此一直在误会对方——但已经太迟了。' },
-    interest: { name:'利益冲突', cause:['一方掌握另一方急需的资源','某种力量的分配不公','为了生存而不得不对抗','隐藏的宝藏或秘密'], escalate:['互相设局','盟友变成敌人','代价越来越高'], climax:'双方都意识到，这场博弈没有赢家——但谁先收手，谁就输了。' },
-    ideology: { name:'理念对立', cause:['对正义的不同理解','传统与变革的碰撞','家族信条的束缚','不同世界的价值观'], escalate:['从争辩到决裂','各自纠集支持者','原则比感情更重要'], climax:'当两套理念在现实中正面相撞，没有一个理念能完全存活——破碎的，是人的心。' },
-    destiny: { name:'宿命对决', cause:['古老的预言','血脉的诅咒','轮回中注定的敌人','正义与邪恶的最终较量'], escalate:['退无可退','身边的人开始倒下','世界在崩塌'], climax:'宿命说他们必须打——但他们心中都隐约觉得，命运也许只是一场可笑的谎言。' },
-    misunderstand: { name:'误会陷阱', cause:['一个善意的谎言被揭穿','被人蓄意离间','巧合的时间差','不愿解释的倔强'], escalate:['裂痕越来越大','信任彻底崩塌','无法原谅的伤害'], climax:'真相终于浮出水面——但伤痕已经太深。就算知道是误会，还能回到从前吗？' },
-  };
-  const info = typeInfo[conflictType];
+  const cat = PLOT_CATEGORIES[catKey];
+  const info = cat?.types[typeKey];
+  if (!info) return;
+
   const chars = [a,b]; if (c) chars.push(c);
+
+  // Character-aware intro
   const charIntro = chars.map(ch => {
-    const p = ch.profile;
-    const traits = [p?.personality, p?.age, p?.ability].filter(Boolean);
-    return `**${ch.display}**（${ch.role}${traits.length?'，'+traits.join('，'):''}）`;
-  }).join('\n\n');
+    const p = ch.profile || {};
+    const traits = [];
+    if (p.personality) traits.push(p.personality);
+    if (p.realm) traits.push(p.realm);
+    if (p.cultivation) traits.push(p.cultivation);
+    if (p.ability && !traits.includes(p.ability)) traits.push(p.ability);
+    return `**${ch.display}**（${ch.role}${traits.length ? '，'+traits.slice(0,3).join('，') : ''}）`;
+  }).join('\n');
+
+  // Weave cultivation/realm into battle/strategy contexts
+  let cultivationFlavor = '';
+  const aCult = a.profile?.cultivation || a.profile?.realm;
+  const bCult = b.profile?.cultivation || b.profile?.realm;
+  if ((catKey === 'action') && (aCult || bCult)) {
+    cultivationFlavor = aCult && bCult
+      ? `\n\n${a.display}的**${aCult}**与${b.display}的**${bCult}**在虚空中激烈碰撞，两股截然不同的力量相互撕扯，让天地为之变色。`
+      : (aCult ? `\n\n${a.display}运转**${aCult}**，磅礴的力量在这一刻毫无保留地释放。` : `\n\n${b.display}催动**${bCult}**，战局在这一刻发生了微妙的变化。`);
+  }
+
+  const cause = rand(info.causes);
+  const escalate = rand(info.escalations);
+  const climax = rand(info.climaxes);
+  const ending1 = rand(info.endings);
+  const ending2 = rand(info.endings.filter(e => e !== ending1));
+
+  const introFlavor = chars.length > 2 ? `\n\n${chars[2].display}的介入让局面变得更加错综复杂。` : '';
+  const escalateFlavor = rand(['在这场争斗中，没有无辜者——每个人都在为了自己的理由而战。','昔日的羁绊在这一刻被撕裂，裂痕深可见骨。','每一次交锋都在彼此的心中刻下更深的伤痕，也在旁观者的记忆中留下难以磨灭的印记。']);
 
   const output = `
-#### 🎬 冲突起因
-${rand(info.cause)}。${chars.length>2 ? chars[2].display+'的介入让事情变得更加复杂。' : ''}
+#### 🎬 ${info.icon} 冲突起因
+${cause}。${introFlavor}
 
-${charIntro}
+${charIntro}${cultivationFlavor}
 
 #### 📈 冲突升级
-${rand(info.escalate)}。昔日的情谊在利益的漩涡中被撕裂，每一次交锋都在彼此的心中刻下更深的伤痕。
+${escalate}。${escalateFlavor}
 
 #### ⚔️ 高潮
-${info.climax}
+${climax}
 
 #### 🌅 可能结局
-- **结局一（悲剧）**：一方的消失或死亡，让一切戛然而止。
-- **结局二（和解）**：意想不到的第三方力量介入，让双方不得不放下成见，发现其实可以并肩作战。
-- **结局三（反转）**：原来这一切冲突的背后，都是被人设下的局——而真正的敌人，从未被注意到。
+- **${ending1.split('：')[0]}**：${ending1.split('：').slice(1).join('：')}
+- **${ending2.split('：')[0]}**：${ending2.split('：').slice(1).join('：')}
+- **开放结局**：故事在这里戛然而止——剩下的，留给你和你的读者去想象。
 
 > ⚡ *此剧情由模拟器自动生成。好故事的灵魂，在于你赋予角色的温度与呼吸。*
 `;
 
   document.getElementById('plotOutput').innerHTML = `<div class="conflict-output">${output.replace(/\n/g,'<br>')}</div>
-    <div style="margin-top:12px;display:flex;gap:10px;justify-content:flex-end;">
-      <button class="btn-gen ghost" id="copyPlotBtn">📋 复制剧情</button>
-      <button class="btn-gen ghost" id="regenPlotBtn">🔄 重新生成</button>
+    <div style="margin-top:12px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
+      <button class="btn-gen ghost small" id="regenCauseBtn">🔄 起因</button>
+      <button class="btn-gen ghost small" id="regenEscalateBtn">🔄 升级</button>
+      <button class="btn-gen ghost small" id="regenClimaxBtn">🔄 高潮</button>
+      <button class="btn-gen ghost small" id="regenEndingsBtn">🔄 结局</button>
+      <button class="btn-gen ghost" id="copyPlotBtn">📋 复制</button>
+      <button class="btn-gen" id="regenPlotBtn">🔄 全部重生成</button>
     </div>`;
   document.getElementById('copyPlotBtn').addEventListener('click', () => {
     navigator.clipboard.writeText(output.replace(/<br>/g,'\n').replace(/\*\*/g,'').replace(/\*/g,''));
     showToast('✅ 已复制');
   });
   document.getElementById('regenPlotBtn').addEventListener('click', generatePlotConflict);
+  // Section-level regenerate
+  document.getElementById('regenCauseBtn').addEventListener('click', () => {
+    const newCause = rand(info.causes);
+    const el = document.querySelector('.conflict-output');
+    if (el) el.innerHTML = el.innerHTML.replace(/🎬.*?(?=<br>)/s, '🎬 '+info.icon+' 冲突起因<br>'+newCause);
+    showToast('起因已刷新');
+  });
+  document.getElementById('regenEscalateBtn').addEventListener('click', () => {
+    const el = document.querySelector('.conflict-output');
+    if (el) {
+      const es = rand(info.escalations);
+      const fl = rand(['在这场争斗中，没有无辜者。','昔日的羁绊在这一刻被撕裂。','每一次交锋都在彼此的心中刻下伤痕。']);
+      el.innerHTML = el.innerHTML.replace(/📈.*?(?=<br>)/s, '📈 冲突升级<br>'+es+'。'+fl);
+    }
+    showToast('升级已刷新');
+  });
+  document.getElementById('regenClimaxBtn').addEventListener('click', () => {
+    const el = document.querySelector('.conflict-output');
+    if (el) el.innerHTML = el.innerHTML.replace(/⚔️.*?(?=<br>)/s, '⚔️ 高潮<br>'+rand(info.climaxes));
+    showToast('高潮已刷新');
+  });
+  document.getElementById('regenEndingsBtn').addEventListener('click', () => {
+    const e1 = rand(info.endings), e2 = rand(info.endings.filter(e => e !== e1));
+    const newEnd = `- **${e1.split('：')[0]}**：${e1.split('：').slice(1).join('：')}<br>- **${e2.split('：')[0]}**：${e2.split('：').slice(1).join('：')}<br>- **开放结局**：故事在这里戛然而止——剩下的，留给你和你的读者去想象。`;
+    const el = document.querySelector('.conflict-output');
+    if (el) el.innerHTML = el.innerHTML.replace(/🌅.*$/s, '🌅 可能结局<br>'+newEnd);
+    showToast('结局已刷新');
+  });
 }
 
 // ==================== TOAST ====================
@@ -2013,14 +2672,14 @@ function initGeneratorUI() {
     b.className='btn-opt'+(s.id==='urban'?' active':'');
     b.dataset.value=s.id;
     b.innerHTML=s.label+'<br><span style="font-size:0.7rem;color:#888;font-weight:400;">'+s.desc+'</span>';
-    b.addEventListener('click',()=>{ styleC.querySelectorAll('.btn-opt').forEach(x=>x.classList.remove('active')); b.classList.add('active'); playSound('click'); });
+    b.addEventListener('click',()=>{ styleC.querySelectorAll('.btn-opt').forEach(x=>x.classList.remove('active')); b.classList.add('active'); playSound('click'); const ds = document.getElementById('dynastySection'); if(ds) ds.classList.toggle('hidden', s.id !== 'ancient'); });
     styleC.appendChild(b);
   });
 
   // Phase 2: Add filter sections after styleBtns
   const sidebar = document.querySelector('#panel-generator .sidebar');
   sidebar.insertAdjacentHTML('beforeend', `
-    <div class="sidebar-section filter-section">
+    <div class="sidebar-section filter-section hidden" id="dynastySection">
       <div class="sidebar-label">朝代风格</div>
       <div class="filter-row" id="dynastyBtns">
         <button class="filter-chip active" data-value="any">不限</button>
@@ -2079,6 +2738,197 @@ function initGeneratorUI() {
     });
   });
   document.getElementById('blMgrBtn').addEventListener('click', showBlacklistModal);
+
+  function quickSave(nameStr, gender) {
+  if (!books.length) {
+    showCreateBookModal({ display: nameStr, role: 'protagonist', gender: gender || 'male', style: 'xianxia', explanation: '' });
+    return;
+  }
+  const n = {
+    display: nameStr, name: nameStr,
+    role: 'protagonist', gender: gender || 'male', style: 'xianxia',
+    explanation: '特殊关系生成',
+    zi: '', hao: '', nickname: '', wuxing: '',
+    title: '', pingze: '', meanings: '', profile: {},
+  };
+  saveNameToLibrary(n, null);
+}
+
+// Phase 7: Special relationship naming
+  sidebar.insertAdjacentHTML('beforeend', `
+    <div class="sidebar-section">
+      <div class="sidebar-label">🎯 特殊关系取名</div>
+      <div class="filter-row" id="specialModeBtns" style="margin-bottom:8px;">
+        <button class="filter-chip active" data-mode="family">家族同辈</button>
+        <button class="filter-chip" data-mode="couple">情侣配对</button>
+        <button class="filter-chip" data-mode="sect">同宗门</button>
+        <button class="filter-chip" data-mode="regional">地域风格</button>
+      </div>
+      <div id="specialSubConfig"></div>
+      <div style="margin-top:8px;display:flex;gap:6px;align-items:center;">
+        <select id="specialCount" style="background:var(--bg-primary);border:1px solid var(--border);color:var(--text-primary);padding:4px 8px;border-radius:4px;font-size:0.75rem;font-family:inherit;">
+          <option value="3">3</option><option value="5" selected>5</option><option value="8">8</option><option value="10">10</option>
+        </select>
+        <button class="btn-gen small" id="genSpecialBtn" style="flex:1;">✨ 生成</button>
+        <button class="btn-gen ghost small" id="genSpecialAIBtn" title="AI 辅助生成">🤖</button>
+      </div>
+    </div>
+  `);
+
+  // Special naming mode switching
+  let specialMode = 'family';
+  function updateSpecialSubConfig() {
+    const cfg = document.getElementById('specialSubConfig');
+    let html = '';
+    if (specialMode === 'family') {
+      const chars = DATA.specialNaming.familySameGen.genChars;
+      html = `<div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:4px;">字辈选择</div>
+        <div class="filter-row" id="genCharBtns">${chars.male.slice(0,20).map(c => `<button class="filter-chip" data-char="${c}">${c}</button>`).join('')}</div>`;
+    } else if (specialMode === 'sect') {
+      html = `<div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:4px;">宗门风格</div>
+        <div class="filter-row" id="sectStyleBtns">
+          <button class="filter-chip active" data-style="xianxia">修仙</button>
+          <button class="filter-chip" data-style="wuxia">武侠</button>
+          <button class="filter-chip" data-style="ancient">古代</button>
+          <button class="filter-chip" data-style="fantasy">奇幻</button>
+        </div>`;
+    } else if (specialMode === 'regional') {
+      const regions = DATA.specialNaming.regionalStyle.regions;
+      html = `<div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:4px;">选择地域</div>
+        <div class="filter-row" id="regionBtns">${Object.entries(regions).map(([k,v]) => `<button class="filter-chip${k==='jiangnan'?' active':''}" data-region="${k}">${v.label}</button>`).join('')}</div>`;
+    }
+    cfg.innerHTML = html;
+    // Bind sub-config chip listeners
+    cfg.querySelectorAll('.filter-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        cfg.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      });
+    });
+  }
+  updateSpecialSubConfig();
+
+  document.getElementById('specialModeBtns').querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.getElementById('specialModeBtns').querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      specialMode = chip.dataset.mode;
+      updateSpecialSubConfig();
+    });
+  });
+
+  document.getElementById('genSpecialBtn').addEventListener('click', () => {
+    const count = parseInt(document.getElementById('specialCount').value) || 5;
+    let results = [];
+    if (specialMode === 'family') {
+      const activeChar = document.querySelector('#genCharBtns .filter-chip.active');
+      const genChar = activeChar?.dataset.char || DATA.specialNaming.familySameGen.genChars.male[0];
+      // Override for demo: use active char
+      const sn = DATA.specialNaming.familySameGen;
+      const surnames = POOLS.cnSurnames.slice(0, 100);
+      for (let i = 0; i < count; i++) {
+        const surname = rand(surnames);
+        const gender = Math.random() < 0.5 ? 'male' : 'female';
+        const chars = gender === 'male' ? sn.genChars.male : sn.genChars.female;
+        const suffix = gender === 'male' ? rand(sn.suffixMale) : rand(sn.suffixFemale);
+        const secondChar = rand(chars.filter(c => c !== genChar));
+        results.push({ name: surname + genChar + secondChar, display: `${surname}${genChar}${secondChar}（${suffix}）`, gender, note: `同辈"${genChar}"` });
+      }
+      results = { genChar, results, label: `家族同辈字"${genChar}"` };
+    } else if (specialMode === 'couple') {
+      const sn = DATA.specialNaming.coupleNames;
+      const pair = rand(sn.pairs);
+      const surnames = POOLS.cnSurnames.slice(0, 100);
+      const items = [];
+      for (let i = 0; i < count; i++) {
+        const s1 = rand(surnames), s2 = rand(surnames.filter(s => s !== s1));
+        const extra = rand(['辰','轩','宇','瑶','萱','晚','曦','逸','然','安','宁','清']);
+        items.push({ male: s1+pair[0]+extra, female: s2+pair[1]+extra, display: `${s1}${pair[0]}${extra} ♥ ${s2}${pair[1]}${extra}`, note: pair.join('/') });
+      }
+      results = { pair, results: items, label: `情侣配对"${pair.join('/')}"` };
+    } else if (specialMode === 'sect') {
+      const activeStyle = document.querySelector('#sectStyleBtns .filter-chip.active');
+      const style = activeStyle?.dataset.style || 'xianxia';
+      const sn = DATA.specialNaming.sectSamePrefix;
+      const prefixes = sn[style] || sn.xianxia;
+      const prefix = rand(prefixes);
+      const titles = style==='xianxia'?['真人','道人','仙子','尊者','散人']:style==='wuxia'?['大侠','剑客','刀客','女侠']:style==='ancient'?['先生','道人','散人','居士']:['骑士','法师','游侠','贤者'];
+      const items = [];
+      for (let i = 0; i < count; i++) {
+        const suffix = rand(['子','君','尘','云','风','月','星','明','清','玄','真','行','远','寒','羽']);
+        items.push({ name: prefix+suffix, display: `${prefix}${suffix}（${rand(titles)}）`, note: `前缀"${prefix}"` });
+      }
+      results = { prefix, results: items, label: `同宗门"${prefix}"` };
+    } else if (specialMode === 'regional') {
+      const activeRegion = document.querySelector('#regionBtns .filter-chip.active');
+      const regionKey = activeRegion?.dataset.region || 'jiangnan';
+      results = generateRegionalNames(count, regionKey);
+      results.label = `${results.region}风格`;
+    }
+    // Display results in content area
+    const header = results.label || '特殊关系取名';
+    const items = results.results || [];
+    const html = `<div class="result-group">
+      <div class="result-group-title">${results.genChar ? '字辈：'+results.genChar : results.pair ? '配对：'+results.pair.join('/') : results.prefix ? '前缀：'+results.prefix : ''} ${results.region||''} - ${items.length}个名字</div>
+      <div class="name-list" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+        ${items.map(r => `<div class="name-card" style="padding:10px 14px;">
+          <div class="name" style="font-size:0.95rem;">${r.display||r.name}</div>
+          <div class="desc">${r.note||''} ${r.gender==='male'?'♂':r.gender==='female'?'♀':''}</div>
+          <div class="card-actions" style="margin-top:4px;opacity:1;">
+            <button class="btn-sm" data-action="copy" data-name="${r.display||r.name}">📋</button>
+            <button class="btn-sm" data-action="save" data-name="${r.name||(r.display||'').split('♥')[0].trim()}" data-gender="${r.gender||'male'}">💾</button>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+    const resultArea = document.getElementById('resultArea');
+    resultArea.insertAdjacentHTML('afterbegin', html);
+    // Bind card actions
+    resultArea.querySelectorAll('.btn-sm[data-action="copy"]').forEach(btn => {
+      btn.addEventListener('click', (e) => { e.stopPropagation(); navigator.clipboard.writeText(btn.dataset.name); showToast('已复制'); });
+    });
+    resultArea.querySelectorAll('.btn-sm[data-action="save"]').forEach(btn => {
+      btn.addEventListener('click', (e) => { e.stopPropagation(); quickSave(btn.dataset.name, btn.dataset.gender); });
+    });
+    showToast(`✅ 已生成${items.length}个特殊关系名字`);
+  });
+
+  document.getElementById('genSpecialAIBtn').addEventListener('click', async () => {
+    if (!aiConfig?.apiKey) { showToast('请先配置 AI (点击右上角⚙️)'); return; }
+    const btn = document.getElementById('genSpecialAIBtn');
+    btn.disabled = true; btn.textContent = '...';
+    try {
+      const count = parseInt(document.getElementById('specialCount').value) || 5;
+      let config = { count };
+      if (specialMode === 'family') {
+        const activeChar = document.querySelector('#genCharBtns .filter-chip.active');
+        config.genChar = activeChar?.dataset.char || '';
+      } else if (specialMode === 'sect') {
+        const activeStyle = document.querySelector('#sectStyleBtns .filter-chip.active');
+        config.style = activeStyle?.dataset.style || 'xianxia';
+      } else if (specialMode === 'regional') {
+        const activeRegion = document.querySelector('#regionBtns .filter-chip.active');
+        config.region = DATA.specialNaming.regionalStyle.regions[activeRegion?.dataset.region]?.label || '江南';
+      }
+      const aiResults = await generateAIRelationshipNames(specialMode, config);
+      const resultArea = document.getElementById('resultArea');
+      const names = aiResults.map(r => {
+        if (r.male && r.female) return `${r.male} ♥ ${r.female} — ${r.pairMeaning||''}`;
+        return `${r.name} — ${r.meaning||''}`;
+      });
+      resultArea.insertAdjacentHTML('afterbegin', `<div class="result-group">
+        <div class="result-group-title">🤖 AI 生成 · ${specialMode} · ${aiResults.length}个名字</div>
+        <div class="name-list" style="grid-template-columns:1fr;">
+          ${names.map(n => `<div class="name-card"><div class="name" style="font-size:0.9rem;">${n}</div></div>`).join('')}
+        </div>
+      </div>`);
+      showToast(`✅ AI 生成${aiResults.length}个名字`);
+    } catch (err) {
+      showToast('❌ ' + err.message);
+    } finally {
+      btn.disabled = false; btn.textContent = '🤖';
+    }
+  });
 
   // Phase 1: Daily fortune banner
   const fortune = getDailyFortune();
@@ -2145,9 +2995,34 @@ function initTabs() {
   });
 }
 
+// ==================== THEME ====================
+const THEME_KEY = 'app_theme';
+const THEMES = ['dark', 'classical', 'xianxia', 'forest'];
+const THEME_ICONS = { dark:'🌙', classical:'📜', xianxia:'✨', forest:'🌿' };
+
+function initTheme() {
+  const saved = localStorage.getItem(THEME_KEY) || 'dark';
+  applyTheme(saved);
+  document.getElementById('themeBtn').addEventListener('click', cycleTheme);
+}
+
+function applyTheme(name) {
+  document.documentElement.setAttribute('data-theme', name);
+  document.getElementById('themeBtn').textContent = THEME_ICONS[name] || '🎨';
+  localStorage.setItem(THEME_KEY, name);
+}
+
+function cycleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  const idx = THEMES.indexOf(cur);
+  const next = THEMES[(idx + 1) % THEMES.length];
+  applyTheme(next);
+}
+
 loadBooks();
 document.addEventListener('DOMContentLoaded', () => {
   try {
+    initTheme();
     initTabs();
     loadAIConfig(); updateSettingsBadge(); updateModeBadge();
     setTimeout(function() {
