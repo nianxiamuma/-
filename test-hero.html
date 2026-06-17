@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Hero</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: sans-serif; }
+.scroll-hero {
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #6a82fb, #fc5c7d);
+  text-align: center;
+  padding: 40px;
+}
+.card {
+  background: white;
+  border-radius: 24px;
+  padding: 60px 40px;
+  max-width: 600px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.card h2 { color: #333; font-size: 2rem; }
+.card p { color: #666; margin-top: 12px; }
+</style>
+</head>
+<body>
+<div class="scroll-hero">
+  <div class="card">
+    <h2>✅ Hero 可见!</h2>
+    <p>紫粉渐变背景 + 白色卡片 = 不可能全黑</p>
+  </div>
+</div>
+</body>
+</html>

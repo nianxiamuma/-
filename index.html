@@ -534,19 +534,158 @@ header p { color: var(--text-dim); margin-top: 6px; font-size: 0.9rem; }
 .result-group-title { font-weight: 600; color: var(--accent-gold); margin-bottom: 12px; font-size: 0.9rem; }
 .retry-banner { text-align: center; padding: 24px; color: var(--text-dim); }
 .retry-banner button { margin-top: 12px; }
+
+/* ===== Scroll Animation Hero ===== */
+.scroll-hero {
+  height: 600px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative;
+  padding: 0 20px;
+  background: linear-gradient(180deg, #6a82fb 0%, #fc5c7d 100%) !important;
+  text-align: center;
+  z-index: 1;
+  min-height: 400px;
+}
+@media (max-width: 768px) {
+  .scroll-hero { height: 600px; padding: 0 12px; }
+}
+.scroll-hero-inner {
+  perspective: 1000px;
+  width: 100%;
+  max-width: 1024px;
+}
+.scroll-hero-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.scroll-hero-header h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 8px;
+}
+.scroll-hero-header .big {
+  font-size: 2.8rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, #ffd700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+  line-height: 1.2;
+}
+@media (max-width: 768px) {
+  .scroll-hero-header h1 { font-size: 1rem; }
+  .scroll-hero-header .big { font-size: 1.8rem; }
+}
+.scroll-card {
+  height: 30rem;
+  width: 100%;
+  padding: 8px;
+  border-radius: 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  overflow: hidden;
+  will-change: transform;
+  transform-origin: center center;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+}
+@media (max-width: 768px) {
+  .scroll-card { height: 20rem; padding: 5px; border-radius: 18px; }
+}
+.scroll-card-inner {
+  height: 100%;
+  width: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.95);
+  position: relative;
+}
+@media (max-width: 768px) {
+  .scroll-card-inner { border-radius: 12px; }
+}
+.scroll-card-content {
+  text-align: center;
+  padding: 40px;
+  color: #333;
+}
+.scroll-card-content .icon {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  display: block;
+}
+.scroll-card-content h3 {
+  font-size: 1.6rem;
+  color: #1a1a2e;
+  margin-bottom: 12px;
+}
+.scroll-card-content p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.7;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.scroll-card-content .features {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.scroll-card-content .features span {
+  background: linear-gradient(135deg, #6a82fb22, #fc5c7d22);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #6a82fb;
+  font-weight: 600;
+}
+.scroll-hint {
+  text-align: center;
+  padding: 16px;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.85rem;
+  animation: floatHint 2s ease-in-out infinite;
+}
+@keyframes floatHint {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
 </style>
+
 </head>
 <body>
 
 <button class="settings-btn" id="settingsBtn" title="AI 设置">⚙️</button>
 <button class="theme-btn" id="themeBtn" title="切换主题">🎨</button>
 
-<div class="app">
-  <header>
-    <h1>📖 小说取名模拟器</h1>
-    <p>生成 · 收藏 · 诠释你的小说角色名字</p>
-  </header>
+<!-- Scroll Animation Hero -->
+<div class="scroll-hero" id="scrollHero">
+  <div class="scroll-hero-inner" id="scrollHeroInner">
+    <div class="scroll-hero-header" id="scrollHeroHeader">
+      <h1>打造你的小说世界</h1>
+      <span class="big">Scroll Animations</span>
+    </div>
+    <div class="scroll-card" id="scrollCard">
+      <div class="scroll-card-inner">
+        <div class="scroll-card-content">
+          <span class="icon">📖</span>
+          <h3>创意无限 · 角色万千</h3>
+          <p>小说取名模拟器帮你生成各类型角色名字，<br>支持仙侠、都市、奇幻、科幻等 16 种风格。</p>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-hint">↓ 继续滚动进入生成器</div>
+  </div>
+</div>
 
+<div class="app">
   <div class="tab-bar">
     <button class="tab-btn active" data-tab="generator">🎲 生成器</button>
     <button class="tab-btn" data-tab="library">📚 本地库</button>
@@ -3031,6 +3170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initBatchAIMode();
     initKeyboardShortcut();
     initDescMonitor();
+    initScrollAnimation();
     initSettingsModal();
   } catch(e) {
     console.error('DOMContentLoaded error:', e.message);
@@ -3531,6 +3671,36 @@ function initKeyboardShortcut() {
 function initDescMonitor() {
   document.getElementById('descInput').addEventListener('input', updateModeBadge);
 }
+
+// ==================== SCROLL ANIMATION HERO (ContainerScroll replica) ====================
+function initScrollAnimation() {
+  const hero = document.getElementById('scrollHero');
+  const header = document.getElementById('scrollHeroHeader');
+  const card = document.getElementById('scrollCard');
+
+  function update() {
+    const rect = hero.getBoundingClientRect();
+    const progress = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / (rect.height - window.innerHeight)));
+    const isMobile = window.innerWidth <= 768;
+
+    // Rotate X: 20deg → 0
+    const rotateX = 20 - progress * 20;
+    // Scale: 1.05 → 1 (desktop), 0.7 → 0.9 (mobile)
+    const scaleStart = isMobile ? 0.7 : 1.05;
+    const scaleEnd = isMobile ? 0.9 : 1;
+    const scale = scaleStart + (scaleEnd - scaleStart) * progress;
+    // Translate Y: header moves up by 100px
+    const translateY = -progress * 80;
+
+    card.style.transform = `rotateX(${rotateX}deg) scale(${scale})`;
+    header.style.transform = `translateY(${translateY}px)`;
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+}
+
 </script>
 <!-- AI Settings Modal -->
 <div class="modal-overlay" id="settingsModal" style="display:none;">
